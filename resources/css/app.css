@@ -1,11 +1,43 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
+/* --- Konversi Variable style.css Anda --- */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Kita definisikan warna custom Anda di sini agar bisa dipanggil dengan class */
+    /* Contoh: class="bg-card" atau class="text-primary" */
+
+    --color-card-bg: var(--card-bg);
+    --color-bg-main: var(--bg-color);
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-border: var(--border-color);
+    --color-accent: var(--accent-color);
+
+    /* Status Colors */
+    --color-status-waiting: var(--status-waiting);
+    --color-status-progress: var(--status-progress);
+    --color-status-done: var(--status-done);
+}
+
+/* Paste nilai warna asli dari style.css lama Anda di sini.
+   Saya buatkan dummy hex-code, silakan GANTI dengan hex code asli Anda.
+*/
+:root {
+    --bg-color: #f3f4f6; /* Abu-abu terang background */
+    --card-bg: #ffffff; /* Putih card */
+    --text-primary: #111827; /* Hitam teks utama */
+    --text-secondary: #6b7280; /* Abu-abu teks sekunder */
+    --border-color: #e5e7eb; /* Garis border */
+    --accent-color: #3b82f6; /* Biru tombol utama */
+
+    /* Warna Status Badge */
+    --status-waiting: #9ca3af; /* Abu-abu */
+    --status-progress: #f59e0b; /* Kuning/Orange */
+    --status-done: #10b981; /* Hijau */
+}
+
+/* Base Styles untuk font Inter */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
 }
