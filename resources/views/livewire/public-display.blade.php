@@ -39,13 +39,31 @@
             <div class="w-full h-full relative bg-black" wire:key="video-player-{{ $settings->video_url ?? 'none' }}">
                 @if($settings && $settings->video_url)
                 @if($settings->video_type == 'youtube')
-                <iframe class="w-full h-full"
-                    src="https://www.youtube.com/embed/{{ $settings->video_url }}?autoplay=1&mute=0&loop=1&playlist={{ $settings->video_url }}&controls=0&showinfo=0&modestbranding=1"
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore class="relative w-full h-full">
+                    <div id="youtube-player-container" class="w-full h-full"></div>
+                    <button @click="toggleMute()" class="absolute bottom-4 right-4 z-20 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                        <svg x-show="isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                        </svg>
+                        <svg x-show="!isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                        </svg>
+                    </button>
+                </div>
                 @else
-                <video class="w-full h-full object-contain" autoplay loop playsinline>
-                    <source src="{{ asset('storage/' . $settings->video_url) }}" type="video/mp4">
-                </video>
+                <div x-data="{ isMuted: true }" wire:ignore class="relative w-full h-full">
+                    <video class="w-full h-full object-contain" autoplay loop playsinline :muted="isMuted">
+                        <source src="{{ asset('storage/' . $settings->video_url) }}" type="video/mp4">
+                    </video>
+                    <button @click="isMuted = !isMuted" class="absolute bottom-4 right-4 z-20 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                        <svg x-show="isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                          </svg>
+                        <svg x-show="!isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                          </svg>
+                    </button>
+                </div>
                 @endif
                 @else
                 <div
@@ -224,6 +242,76 @@
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                     this.timeLeft = hours > 0 ? `${hours}j ${minutes}m` : `${minutes}m ${seconds}s`;
+                }
+            }
+        }
+
+        // 4. YouTube Player Control
+        function youtubePlayer() {
+            return {
+                player: null,
+                isMuted: true,
+                init(videoId) {
+                    if (!videoId) return;
+                    
+                    // Ensure the API script is loaded only once
+                    if (!window.YT) {
+                        var tag = document.createElement('script');
+                        tag.src = "https://www.youtube.com/iframe_api";
+                        var firstScriptTag = document.getElementsByTagName('script')[0];
+                        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    }
+
+                    const checkYT = setInterval(() => {
+                        if (window.YT && window.YT.Player) {
+                            // If a player instance already exists, destroy it before creating a new one.
+                            if (this.player) {
+                                this.player.destroy();
+                            }
+                            this.createPlayer(videoId);
+                            clearInterval(checkYT);
+                        }
+                    }, 100);
+                },
+                createPlayer(videoId) {
+                    this.player = new YT.Player('youtube-player-container', {
+                        height: '100%',
+                        width: '100%',
+                        videoId: videoId,
+                        playerVars: {
+                            autoplay: 1,
+                            mute: 1,
+                            loop: 1,
+                            playlist: videoId, // Required for loop to work
+                            controls: 0,
+                            showinfo: 0,
+                            modestbranding: 1,
+                            playsinline: 1
+                        },
+                        events: {
+                            'onReady': (event) => {
+                                event.target.mute();
+                                this.isMuted = true;
+                            },
+                            'onStateChange': (event) => {
+                                // Loop the video manually if the loop parameter doesn't work
+                                if (event.data === YT.PlayerState.ENDED) {
+                                    this.player.playVideo();
+                                }
+                            }
+                        }
+                    });
+                },
+                toggleMute() {
+                    if (this.player && typeof this.player.isMuted === 'function') {
+                        if (this.player.isMuted()) {
+                            this.player.unMute();
+                            this.isMuted = false;
+                        } else {
+                            this.player.mute();
+                            this.isMuted = true;
+                        }
+                    }
                 }
             }
         }
