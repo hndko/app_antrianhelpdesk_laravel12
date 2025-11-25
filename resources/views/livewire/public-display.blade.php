@@ -39,40 +39,20 @@
             <div class="w-full h-full relative bg-black" wire:key="video-player-{{ $settings->video_url ?? 'none' }}">
                 @if($settings && $settings->video_url)
                 @if($settings->video_type == 'youtube')
-                <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore class="relative w-full h-full">
+                <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore
+                    class="relative w-full h-full">
                     <div id="youtube-player-container" class="w-full h-full"></div>
-                    <button @click="toggleMute()" class="absolute bottom-4 right-4 z-20 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
-                        <svg x-show="isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-                        </svg>
-                        <svg x-show="!isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-                        </svg>
-                    </button>
                 </div>
                 @else
                 <div x-data="{ isMuted: true }" wire:ignore class="relative w-full h-full">
                     <video class="w-full h-full object-contain" autoplay loop playsinline :muted="isMuted">
                         <source src="{{ asset('storage/' . $settings->video_url) }}" type="video/mp4">
                     </video>
-                    <button @click="isMuted = !isMuted" class="absolute bottom-4 right-4 z-20 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
-                        <svg x-show="isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-                          </svg>
-                        <svg x-show="!isMuted" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-                          </svg>
-                    </button>
                 </div>
                 @endif
                 @else
                 <div
                     class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center text-slate-600">
-                    <div class="w-20 h-20 rounded-full border-2 border-slate-700 flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                    </div>
                     <p class="text-sm font-medium tracking-[0.2em] uppercase opacity-50">Menunggu Tayangan</p>
                 </div>
                 @endif
@@ -253,7 +233,7 @@
                 isMuted: true,
                 init(videoId) {
                     if (!videoId) return;
-                    
+
                     // Ensure the API script is loaded only once
                     if (!window.YT) {
                         var tag = document.createElement('script');
