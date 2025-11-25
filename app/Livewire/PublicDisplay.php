@@ -13,9 +13,10 @@ class PublicDisplay extends Component
     {
         $settings = Setting::first();
 
-        $queues = Queue::orderByRaw("FIELD(status, 'progress', 'waiting', 'done')")
+        $queues = Queue::with('technician')
+            ->orderByRaw("FIELD(status, 'progress', 'waiting', 'done')")
             ->orderBy('queue_number', 'asc')
-            ->take(10)
+            ->take(50)
             ->get()
             ->map(function ($q) {
                 // Logika Countdown:
@@ -34,7 +35,7 @@ class PublicDisplay extends Component
         return view('livewire.public-display', [
             'queues' => $queues,
             'settings' => $settings,
-        ])->layout('layouts.display', [
+        ])->layout('components.display', [
             'title' => $settings->app_title ?? 'Service Display',
             'appName' => $settings->app_title ?? 'Service Display',
             'logo' => $settings->logo_url ?? '',

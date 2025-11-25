@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Queue;
 use App\Models\Setting;
+use App\Models\Technician;
 use Illuminate\Support\Facades\Storage;
 
 class AdminDashboard extends Component
@@ -14,8 +15,9 @@ class AdminDashboard extends Component
 
     // --- State Queue ---
     public $queue_id;
-    public $laptop_id, $helpdesk_name, $status = 'waiting', $duration_minutes = 60;
+    public $laptop_id, $technician_id, $status = 'waiting', $duration_minutes = 60;
     public $isEditing = false;
+    public $technicians;
 
     // --- State Settings ---
     public $app_title, $running_text, $marquee_speed, $video_type, $logo_url;
@@ -25,6 +27,7 @@ class AdminDashboard extends Component
     public function mount()
     {
         $this->loadSettings();
+        $this->technicians = Technician::all();
     }
 
     public function loadSettings()
@@ -44,7 +47,7 @@ class AdminDashboard extends Component
     {
         $this->queue_id = null;
         $this->laptop_id = '';
-        $this->helpdesk_name = '';
+        $this->technician_id = null;
         $this->status = 'waiting';
         $this->duration_minutes = 60;
         $this->isEditing = false;
@@ -54,7 +57,7 @@ class AdminDashboard extends Component
     {
         $this->validate([
             'laptop_id' => 'required',
-            'helpdesk_name' => 'required',
+            'technician_id' => 'required',
             'status' => 'required',
             'duration_minutes' => 'required|integer',
         ]);
@@ -63,7 +66,7 @@ class AdminDashboard extends Component
             $queue = Queue::find($this->queue_id);
             $queue->update([
                 'laptop_id' => $this->laptop_id,
-                'helpdesk_name' => $this->helpdesk_name,
+                'technician_id' => $this->technician_id,
                 'status' => $this->status,
                 'duration_minutes' => $this->duration_minutes,
             ]);
@@ -73,7 +76,7 @@ class AdminDashboard extends Component
             Queue::create([
                 'queue_number' => $lastQueue + 1,
                 'laptop_id' => $this->laptop_id,
-                'helpdesk_name' => $this->helpdesk_name,
+                'technician_id' => $this->technician_id,
                 'status' => $this->status,
                 'duration_minutes' => $this->duration_minutes,
             ]);
@@ -94,7 +97,7 @@ class AdminDashboard extends Component
         $queue = Queue::find($id);
         $this->queue_id = $queue->id;
         $this->laptop_id = $queue->laptop_id;
-        $this->helpdesk_name = $queue->helpdesk_name;
+        $this->technician_id = $queue->technician_id;
         $this->status = $queue->status;
         $this->duration_minutes = $queue->duration_minutes;
         $this->isEditing = true;
@@ -214,6 +217,6 @@ class AdminDashboard extends Component
         return view('livewire.admin-dashboard', [
             'queues' => $queues,
             'stats' => $stats
-        ])->layout('layouts.app');
+        ])->layout('components.layout');
     }
 }

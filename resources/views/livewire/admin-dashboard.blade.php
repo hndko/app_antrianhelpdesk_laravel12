@@ -59,8 +59,13 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Helpdesk / Teknisi</label>
-                        <input type="text" wire:model="helpdesk_name" placeholder="Nama Teknisi" required
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        <select wire:model="technician_id" required
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
+                            <option value="">-- Pilih Teknisi --</option>
+                            @foreach($technicians as $technician)
+                                <option value="{{ $technician->id }}">{{ $technician->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -129,7 +134,7 @@
                                 <td class="p-4">
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
-                                        {{ $q->helpdesk_name }}
+                                        {{ $q->technician->name ?? 'N/A' }}
                                     </span>
                                 </td>
                                 <td class="p-4 text-center">

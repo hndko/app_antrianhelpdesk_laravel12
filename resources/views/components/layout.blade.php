@@ -54,6 +54,16 @@
         </div>
     </nav>
 
+    <div class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-8">
+                <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('admin.dashboard') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Dashboard</a>
+                <a href="{{ route('admin.technicians.index') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('admin.technicians.index') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Technicians</a>
+                <a href="{{ route('admin.reports.daily') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('admin.reports.daily') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Daily Report</a>
+            </div>
+        </div>
+    </div>
+
     <main class="flex-1 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{ $slot }}

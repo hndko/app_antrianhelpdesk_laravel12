@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest>
     <form method="POST" action="{{ route('login') }}" class="space-y-6">
         @csrf
 
@@ -22,4 +22,4 @@
             Masuk
         </button>
     </form>
-</x-guest-layout>
+</x-guest>

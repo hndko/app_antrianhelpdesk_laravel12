@@ -12,10 +12,15 @@ class Queue extends Model
     protected $fillable = [
         'queue_number',
         'laptop_id',
-        'helpdesk_name',
+        'technician_id',
         'status',
         'duration_minutes',
     ];
+
+    public function technician()
+    {
+        return $this->belongsTo(Technician::class);
+    }
 
     // Helper untuk badge warna status (nanti dipakai di blade)
     public function getStatusColorAttribute()
