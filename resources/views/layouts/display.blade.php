@@ -6,51 +6,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Service Display' }}</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    <style>
+        .marquee-wrapper {
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation-name: marquee;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(-100%, 0, 0);
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-bg-main h-screen flex flex-col overflow-hidden">
+<body class="bg-gray-100 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased text-slate-800">
 
-    <header class="bg-card-bg shadow-sm px-6 py-4 flex items-center gap-4 z-10 border-b border-border">
-        @if(isset($logo))
-        <img src="{{ $logo }}" alt="Logo" class="h-12 w-auto object-contain">
-        @endif
-
-        <div class="flex flex-col">
-            <h1 class="text-2xl font-bold text-text-primary leading-tight">{{ $appName ?? 'Service Display' }}</h1>
-            <span class="text-text-secondary text-sm">Layanan Prima, Cepat, dan Tepat</span>
+    <header
+        class="bg-white shadow-sm border-b border-gray-200 px-6 h-16 shrink-0 z-40 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            @if(isset($logo) && $logo)
+            <img src="{{ $logo }}" alt="Logo" class="h-8 w-auto">
+            @endif
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 leading-none">{{ $appName ?? 'Service Display' }}</h1>
+                <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Official Partner</span>
+            </div>
+        </div>
+        <div
+            class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-200 shadow-sm">
+            <span class="relative flex h-2.5 w-2.5">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+            </span>
+            <span class="text-[10px] font-bold tracking-wide">SYSTEM ONLINE</span>
         </div>
     </header>
 
-    <main class="flex-1 p-4 grid grid-cols-1 lg:grid-cols-2 gap-4 h-full overflow-hidden">
+    {{-- Main Content sekarang menghandle full height termasuk footer --}}
+    <main class="flex-1 relative w-full bg-slate-100 overflow-hidden">
         {{ $slot }}
     </main>
-
-    <footer class="bg-card-bg border-t border-border h-16 flex relative z-10">
-        <div class="w-64 bg-accent text-white flex flex-col justify-center items-center px-4 shrink-0 z-20 shadow-lg">
-            <div id="clock-time" class="text-xl font-bold font-mono">00:00:00</div>
-            <div id="clock-date" class="text-xs text-blue-100">Senin, 1 Jan 2024</div>
-        </div>
-
-        <div class="flex-1 flex items-center overflow-hidden bg-white relative">
-            <div class="whitespace-nowrap animate-marquee px-4 text-lg font-medium text-text-primary">
-                {{ $runningText ?? 'Selamat Datang di Layanan Service.' }}
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock-time').innerText = now.toLocaleTimeString('id-ID', {hour12: false});
-            document.getElementById('clock-date').innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
 
     @livewireScripts
 </body>

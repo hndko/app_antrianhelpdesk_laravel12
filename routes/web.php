@@ -1,14 +1,12 @@
 <?php
 
+use App\Livewire\PublicDisplay;
 use App\Livewire\AdminDashboard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
 // Route Public (Tampilan TV)
-Route::get('/', function () {
-    // Nanti diganti dengan component PublicDisplay
-    return view('welcome');
-})->name('home');
+Route::get('/', PublicDisplay::class)->name('home');
 
 // Route Auth
 Route::middleware('guest')->group(function () {

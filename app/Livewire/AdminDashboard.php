@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\WithFileUploads; // Wajib untuk upload video
+use Livewire\WithFileUploads;
 use App\Models\Queue;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
@@ -13,14 +13,14 @@ class AdminDashboard extends Component
     use WithFileUploads;
 
     // --- State Queue ---
-    public $queue_id; // Untuk mode edit
+    public $queue_id;
     public $laptop_id, $helpdesk_name, $status = 'waiting', $duration_minutes = 60;
     public $isEditing = false;
 
     // --- State Settings ---
     public $app_title, $running_text, $marquee_speed, $video_type, $logo_url;
-    public $video_file; // Untuk upload baru
-    public $existing_video_url; // Untuk preview video lama
+    public $video_file;
+    public $existing_video_url;
 
     public function mount()
     {
@@ -39,8 +39,6 @@ class AdminDashboard extends Component
             $this->logo_url = $settings->logo_url;
         }
     }
-
-    // --- CRUD Queue Logic ---
 
     public function resetQueueForm()
     {
@@ -69,10 +67,9 @@ class AdminDashboard extends Component
                 'status' => $this->status,
                 'duration_minutes' => $this->duration_minutes,
             ]);
+            $msg = 'Data antrian berhasil diperbarui!';
         } else {
-            // Auto generate nomor urut terakhir + 1
             $lastQueue = Queue::max('queue_number') ?? 0;
-
             Queue::create([
                 'queue_number' => $lastQueue + 1,
                 'laptop_id' => $this->laptop_id,
@@ -80,11 +77,16 @@ class AdminDashboard extends Component
                 'status' => $this->status,
                 'duration_minutes' => $this->duration_minutes,
             ]);
+            $msg = 'Antrian baru berhasil ditambahkan!';
         }
 
         $this->resetQueueForm();
-        // Dispatch event browser (opsional, untuk notifikasi toaster)
-        // $this->dispatch('saved');
+
+        // --- GANTI FLASH MESSAGE DENGAN DISPATCH TOAST ---
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => $msg
+        ]);
     }
 
     public function editQueue($id)
@@ -101,28 +103,28 @@ class AdminDashboard extends Component
     public function deleteQueue($id)
     {
         Queue::find($id)->delete();
-    }
 
-    // --- Settings Logic ---
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Antrian berhasil dihapus.'
+        ]);
+    }
 
     public function saveSettings()
     {
         $this->validate([
             'app_title' => 'required',
             'marquee_speed' => 'required|integer|min:10|max:200',
-            'video_file' => 'nullable|mimes:mp4,mov,ogg|max:51200', // Max 50MB
+            'video_file' => 'nullable|mimes:mp4,mov,ogg|max:51200',
         ]);
 
         $settings = Setting::first();
         $videoPath = $settings->video_url;
 
-        // Handle Video Upload
         if ($this->video_file) {
-            // Hapus video lama jika ada dan lokal
             if ($settings->video_type == 'local' && $settings->video_url) {
                 Storage::disk('public')->delete($settings->video_url);
             }
-            // Simpan video baru
             $videoPath = $this->video_file->store('videos', 'public');
             $this->video_type = 'local';
         }
@@ -131,27 +133,37 @@ class AdminDashboard extends Component
             'app_title' => $this->app_title,
             'running_text' => $this->running_text,
             'marquee_speed' => $this->marquee_speed,
-            'video_type' => $this->video_type, // sementara hardcode 'local' karena belum handle youtube input
+            'video_type' => $this->video_type,
             'video_url' => $videoPath,
             'logo_url' => $this->logo_url,
         ]);
 
-        // Refresh local state
         $this->existing_video_url = $videoPath;
-        $this->video_file = null; // Reset input file
+        $this->video_file = null;
 
-        session()->flash('settings_status', 'Pengaturan berhasil disimpan!');
+        // --- DISPATCH TOAST ---
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Pengaturan tampilan berhasil disimpan!'
+        ]);
     }
 
     public function render()
     {
-        // Ambil data antrian, urutkan
-        $queues = Queue::orderBy('status', 'asc') // Menunggu dulu, baru yg lain
+        // Hitung statistik sederhana
+        $stats = [
+            'total' => Queue::count(),
+            'waiting' => Queue::where('status', 'waiting')->count(),
+            'progress' => Queue::where('status', 'progress')->count(),
+        ];
+
+        $queues = Queue::orderBy('status', 'asc')
             ->orderBy('queue_number', 'asc')
             ->get();
 
         return view('livewire.admin-dashboard', [
-            'queues' => $queues
+            'queues' => $queues,
+            'stats' => $stats
         ])->layout('layouts.app');
     }
 }
