@@ -247,14 +247,18 @@
                 <div class="space-y-4">
                     <label class="block text-sm font-semibold text-slate-700">Video Promosi / Informasi</label>
 
-                    <div
-                        class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100 transition-colors relative">
-                        <input type="file" wire:model="video_file" id="video-upload"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="video/*">
+                    <div x-data="{ isUploading: false, progress: 0 }" x-on:livewire-upload-start="isUploading = true"
+                        x-on:livewire-upload-finish="isUploading = false; progress = 0"
+                        x-on:livewire-upload-error="isUploading = false; progress = 0"
+                        x-on:livewire-upload-progress="progress = $event.detail.progress"
+                        class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100 transition-colors relative group">
 
-                        <div class="flex flex-col items-center justify-center pointer-events-none">
+                        <input type="file" wire:model="video_file" id="video-upload"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="video/*">
+
+                        <div class="flex flex-col items-center justify-center">
                             <div
-                                class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 text-blue-600">
+                                class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 text-blue-600 transition-transform group-hover:scale-110">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
@@ -263,30 +267,59 @@
                             </div>
 
                             @if($video_file)
-                            <p class="text-green-600 font-bold text-sm">{{ $video_file->getClientOriginalName() }}</p>
-                            <p class="text-xs text-slate-500 mt-1">Siap untuk diupload</p>
+                            <p class="text-green-600 font-bold text-sm truncate max-w-[200px]">{{
+                                $video_file->getClientOriginalName() }}</p>
+                            <p class="text-xs text-amber-600 mt-1 font-semibold">Klik "Simpan" untuk mengupload video
+                                ini</p>
                             @else
-                            <p class="text-sm font-medium text-slate-700">Klik untuk upload video baru</p>
-                            <p class="text-xs text-slate-400 mt-1">MP4, MOV (Max 50MB)</p>
+                            <p class="text-sm font-medium text-slate-700">Klik / Drop video di sini</p>
+                            <p class="text-xs text-slate-400 mt-1">Ganti video lama dengan yang baru</p>
                             @endif
                         </div>
+
+                        <div x-show="isUploading"
+                            class="absolute bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur z-20">
+                            <div class="flex justify-between text-xs font-bold text-blue-600 mb-1">
+                                <span>Mengupload...</span>
+                                <span x-text="progress + '%'"></span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                    :style="'width: ' + progress + '%'"></div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div wire:loading wire:target="video_file" class="w-full">
-                        <div class="w-full bg-slate-200 rounded-full h-1.5 mt-2 overflow-hidden">
-                            <div class="bg-blue-600 h-1.5 rounded-full animate-progress" style="width: 100%"></div>
-                        </div>
-                        <p class="text-xs text-blue-600 text-center mt-1">Mengupload video...</p>
-                    </div>
+                    @error('video_file')
+                    <span class="text-red-500 text-xs block">{{ $message }}</span>
+                    @enderror
 
                     @if($existing_video_url && !$video_file)
-                    <div class="mt-4">
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Video Aktif Saat Ini:
-                        </p>
-                        <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-md">
+                    <div class="mt-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-3">
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Video Aktif:</p>
+
+                            <button type="button" wire:click="deleteVideo"
+                                wire:confirm="Yakin ingin menghapus video ini?"
+                                class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                                Hapus Video
+                            </button>
+                        </div>
+
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden relative">
                             <video src="{{ asset('storage/' . $existing_video_url) }}"
                                 class="w-full h-full object-cover" controls></video>
                         </div>
+                    </div>
+                    @elseif(!$existing_video_url && !$video_file)
+                    <div
+                        class="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-400 text-sm">
+                        Belum ada video yang diupload.
                     </div>
                     @endif
                 </div>

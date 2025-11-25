@@ -1,7 +1,32 @@
-<div wire:poll.2s class="h-full w-full flex flex-col">
+<div wire:poll.2s class="h-full w-full flex flex-col bg-slate-100">
 
-    {{-- BAGIAN ATAS: VIDEO & ANTRIAN (Flex-1 mengisi sisa ruang) --}}
-    <div class="flex-1 flex gap-4 p-4 min-h-0">
+    {{-- HEADER REALTIME --}}
+    <header
+        class="bg-white shadow-sm border-b border-gray-200 px-6 h-16 shrink-0 z-40 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            @if($settings && $settings->logo_url)
+            <img src="{{ $settings->logo_url }}" alt="Logo" class="h-10 w-auto object-contain">
+            @endif
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 leading-none">
+                    {{ $settings->app_title ?? 'Service Display' }}
+                </h1>
+                <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Official Partner</span>
+            </div>
+        </div>
+        <div
+            class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-200 shadow-sm">
+            <span class="relative flex h-2.5 w-2.5">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+            </span>
+            <span class="text-[10px] font-bold tracking-wide">SYSTEM ONLINE</span>
+        </div>
+    </header>
+
+    {{-- KONTEN TENGAH --}}
+    <div class="flex-1 flex gap-4 p-4 min-h-0 overflow-hidden">
 
         <section
             class="flex-[6.5] h-full bg-black rounded-2xl shadow-xl overflow-hidden relative border border-slate-800/50 group">
@@ -11,14 +36,14 @@
                 <span class="text-xs font-bold tracking-wider uppercase">Live Info</span>
             </div>
 
-            <div class="w-full h-full relative" wire:ignore>
+            <div class="w-full h-full relative bg-black" wire:key="video-player-{{ $settings->video_url ?? 'none' }}">
                 @if($settings && $settings->video_url)
                 @if($settings->video_type == 'youtube')
-                <iframe class="w-full h-full object-cover"
-                    src="https://www.youtube.com/embed/{{ $settings->video_url }}?autoplay=1&mute=1&loop=1&playlist={{ $settings->video_url }}&controls=0&showinfo=0&modestbranding=1"
+                <iframe class="w-full h-full"
+                    src="https://www.youtube.com/embed/{{ $settings->video_url }}?autoplay=1&mute=0&loop=1&playlist={{ $settings->video_url }}&controls=0&showinfo=0&modestbranding=1"
                     frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 @else
-                <video class="w-full h-full object-cover" autoplay loop muted playsinline>
+                <video class="w-full h-full object-contain" autoplay loop playsinline>
                     <source src="{{ asset('storage/' . $settings->video_url) }}" type="video/mp4">
                 </video>
                 @endif
@@ -59,7 +84,8 @@
             <div
                 class="grid grid-cols-12 gap-2 px-5 py-2 bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0 border-b border-slate-100">
                 <div class="col-span-2 text-center">No</div>
-                <div class="col-span-6">Detail Unit</div>
+                <div class="col-span-3">Detail Unit</div>
+                <div class="col-span-3">Waktu Pengerjaan</div>
                 <div class="col-span-4 text-right">Status</div>
             </div>
 
@@ -82,21 +108,14 @@
                                 {{ $q->queue_number }}
                             </span>
                         </div>
-                        <div class="col-span-6">
+                        <div class="col-span-3">
                             <div class="font-bold text-slate-800 text-sm truncate">{{ $q->laptop_id }}</div>
                             <div class="text-[10px] text-slate-500 truncate flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
                                 {{ $q->helpdesk_name }}
                             </div>
                         </div>
-                        <div class="col-span-4 flex flex-col items-end gap-1">
-                            @if($q->status == 'progress')
-                            <span
-                                class="inline-block px-2 py-0.5 bg-orange-100 text-orange-600 rounded text-[9px] font-black uppercase tracking-wide border border-orange-200">
-                                Proses
-                            </span>
-
-                            {{-- COUNTDOWN TIMER (ALPINE JS) --}}
+                        <div class="col-span-3">
                             @if($q->target_timestamp)
                             <div x-data="timer({{ $q->target_timestamp }})" x-init="init()"
                                 class="text-[10px] font-mono font-bold text-orange-500 flex items-center gap-1 bg-orange-50 px-1.5 py-0.5 rounded">
@@ -104,10 +123,16 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <span x-text="timeLeft">--:--</span>
+                                <span class="text-2xl font-black font-mono" x-text="timeLeft">--:--</span>
                             </div>
                             @endif
-
+                        </div>
+                        <div class="col-span-4 flex flex-col items-end gap-1">
+                            @if($q->status == 'progress')
+                            <span
+                                class="inline-block px-2 py-0.5 bg-orange-100 text-orange-600 rounded text-[9px] font-black uppercase tracking-wide border border-orange-200">
+                                Proses
+                            </span>
                             @elseif($q->status == 'done')
                             <span
                                 class="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-[9px] font-black uppercase tracking-wide border border-green-200">
@@ -137,9 +162,8 @@
         </section>
     </div>
 
-    {{-- BAGIAN BAWAH: FOOTER (Sekarang di dalam component agar marquee speed update) --}}
+    {{-- FOOTER --}}
     <footer class="h-14 bg-slate-900 text-white shrink-0 z-50 flex shadow-[0_-5px_15px_rgba(0,0,0,0.3)] relative">
-
         <div wire:ignore class="bg-blue-600 w-48 flex flex-col justify-center items-center relative z-20 shadow-lg">
             <div id="clock-time" class="text-2xl font-black font-mono leading-none tracking-tight">00:00</div>
             <div id="clock-date" class="text-[9px] text-blue-100 font-bold uppercase tracking-widest mt-0.5">Senin, 1
@@ -157,9 +181,13 @@
         </div>
     </footer>
 
-    {{-- SCRIPT JAM & TIMER --}}
+    {{-- SCRIPTS --}}
     <script>
-        // Update Jam Footer
+        // 1. Update TITLE Browser Tab secara Realtime
+        // Script ini akan dieksekusi ulang setiap kali Livewire merefresh komponen
+        document.title = @json($settings->app_title ?? 'Service Display');
+
+        // 2. Jam Digital
         function updateClock() {
             const now = new Date();
             const timeEl = document.getElementById('clock-time');
@@ -171,17 +199,14 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Logic Countdown AlpineJS
+        // 3. Countdown Timer
         function timer(expiry) {
             return {
                 expiry: expiry,
                 timeLeft: '--:--',
-                interval: null,
                 init() {
                     this.calculate();
-                    this.interval = setInterval(() => {
-                        this.calculate();
-                    }, 1000);
+                    setInterval(() => this.calculate(), 1000);
                 },
                 calculate() {
                     const now = new Date().getTime();
@@ -189,20 +214,13 @@
 
                     if (distance < 0) {
                         this.timeLeft = "OVERDUE";
-                        // clearInterval(this.interval); // Tetap jalan biar tau telat berapa lama (opsional)
                         return;
                     }
-
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                    // Format HH:MM:SS atau MM:SS
-                    if (hours > 0) {
-                        this.timeLeft = `${hours}j ${minutes}m`;
-                    } else {
-                        this.timeLeft = `${minutes}m ${seconds}s`;
-                    }
+                    this.timeLeft = hours > 0 ? `${hours}j ${minutes}m` : `${minutes}m ${seconds}s`;
                 }
             }
         }

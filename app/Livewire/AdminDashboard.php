@@ -110,41 +110,91 @@ class AdminDashboard extends Component
         ]);
     }
 
+    public function deleteVideo()
+    {
+        $settings = Setting::first();
+
+        // Hapus file fisik jika ada
+        if ($settings->video_url && Storage::disk('public')->exists($settings->video_url)) {
+            Storage::disk('public')->delete($settings->video_url);
+        }
+
+        // Reset database
+        $settings->update([
+            'video_url' => null,
+            'video_type' => 'local' // Atau default lain
+        ]);
+
+        // Reset state
+        $this->existing_video_url = null;
+        $this->video_type = null;
+
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Video berhasil dihapus!'
+        ]);
+    }
+
     public function saveSettings()
     {
+        // Validasi
         $this->validate([
             'app_title' => 'required',
             'marquee_speed' => 'required|integer|min:10|max:200',
-            'video_file' => 'nullable|mimes:mp4,mov,ogg|max:51200',
+            // Pastikan validasi file cukup longgar untuk ukuran
+            'video_file' => 'nullable|file|mimes:mp4,mov,ogg,webm|max:102400',
         ]);
 
         $settings = Setting::first();
-        $videoPath = $settings->video_url;
 
+        // Default pakai nilai lama
+        $saveUrl = $settings->video_url;
+        $saveType = $settings->video_type;
+
+        // Cek jika ada file baru diupload
         if ($this->video_file) {
-            if ($settings->video_type == 'local' && $settings->video_url) {
-                Storage::disk('public')->delete($settings->video_url);
+            try {
+                // Hapus video lama
+                if ($settings->video_type == 'local' && $settings->video_url) {
+                    if (Storage::disk('public')->exists($settings->video_url)) {
+                        Storage::disk('public')->delete($settings->video_url);
+                    }
+                }
+
+                // Simpan video baru
+                $filename = 'video_' . time() . '.' . $this->video_file->getClientOriginalExtension();
+                $saveUrl = $this->video_file->storeAs('videos', $filename, 'public');
+                $saveType = 'local';
+            } catch (\Exception $e) {
+                $this->dispatch('show-toast', [
+                    'type' => 'error',
+                    'message' => 'Gagal upload: ' . $e->getMessage()
+                ]);
+                return;
             }
-            $videoPath = $this->video_file->store('videos', 'public');
-            $this->video_type = 'local';
         }
 
+        // Update Database
         $settings->update([
             'app_title' => $this->app_title,
             'running_text' => $this->running_text,
             'marquee_speed' => $this->marquee_speed,
-            'video_type' => $this->video_type,
-            'video_url' => $videoPath,
+            'video_type' => $saveType,
+            'video_url' => $saveUrl,
             'logo_url' => $this->logo_url,
         ]);
 
-        $this->existing_video_url = $videoPath;
+        // Reset Input File agar bersih kembali
         $this->video_file = null;
 
-        // --- DISPATCH TOAST ---
+        // Update Preview
+        $this->existing_video_url = $saveUrl;
+        $this->video_type = $saveType;
+
+        // Kirim Notifikasi Sukses
         $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Pengaturan tampilan berhasil disimpan!'
+            'message' => 'Pengaturan & Video berhasil disimpan!'
         ]);
     }
 

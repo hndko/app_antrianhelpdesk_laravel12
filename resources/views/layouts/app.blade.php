@@ -65,25 +65,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 
     <script>
-        document.addEventListener('livewire:initialized', () => {
+        document.addEventListener('livewire:init', () => {
             Livewire.on('show-toast', (event) => {
-                // Event dari Livewire datang dalam bentuk array, ambil item pertama
+                // Debugging: Cek console browser (F12) jika alert tidak muncul
+                console.log('Toast Event Triggered:', event);
+
+                // Livewire 3 mengirim params dalam array, kita ambil index 0
                 const data = event[0];
 
-                iziToast[data.type]({
-                    title: data.type === 'success' ? 'Berhasil' : 'Error',
-                    message: data.message,
-                    position: 'topRight',
-                    timeout: 3000,
-                    progressBar: true,
-                    titleColor: '#fff',
-                    messageColor: '#fff',
-                    iconColor: '#fff',
-                    backgroundColor: data.type === 'success' ? '#10B981' : '#EF4444',
-                });
+                if (typeof iziToast !== 'undefined') {
+                    iziToast[data.type]({ // data.type = 'success' atau 'error'
+                        title: data.type === 'success' ? 'OK' : 'Oops',
+                        message: data.message,
+                        position: 'topRight',
+                        timeout: 5000,
+                        progressBar: true,
+                    });
+                } else {
+                    alert(data.message); // Fallback jika IziToast gagal load
+                }
             });
         });
     </script>
+</body>
+
+</html>
 </body>
 
 </html>
