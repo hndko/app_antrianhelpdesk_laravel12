@@ -35,34 +35,34 @@ class InitialDataSeeder extends Seeder
         }
 
         // 3. Dummy Data Antrian
-        Queue::truncate(); // Bersihkan dulu jika ada sisa
+        // Queue::truncate(); // Bersihkan dulu jika ada sisa
 
-        $queues = [
-            [
-                'queue_number' => 1,
-                'laptop_id' => 'LPT-001',
-                'helpdesk_name' => 'Budi',
-                'status' => 'done',
-                'duration_minutes' => 45,
-            ],
-            [
-                'queue_number' => 2,
-                'laptop_id' => 'LPT-005',
-                'helpdesk_name' => 'Ani',
-                'status' => 'progress',
-                'duration_minutes' => 60,
-            ],
-            [
-                'queue_number' => 3,
-                'laptop_id' => 'ASUS-ROG',
-                'helpdesk_name' => 'Joko',
-                'status' => 'waiting',
-                'duration_minutes' => 30,
-            ],
-        ];
+        // $queues = [
+        //     [
+        //         'queue_number' => 1,
+        //         'laptop_id' => 'LPT-001',
+        //         'helpdesk_name' => 'Budi',
+        //         'status' => 'done',
+        //         'duration_minutes' => 45,
+        //     ],
+        //     [
+        //         'queue_number' => 2,
+        //         'laptop_id' => 'LPT-005',
+        //         'helpdesk_name' => 'Ani',
+        //         'status' => 'progress',
+        //         'duration_minutes' => 60,
+        //     ],
+        //     [
+        //         'queue_number' => 3,
+        //         'laptop_id' => 'ASUS-ROG',
+        //         'helpdesk_name' => 'Joko',
+        //         'status' => 'waiting',
+        //         'duration_minutes' => 30,
+        //     ],
+        // ];
 
-        foreach ($queues as $q) {
-            Queue::create($q);
-        }
+        // foreach ($queues as $q) {
+        //     Queue::create($q);
+        // }
     }
 }
