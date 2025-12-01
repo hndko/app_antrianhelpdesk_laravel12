@@ -15,6 +15,7 @@ class Queue extends Model
         'technician_id',
         'status',
         'duration_minutes',
+        'description',
     ];
 
     public function technician()

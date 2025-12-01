@@ -14,17 +14,23 @@ class PublicDisplay extends Component
         $settings = Setting::first();
 
         $queues = Queue::with('technician')
+            ->where(function ($query) {
+                $query->where('status', '!=', 'done')
+                    ->orWhere(function ($subQuery) {
+                        $subQuery->where('status', 'done')
+                            ->whereDate('updated_at', Carbon::today());
+                    });
+            })
+            // -----------------------
+
             ->orderByRaw("FIELD(status, 'progress', 'waiting', 'done')")
             ->orderBy('queue_number', 'asc')
             ->take(50)
             ->get()
             ->map(function ($q) {
-                // Logika Countdown:
-                // Jika status 'progress', hitung target selesai (updated_at + duration)
                 if ($q->status == 'progress') {
                     $startTime = Carbon::parse($q->updated_at);
                     $endTime = $startTime->copy()->addMinutes($q->duration_minutes);
-                    // Kirim timestamp javascript (milliseconds)
                     $q->target_timestamp = $endTime->timestamp * 1000;
                 } else {
                     $q->target_timestamp = null;

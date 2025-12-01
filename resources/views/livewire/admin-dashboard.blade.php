@@ -68,6 +68,11 @@
                         </select>
                     </div>
 
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi / Keluhan</label>
+                        <textarea wire:model="description" rows="3" placeholder="Cth: Install Ulang, Keyboard Error, Ganti SSD..."
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-400 resize-none"></textarea>
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">Status</label>
@@ -130,6 +135,11 @@
                                 <td class="p-4">
                                     <div class="font-bold text-slate-800">{{ $q->laptop_id }}</div>
                                     <div class="text-xs text-slate-500">{{ $q->duration_minutes }} Menit</div>
+                                    @if($q->description)
+                                        <div class="text-[11px] text-slate-400 italic leading-tight truncate max-w-[200px]" title="{{ $q->description }}">
+                                            "{{ Str::limit($q->description, 30) }}"
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="p-4">
                                     <span

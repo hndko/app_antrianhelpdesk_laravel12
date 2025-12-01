@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\WithFileUploads;
+use Carbon\Carbon;
 use App\Models\Queue;
 use App\Models\Setting;
+use Livewire\Component;
 use App\Models\Technician;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
 class AdminDashboard extends Component
@@ -15,7 +16,7 @@ class AdminDashboard extends Component
 
     // --- State Queue ---
     public $queue_id;
-    public $laptop_id, $technician_id, $status = 'waiting', $duration_minutes = 60;
+    public $laptop_id, $technician_id, $status = 'waiting', $duration_minutes = 60, $description;
     public $isEditing = false;
     public $technicians;
 
@@ -50,6 +51,7 @@ class AdminDashboard extends Component
         $this->technician_id = null;
         $this->status = 'waiting';
         $this->duration_minutes = 60;
+        $this->description = '';
         $this->isEditing = false;
     }
 
@@ -60,6 +62,7 @@ class AdminDashboard extends Component
             'technician_id' => 'required',
             'status' => 'required',
             'duration_minutes' => 'required|integer',
+            'description' => 'nullable|string',
         ]);
 
         if ($this->isEditing) {
@@ -69,16 +72,19 @@ class AdminDashboard extends Component
                 'technician_id' => $this->technician_id,
                 'status' => $this->status,
                 'duration_minutes' => $this->duration_minutes,
+                'description' => $this->description,
             ]);
             $msg = 'Data antrian berhasil diperbarui!';
         } else {
-            $lastQueue = Queue::max('queue_number') ?? 0;
+            $lastQueue = Queue::whereDate('created_at', Carbon::today())
+                ->max('queue_number') ?? 0;
             Queue::create([
                 'queue_number' => $lastQueue + 1,
                 'laptop_id' => $this->laptop_id,
                 'technician_id' => $this->technician_id,
                 'status' => $this->status,
                 'duration_minutes' => $this->duration_minutes,
+                'description' => $this->description,
             ]);
             $msg = 'Antrian baru berhasil ditambahkan!';
         }
@@ -100,6 +106,7 @@ class AdminDashboard extends Component
         $this->technician_id = $queue->technician_id;
         $this->status = $queue->status;
         $this->duration_minutes = $queue->duration_minutes;
+        $this->description = $queue->description;
         $this->isEditing = true;
     }
 
