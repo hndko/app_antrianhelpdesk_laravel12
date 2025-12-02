@@ -44,20 +44,31 @@
                             class="relative w-full h-full group"
                             x-data="{
                                 needsInteraction: false,
+                                videoError: false,
                                 initVideo() {
                                     let vid = this.$refs.videoPlayer;
-                                    // Coba play dengan suara
+
+                                    // Set error handler before attempting to play
+                                    vid.addEventListener('error', (e) => {
+                                        console.error('Video load error:', e);
+                                        this.videoError = true;
+                                    });
+
+                                    // Try to load and play video
+                                    vid.load();
                                     vid.muted = false;
                                     vid.play().catch(error => {
-                                        // Jika browser memblokir (karena belum ada klik), munculkan tombol
-                                        console.log('Autoplay dicegah, butuh klik manual');
+                                        console.log('Autoplay prevented, manual interaction needed');
                                         this.needsInteraction = true;
                                     });
                                 },
                                 startManually() {
                                     let vid = this.$refs.videoPlayer;
                                     vid.muted = false;
-                                    vid.play();
+                                    vid.play().catch(error => {
+                                        console.error('Failed to play video:', error);
+                                        this.videoError = true;
+                                    });
                                     this.needsInteraction = false;
                                 }
                             }"
@@ -67,9 +78,24 @@
                                 x-ref="videoPlayer"
                                 class="w-full h-full object-contain"
                                 loop
-                                playsinline>
+                                playsinline
+                                preload="metadata">
                                 <source src="{{ asset('storage/' . $settings->video_url) }}" type="video/mp4">
+                                Your browser does not support the video tag.
                             </video>
+
+                            {{-- ERROR OVERLAY (When video file fails to load) --}}
+                            <div x-show="videoError"
+                                class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+                                <svg class="w-20 h-20 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <p class="text-xl font-bold mb-2">Video Tidak Dapat Dimuat</p>
+                                <p class="text-sm text-slate-400 font-mono max-w-md text-center px-4">
+                                    File video tidak ditemukan atau tidak dapat diakses.<br>
+                                    Silakan upload video via Admin Dashboard.
+                                </p>
+                            </div>
 
                             {{-- OVERLAY TOMBOL START (Hanya muncul jika browser memblokir autoplay) --}}
                             <div x-show="needsInteraction"
