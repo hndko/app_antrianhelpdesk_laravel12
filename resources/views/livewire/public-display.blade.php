@@ -151,15 +151,15 @@
                         <div
                             class="relative rounded-xl border transition-all duration-500 overflow-hidden group mb-3
                                     {{ $q->status == 'progress'
-                                        ? 'bg-white border-orange-300 shadow-lg transform scale-[1.01] z-10'
+                                        ? 'bg-white border-blue-300 shadow-lg transform scale-[1.01] z-10'
                                         : 'bg-white border-transparent hover:border-slate-300 shadow-sm' }}">
                             @if ($q->status == 'progress')
-                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-orange-500"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-blue-500"></div>
                             @endif
                             <div class="flex flex-col p-4 gap-2">
                                 <div class="grid grid-cols-12 gap-4 items-center">
                                     <div class="col-span-1 text-center"><span
-                                            class="text-4xl font-black font-mono {{ $q->status == 'progress' ? 'text-orange-600' : 'text-slate-700' }}">{{ $q->queue_number }}</span>
+                                            class="text-4xl font-black font-mono {{ $q->status == 'progress' ? 'text-blue-600' : 'text-slate-700' }}">{{ $q->queue_number }}</span>
                                     </div>
                                     <div class="col-span-3">
                                         <div class="font-bold text-slate-800 text-xl truncate">
@@ -179,14 +179,14 @@
                                     <div class="col-span-2">
                                         @if ($q->target_timestamp)
                                             <div x-data="timer({{ $q->target_timestamp }})" x-init="init()"
-                                                class="inline-flex items-center bg-orange-50 px-2 py-1 rounded border border-orange-100">
-                                                <svg class="w-4 h-4 mr-1.5 text-orange-500" fill="none"
+                                                class="inline-flex items-center bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                                                <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2"
                                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                <span class="text-xl font-black font-mono text-orange-600"
+                                                <span class="text-xl font-black font-mono text-blue-600"
                                                     x-text="timeLeft">--:--</span>
                                             </div>
                                         @endif
@@ -194,7 +194,7 @@
                                     <div class="col-span-2 flex justify-end">
                                         @if ($q->status == 'progress')
                                             <span
-                                                class="inline-block px-3 py-1 bg-orange-100 text-orange-700 rounded text-s font-black uppercase tracking-wide border border-orange-200">Proses</span>
+                                                class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded text-s font-black uppercase tracking-wide border border-blue-200">Proses</span>
                                         @elseif($q->status == 'done')
                                             <span
                                                 class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded text-s font-black uppercase tracking-wide border border-green-200">Selesai</span>
@@ -207,8 +207,8 @@
                                 <div class="grid grid-cols-12 gap-4">
                                     <div class="col-span-1"></div>
                                     <div class="col-span-11">
-                                        <div class="bg-orange-200 rounded p-2.5 border border-slate-100">
-                                            <p class="text-s text-slate-600 leading-normal font-bold">
+                                        <div class="bg-blue-500 rounded p-2.5 border border-slate-100">
+                                            <p class="text-s text-slate-100 leading-normal font-bold">
                                                 {{ $q->description ?? '-' }}</p>
                                         </div>
                                     </div>
@@ -228,15 +228,15 @@
                         <div
                             class="relative rounded-xl border transition-all duration-500 overflow-hidden group mb-3
                                     {{ $q->status == 'progress'
-                                        ? 'bg-white border-orange-300 shadow-lg transform scale-[1.01] z-10'
+                                        ? 'bg-white border-blue-300 shadow-lg transform scale-[1.01] z-10'
                                         : 'bg-white border-transparent hover:border-slate-300 shadow-sm' }}">
                             @if ($q->status == 'progress')
-                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-orange-500"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-blue-500"></div>
                             @endif
                             <div class="flex flex-col p-4 gap-2">
                                 <div class="grid grid-cols-12 gap-4 items-center">
                                     <div class="col-span-1 text-center"><span
-                                            class="text-4xl font-black font-mono {{ $q->status == 'progress' ? 'text-orange-600' : 'text-slate-700' }}">{{ $q->queue_number }}</span>
+                                            class="text-4xl font-black font-mono {{ $q->status == 'progress' ? 'text-blue-600' : 'text-slate-700' }}">{{ $q->queue_number }}</span>
                                     </div>
                                     <div class="col-span-3">
                                         <div class="font-bold text-slate-800 text-xl truncate">
@@ -250,20 +250,20 @@
                                         <div
                                             class="text-base text-slate-600 truncate flex items-center gap-2 font-medium">
                                             <span
-                                                class="w-2 h-2 rounded-full bg-slate-300 shrink-0"></span>{{ $q->technician->name ?? '??' }}
+                                                class="w-2 h-2 rounded-full bg-green-300 shrink-0"></span>{{ $q->technician->name ?? '??' }}
                                         </div>
                                     </div>
                                     <div class="col-span-2">
                                         @if ($q->target_timestamp)
                                             <div x-data="timer({{ $q->target_timestamp }})" x-init="init()"
-                                                class="inline-flex items-center bg-orange-50 px-2 py-1 rounded border border-orange-100">
-                                                <svg class="w-4 h-4 mr-1.5 text-orange-500" fill="none"
+                                                class="inline-flex items-center bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                                                <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2"
                                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                <span class="text-xl font-black font-mono text-orange-600"
+                                                <span class="text-xl font-black font-mono text-blue-600"
                                                     x-text="timeLeft">--:--</span>
                                             </div>
                                         @endif
@@ -271,7 +271,7 @@
                                     <div class="col-span-2 flex justify-end">
                                         @if ($q->status == 'progress')
                                             <span
-                                                class="inline-block px-3 py-1 bg-orange-100 text-orange-700 rounded text-s font-black uppercase tracking-wide border border-orange-200">Proses</span>
+                                                class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded text-s font-black uppercase tracking-wide border border-blue-200">Proses</span>
                                         @elseif($q->status == 'done')
                                             <span
                                                 class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded text-s font-black uppercase tracking-wide border border-green-200">Selesai</span>
@@ -284,8 +284,8 @@
                                 <div class="grid grid-cols-12 gap-4">
                                     <div class="col-span-1"></div>
                                     <div class="col-span-11">
-                                        <div class="bg-orange-200 rounded p-2.5 border border-slate-100">
-                                            <p class="text-s text-slate-600 leading-normal font-bold">
+                                        <div class="bg-blue-500 rounded p-2.5 border border-slate-100">
+                                            <p class="text-s text-slate-100 leading-normal font-bold">
                                                 {{ $q->description ?? '-' }}</p>
                                         </div>
                                     </div>
