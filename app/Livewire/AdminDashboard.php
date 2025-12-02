@@ -8,22 +8,22 @@ use App\Models\Setting;
 use Livewire\Component;
 use App\Models\Technician;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 
 class AdminDashboard extends Component
 {
     use WithFileUploads;
+    use WithPagination;
 
     // --- State Queue ---
     public $queue_id;
-    public $laptop_id, $technician_id, $status = 'waiting', $duration_minutes = 60, $description;
+    public $laptop_id, $user_name, $technician_id, $status = 'waiting', $duration_minutes = 60, $description;
     public $isEditing = false;
     public $technicians;
 
     // --- State Settings ---
-    public $app_title, $running_text, $marquee_speed, $video_type, $logo_url;
-    public $video_file;
-    public $existing_video_url;
+    public $app_title, $running_text, $marquee_speed, $logo_url, $youtube_id;
 
     public function mount()
     {
@@ -38,15 +38,15 @@ class AdminDashboard extends Component
             $this->app_title = $settings->app_title;
             $this->running_text = $settings->running_text;
             $this->marquee_speed = $settings->marquee_speed;
-            $this->video_type = $settings->video_type;
-            $this->existing_video_url = $settings->video_url;
             $this->logo_url = $settings->logo_url;
+            $this->youtube_id = $settings->video_url;
         }
     }
 
     public function resetQueueForm()
     {
         $this->queue_id = null;
+        $this->user_name = '';
         $this->laptop_id = '';
         $this->technician_id = null;
         $this->status = 'waiting';
@@ -58,6 +58,7 @@ class AdminDashboard extends Component
     public function saveQueue()
     {
         $this->validate([
+            'user_name' => 'nullable|string|max:255',
             'laptop_id' => 'required',
             'technician_id' => 'required',
             'status' => 'required',
@@ -68,6 +69,7 @@ class AdminDashboard extends Component
         if ($this->isEditing) {
             $queue = Queue::find($this->queue_id);
             $queue->update([
+                'user_name' => $this->user_name,
                 'laptop_id' => $this->laptop_id,
                 'technician_id' => $this->technician_id,
                 'status' => $this->status,
@@ -80,6 +82,7 @@ class AdminDashboard extends Component
                 ->max('queue_number') ?? 0;
             Queue::create([
                 'queue_number' => $lastQueue + 1,
+                'user_name' => $this->user_name,
                 'laptop_id' => $this->laptop_id,
                 'technician_id' => $this->technician_id,
                 'status' => $this->status,
@@ -102,6 +105,7 @@ class AdminDashboard extends Component
     {
         $queue = Queue::find($id);
         $this->queue_id = $queue->id;
+        $this->user_name = $queue->user_name;
         $this->laptop_id = $queue->laptop_id;
         $this->technician_id = $queue->technician_id;
         $this->status = $queue->status;
@@ -120,106 +124,105 @@ class AdminDashboard extends Component
         ]);
     }
 
-    public function deleteVideo()
-    {
-        $settings = Setting::first();
+    // public function deleteVideo()
+    // {
+    //     $settings = Setting::first();
 
-        // Hapus file fisik jika ada
-        if ($settings->video_url && Storage::disk('public')->exists($settings->video_url)) {
-            Storage::disk('public')->delete($settings->video_url);
+    //     // Hapus file fisik jika ada
+    //     if ($settings->video_url && Storage::disk('public')->exists($settings->video_url)) {
+    //         Storage::disk('public')->delete($settings->video_url);
+    //     }
+
+    //     // Reset database
+    //     $settings->update([
+    //         'video_url' => null,
+    //         'video_type' => 'local' // Atau default lain
+    //     ]);
+
+    //     // Reset state
+    //     $this->existing_video_url = null;
+    //     $this->video_type = null;
+
+    //     $this->dispatch('show-toast', [
+    //         'type' => 'success',
+    //         'message' => 'Video berhasil dihapus!'
+    //     ]);
+    // }
+
+    private function extractYoutubeId($url)
+    {
+        $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i';
+
+        if (preg_match($pattern, $url, $matches)) {
+            return $matches[1];
         }
 
-        // Reset database
-        $settings->update([
-            'video_url' => null,
-            'video_type' => 'local' // Atau default lain
-        ]);
+        return $url;
+    }
 
-        // Reset state
-        $this->existing_video_url = null;
-        $this->video_type = null;
 
-        $this->dispatch('show-toast', [
-            'type' => 'success',
-            'message' => 'Video berhasil dihapus!'
-        ]);
+    public function updatedYoutubeId($value)
+    {
+        $this->youtube_id = $this->extractYoutubeId($value);
     }
 
     public function saveSettings()
     {
-        // Validasi
+        $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
+
         $this->validate([
             'app_title' => 'required',
             'marquee_speed' => 'required|integer|min:10|max:200',
-            // Pastikan validasi file cukup longgar untuk ukuran
-            'video_file' => 'nullable|file|mimes:mp4,mov,ogg,webm|max:102400',
+            'youtube_id' => 'required|string',
         ]);
 
         $settings = Setting::first();
 
-        // Default pakai nilai lama
-        $saveUrl = $settings->video_url;
-        $saveType = $settings->video_type;
-
-        // Cek jika ada file baru diupload
-        if ($this->video_file) {
-            try {
-                // Hapus video lama
-                if ($settings->video_type == 'local' && $settings->video_url) {
-                    if (Storage::disk('public')->exists($settings->video_url)) {
-                        Storage::disk('public')->delete($settings->video_url);
-                    }
-                }
-
-                // Simpan video baru
-                $filename = 'video_' . time() . '.' . $this->video_file->getClientOriginalExtension();
-                $saveUrl = $this->video_file->storeAs('videos', $filename, 'public');
-                $saveType = 'local';
-            } catch (\Exception $e) {
-                $this->dispatch('show-toast', [
-                    'type' => 'error',
-                    'message' => 'Gagal upload: ' . $e->getMessage()
-                ]);
-                return;
-            }
-        }
-
-        // Update Database
         $settings->update([
             'app_title' => $this->app_title,
             'running_text' => $this->running_text,
             'marquee_speed' => $this->marquee_speed,
-            'video_type' => $saveType,
-            'video_url' => $saveUrl,
             'logo_url' => $this->logo_url,
+            'video_url' => $this->youtube_id, // Simpan ID bersih ke DB
+            'video_type' => 'youtube',
         ]);
 
-        // Reset Input File agar bersih kembali
-        $this->video_file = null;
-
-        // Update Preview
-        $this->existing_video_url = $saveUrl;
-        $this->video_type = $saveType;
-
-        // Kirim Notifikasi Sukses
         $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Pengaturan & Video berhasil disimpan!'
+            'message' => 'Video YouTube berhasil disimpan!'
         ]);
+    }
+
+    public function paginationView()
+    {
+        return 'components.pagination-custom';
     }
 
     public function render()
     {
-        // Hitung statistik sederhana
         $stats = [
             'total' => Queue::count(),
             'waiting' => Queue::where('status', 'waiting')->count(),
             'progress' => Queue::where('status', 'progress')->count(),
         ];
 
-        $queues = Queue::orderBy('status', 'asc')
+        // LOGIKA FILTER & PAGINATION
+        $queues = Queue::with('technician')
+            ->where(function ($query) {
+                // 1. Tampilkan semua yang BELUM selesai (Waiting/Progress) mau kapanpun (agar tidak ada yg terlewat)
+                $query->where('status', '!=', 'done')
+                    // 2. ATAU jika statusnya SUDAH selesai (Done), harus yang hari ini (Updated Hari Ini)
+                    ->orWhere(function ($sub) {
+                        $sub->where('status', 'done')
+                            ->whereDate('updated_at', Carbon::today());
+                    });
+            })
+            // Urutkan: Progress -> Waiting -> Done
+            ->orderByRaw("FIELD(status, 'progress', 'waiting', 'done')")
+            // Urutkan nomor antrian
             ->orderBy('queue_number', 'asc')
-            ->get();
+            // Pagination: 10 data per halaman
+            ->paginate(5);
 
         return view('livewire.admin-dashboard', [
             'queues' => $queues,
