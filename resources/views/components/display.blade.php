@@ -31,6 +31,7 @@
         })();
     </script>
 
+    <style>
         .marquee-wrapper {
             position: relative;
             overflow: hidden;
