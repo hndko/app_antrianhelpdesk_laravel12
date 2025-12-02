@@ -11,10 +11,10 @@ export default defineConfig({
         tailwindcss(),
     ],
 
-    server: {
-        host: "0.0.0.0",
-        hmr: {
-            host: "192.168.250.47",
-        },
-    },
+    // server: {
+    //     host: "0.0.0.0",
+    //     hmr: {
+    //         host: "192.168.250.47",
+    //     },
+    // },
 });
