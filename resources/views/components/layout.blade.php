@@ -12,7 +12,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
+   @livewireStyles
+
+    {{-- Fix localStorage access error in restrictive browser environments --}}
+    <script>
+        (function() {
+            try {
+                const test = '__storage_test__';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+            } catch(e) {
+                console.warn('[Fix] localStorage blocked, using memory fallback');
+                const store = {};
+                Storage.prototype.setItem = function(k, v) { store[k] = String(v); };
+                Storage.prototype.getItem = function(k) { return store[k] || null; };
+                Storage.prototype.removeItem = function(k) { delete store[k]; };
+                Storage.prototype.clear = function() { for(let k in store) delete store[k]; };
+            }
+        })();
+    </script>
 
     <style>
         body {
