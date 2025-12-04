@@ -18,6 +18,7 @@ class InitialDataSeeder extends Seeder
             ['email' => 'admin@service.com'],
             [
                 'name' => 'Administrator',
+                'username' => 'helpdesk',
                 'password' => Hash::make('admin'), // Password di-hash
                 'email_verified_at' => now(),
             ]
