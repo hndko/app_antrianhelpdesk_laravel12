@@ -3,10 +3,10 @@
         @csrf
 
         <div>
-            <label for="email" class="block text-sm font-medium text-text-secondary">Email</label>
-            <input type="email" name="email" id="email" required autofocus
+            <label for="username" class="block text-sm font-medium text-text-secondary">Username</label>
+            <input type="text" name="username" id="username" required autofocus
                 class="mt-1 block w-full px-3 py-2 bg-bg-main border border-border rounded-lg text-text-primary focus:ring-accent focus:border-accent outline-none transition">
-            @error('email')
+            @error('username')
             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
             @enderror
         </div>
