@@ -9,7 +9,7 @@
             @endif
             <div>
                 <h1 class="text-xl font-bold text-slate-900 leading-none">
-                    {{ $settings->app_title ?? 'Service Display' }}
+                    {{ $settings->app_title ?? 'Service Display' }} - Uji Coba
                 </h1>
                 <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Official Partner</span>
             </div>
@@ -59,15 +59,15 @@
                                 this.$nextTick(() => {
                                     let vid = this.$refs.videoPlayer;
                                     if (!vid) return;
-                        
+
                                     vid.addEventListener('error', (e) => {
                                         if (vid.networkState === 3) this.videoError = true;
                                     });
-                        
+
                                     // 1. Coba Play Suara
                                     vid.muted = false;
                                     let playPromise = vid.play();
-                        
+
                                     if (playPromise !== undefined) {
                                         playPromise.then(_ => {
                                                 console.log('Video playing with sound');
@@ -111,7 +111,7 @@
             class="flex-[5] h-full flex flex-col bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
             <div class="px-6 py-4 bg-white border-b border-slate-200 flex justify-between items-center shrink-0">
                 <div>
-                    <h2 class="text-2xl font-black text-slate-800">Antrian</h2>
+                    <h2 class="text-2xl font-black text-slate-800">Layanan Antrian Helpdesk IT</h2>
                     <div class="flex items-center gap-2 mt-1">
                         <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
                         <span class="text-sm text-slate-500 font-bold uppercase tracking-wider">Realtime Update</span>
