@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->id();
             $table->integer('queue_number'); // No. Urut
+            $table->string('user_name')->nullable();
             $table->string('laptop_id'); // No. Laptop / ID
             $table->string('helpdesk_name'); // Nama Helpdesk
             // Enum status: sesuai dropdown di HTML Anda

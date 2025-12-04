@@ -11,6 +11,7 @@ class Queue extends Model
 
     protected $fillable = [
         'queue_number',
+        'user_name',
         'laptop_id',
         'technician_id',
         'status',

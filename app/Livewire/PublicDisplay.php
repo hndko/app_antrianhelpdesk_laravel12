@@ -15,10 +15,14 @@ class PublicDisplay extends Component
 
         $queues = Queue::with('technician')
             ->where(function ($query) {
+                // 1. Tampilkan semua yang BELUM selesai (Waiting/Progress) mau kapanpun dibuatnya
                 $query->where('status', '!=', 'done')
+
+                    // 2. ATAU jika sudah SELESAI (Done), cek waktunya
                     ->orWhere(function ($subQuery) {
                         $subQuery->where('status', 'done')
-                            ->whereDate('updated_at', Carbon::today());
+                            // HANYA ambil data yang diupdate dalam 60 menit terakhir
+                            ->where('updated_at', '>=', Carbon::now()->subMinutes(60));
                     });
             })
             // -----------------------
