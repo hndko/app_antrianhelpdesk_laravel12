@@ -1,5 +1,3 @@
-rapihkan markdown readme ini
-
 # Service Display System 🖥️
 
 Sistem Manajemen Antrian dan _Digital Signage_ (Papan Informasi Digital) modern berbasis web. Dibangun menggunakan **Laravel** dan **Livewire** untuk performa real-time yang ringan tanpa memerlukan konfigurasi WebSocket server yang rumit.
