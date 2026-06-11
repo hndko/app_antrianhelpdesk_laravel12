@@ -13,7 +13,7 @@ class Queue extends Model
         'queue_number',
         'user_name',
         'laptop_id',
-        'technician_id',
+        'technician_user_id',
         'status',
         'duration_minutes',
         'description',
@@ -21,7 +21,12 @@ class Queue extends Model
 
     public function technician()
     {
-        return $this->belongsTo(Technician::class);
+        return $this->belongsTo(User::class, 'technician_user_id');
+    }
+
+    public function technicianUser()
+    {
+        return $this->belongsTo(User::class, 'technician_user_id');
     }
 
     // Helper untuk badge warna status (nanti dipakai di blade)

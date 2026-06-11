@@ -43,20 +43,14 @@ Aplikasi ini cocok untuk helpdesk IT, service center, bengkel, klinik, loket pel
 
 ## 1.4 Area Akses Utama
 
-Saat ini project menggunakan akses sederhana:
+Saat ini project menggunakan akses berbasis kolom `role` pada tabel `users`:
 
 - Public display tanpa login.
-- Admin/operator dengan login.
+- `superadmin` dengan akses penuh.
+- `service_desk` untuk menerima keluhan, membuat antrian, dan assign ke teknisi.
+- `technician` untuk melihat antrian miliknya, membuat antrian untuk dirinya sendiri, dan update status pekerjaan.
 
-Belum ada RBAC, role table, permission table, atau Spatie Laravel Permission di implementasi aktual.
-
-Jika di masa depan ditambahkan role, gunakan minimal:
-
-- `admin`
-- `operator`
-- `viewer`
-
-Role hanya boleh ditambahkan jika benar-benar dibutuhkan oleh fitur.
+Project tidak memakai role table, permission table, atau Spatie Laravel Permission.
 
 ## 1.5 Modul Utama
 
@@ -64,7 +58,7 @@ Role hanya boleh ditambahkan jika benar-benar dibutuhkan oleh fitur.
 - Public Display
 - Admin Dashboard
 - Queue Management
-- Technician Management
+- Account and Role Management
 - Display Settings
 - Daily Report
 - Toast Notification
@@ -115,9 +109,9 @@ database/
 
 resources/
 ├── views/
-│   ├── admin/
-│   │   ├── reports/
-│   │   └── technicians/
+│   ├── backend/
+│   │   ├── accounts/
+│   │   └── reports/
 │   ├── auth/
 │   ├── components/
 │   └── livewire/
@@ -167,16 +161,16 @@ resources/views/components/
 resources/views/
 ├── auth/
 │   └── login.blade.php
-├── admin/
-│   ├── technicians/
+├── backend/
+│   ├── accounts/
 │   │   └── index.blade.php
 │   └── reports/
 │       └── daily.blade.php
 ├── livewire/
-│   ├── admin-dashboard.blade.php
 │   ├── daily-report.blade.php
 │   ├── public-display.blade.php
-│   └── technician-manager.blade.php
+│   ├── dashboard.blade.php
+│   └── user-manager.blade.php
 └── components/
 ```
 
@@ -253,7 +247,6 @@ Model utama saat ini:
 
 - `User`
 - `Queue`
-- `Technician`
 - `Setting`
 
 Aturan model:
@@ -269,8 +262,8 @@ Aturan model:
 Relasi utama:
 
 ```php
-Queue belongsTo Technician
-Technician hasMany Queue
+Queue belongsTo User melalui technician_user_id
+User hasMany Queue sebagai assignedQueues
 ```
 
 ---
@@ -281,7 +274,7 @@ Technician hasMany Queue
 
 ### `users`
 
-Menyimpan akun admin/operator.
+Menyimpan akun superadmin, service desk, dan teknisi.
 
 Kolom penting:
 
@@ -291,6 +284,8 @@ Kolom penting:
 - `email`
 - `email_verified_at`
 - `password`
+- `role`
+- `status`
 - `remember_token`
 - `created_at`
 - `updated_at`
@@ -305,7 +300,7 @@ Kolom penting:
 - `queue_number`
 - `user_name`
 - `laptop_id`
-- `technician_id`
+- `technician_user_id`
 - `status`
 - `duration_minutes`
 - `description`
@@ -314,15 +309,7 @@ Kolom penting:
 
 ### `technicians`
 
-Menyimpan data teknisi/helpdesk.
-
-Kolom penting:
-
-- `id`
-- `name`
-- `status`
-- `created_at`
-- `updated_at`
+Tabel legacy untuk data lama. Fitur utama tidak lagi memakai tabel ini; teknisi aktif disimpan sebagai user dengan `role = technician`.
 
 ### `settings`
 
@@ -361,10 +348,10 @@ Kolom penting:
 | Model | PascalCase Singular | Queue |
 | Migration | snake_case | create_queues_table |
 | Seeder | PascalCaseSeeder | InitialDataSeeder |
-| View Folder | lowercase atau kebab-case | admin/technicians |
-| Route Name | dot notation | admin.dashboard |
+| View Folder | lowercase atau kebab-case | backend/accounts |
+| Route Name | dot notation | accounts.index |
 | Variable | camelCase | selectedTechnician |
-| Database Column | snake_case | technician_id |
+| Database Column | snake_case | technician_user_id |
 | Status Value | lowercase snake/kebab sederhana | waiting |
 
 ---
@@ -377,7 +364,7 @@ Kolom penting:
 - Logout wajib menggunakan method `POST`.
 - Semua route penting wajib memiliki route name.
 - Jangan mengandalkan tampilan menu untuk keamanan akses.
-- Jika role/permission ditambahkan nanti, route sensitif wajib menggunakan middleware authorization.
+- Route sensitif wajib melakukan authorization sesuai role user.
 
 Route utama saat ini:
 
@@ -386,30 +373,32 @@ GET  /                         home
 GET  /login                    login
 POST /login                    login submit
 POST /logout                   logout
-GET  /admin                    admin.dashboard
-GET  /admin/technicians        admin.technicians.index
-GET  /admin/reports/daily      admin.reports.daily
+GET  /dashboard                dashboard
+GET  /accounts                 accounts.index
+GET  /reports/daily            reports.daily
 ```
 
 ---
 
 # 12. Authentication Rules
 
-- Login operator dan teknisi menggunakan satu halaman auth yang sama.
+- Login superadmin, service desk, dan teknisi menggunakan satu halaman auth yang sama.
 - Akun login disimpan di tabel `users`.
 - Login menggunakan `username` dan `password`.
 - Password wajib di-hash.
-- Seeder default boleh membuat akun admin untuk development.
+- Seeder default membuat akun superadmin untuk development.
 - Jangan menampilkan password di view, log, atau dokumentasi publik kecuali untuk akun demo development.
 - Tambahkan throttle login jika aplikasi dipakai production.
 - Gunakan middleware `auth` untuk semua halaman admin.
+- Akun dengan `status = false` tidak boleh login.
 
 Akun default development:
 
 ```text
 username: helpdesk
-email: admin@service.com
-password: admin
+email: operator@example.com
+password: password
+role: superadmin
 ```
 
 Jika akun default berubah, update `README.md`.
@@ -449,12 +438,15 @@ Aturan display:
 
 ---
 
-# 14. Technician Rules
+# 14. User Role dan Technician Rules
 
-- Nama teknisi wajib diisi.
-- Teknisi dapat memiliki banyak antrian.
-- Menghapus teknisi yang sudah punya riwayat antrian harus dipertimbangkan dampaknya.
-- Jika data teknisi penting untuk audit/laporan, gunakan nonaktifkan status daripada delete permanen.
+- Role yang digunakan: `superadmin`, `service_desk`, dan `technician`.
+- Teknisi adalah akun di tabel `users` dengan `role = technician`.
+- `superadmin` dapat mengelola akun, seluruh antrian, laporan, dan pengaturan display.
+- `service_desk` dapat melihat semua antrian dan assign pekerjaan ke teknisi.
+- `technician` hanya boleh melihat antrian dengan `technician_user_id` miliknya.
+- Saat teknisi membuat antrian, `technician_user_id` wajib otomatis memakai akun teknisi yang sedang login.
+- Jika akun teknisi sudah punya riwayat antrian, gunakan nonaktifkan `status` daripada delete permanen.
 - Laporan harian teknisi dihitung dari antrian selesai pada tanggal tertentu.
 
 ---
@@ -595,10 +587,11 @@ Pengaturan display berhasil disimpan.
 
 Seeder minimal harus membuat:
 
-- User admin default untuk development.
+- User superadmin default untuk development.
+- User teknisi demo jika data dummy antrian dibuat.
 - Setting display default.
 
-Seeder boleh menambahkan data dummy antrian atau teknisi hanya jika dibutuhkan untuk demo/development.
+Seeder boleh menambahkan data dummy antrian hanya jika dibutuhkan untuk demo/development.
 
 Jika akun default atau setting default berubah, update `README.md`.
 
@@ -689,15 +682,19 @@ Aturan auto commit dan push:
 
 Minimal lakukan pengujian:
 
-- Login admin.
-- Logout admin.
+- Login superadmin.
+- Logout superadmin.
 - Public display terbuka tanpa login.
-- Admin dashboard hanya bisa dibuka setelah login.
+- Dashboard hanya bisa dibuka setelah login.
+- Superadmin dapat membuat akun service desk dan teknisi.
+- Service desk dapat melihat semua antrian.
+- Teknisi hanya melihat antrian miliknya.
 - Tambah antrian.
+- Assign teknisi oleh superadmin/service desk.
+- Teknisi membuat antrian otomatis untuk dirinya sendiri.
 - Edit status antrian ke `progress`.
 - Countdown tampil pada public display.
 - Edit status antrian ke `done`.
-- Tambah/edit/hapus teknisi.
 - Laporan harian teknisi.
 - Simpan pengaturan display.
 

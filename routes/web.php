@@ -18,10 +18,14 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/technicians', function () {
-        return view('backend.technicians.index');
-    })->name('technicians.index');
+    Route::get('/accounts', function () {
+        abort_unless(auth()->user()->canManageUsers(), 403);
+
+        return view('backend.accounts.index');
+    })->name('accounts.index');
     Route::get('/reports/daily', function () {
+        abort_unless(auth()->user()->canViewReports(), 403);
+
         return view('backend.reports.daily');
     })->name('reports.daily');
 });

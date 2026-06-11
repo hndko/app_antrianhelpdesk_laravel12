@@ -5,11 +5,12 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use App\Models\Queue;
 use App\Models\Setting;
+use App\Models\User;
 use Livewire\Component;
-use App\Models\Technician;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class Dashboard extends Component
@@ -18,7 +19,7 @@ class Dashboard extends Component
 
     // --- State Queue ---
     public $queue_id;
-    public $laptop_id, $user_name, $technician_id, $status = 'waiting', $duration_minutes = 60, $description;
+    public $laptop_id, $user_name, $technician_user_id, $status = 'waiting', $duration_minutes = 60, $description;
     public $isEditing = false;
     public $technicians;
 
@@ -29,7 +30,16 @@ class Dashboard extends Component
     public function mount()
     {
         $this->loadSettings();
-        $this->technicians = Technician::all();
+        $this->loadTechnicians();
+    }
+
+    public function loadTechnicians()
+    {
+        $this->technicians = User::query()
+            ->where('role', 'technician')
+            ->where('status', true)
+            ->orderBy('name')
+            ->get();
     }
 
     public function loadSettings()
@@ -49,7 +59,7 @@ class Dashboard extends Component
         $this->queue_id = null;
         $this->user_name = '';
         $this->laptop_id = '';
-        $this->technician_id = null;
+        $this->technician_user_id = null;
         $this->status = 'waiting';
         $this->duration_minutes = 60;
         $this->description = '';
@@ -58,17 +68,26 @@ class Dashboard extends Component
 
     public function saveQueue()
     {
+        $user = Auth::user();
+
+        if ($user->isTechnician()) {
+            $this->technician_user_id = $user->id;
+        }
+
         $validated = $this->validate([
             'user_name' => 'nullable|string|max:255',
             'laptop_id' => 'required|string|max:255',
-            'technician_id' => 'required|exists:technicians,id',
+            'technician_user_id' => [
+                'required',
+                Rule::exists('users', 'id')->where('role', 'technician')->where('status', true),
+            ],
             'status' => ['required', Rule::in(['waiting', 'progress', 'done', 'completed'])],
             'duration_minutes' => 'required|integer|min:1|max:1440',
             'description' => 'nullable|string|max:5000',
         ]);
 
         if ($this->isEditing) {
-            $queue = Queue::findOrFail($this->queue_id);
+            $queue = $this->findQueueForUser($this->queue_id);
             $queue->update($validated);
             $msg = 'Data antrian berhasil diperbarui!';
         } else {
@@ -96,11 +115,11 @@ class Dashboard extends Component
 
     public function editQueue($id)
     {
-        $queue = Queue::findOrFail($id);
+        $queue = $this->findQueueForUser($id);
         $this->queue_id = $queue->id;
         $this->user_name = $queue->user_name;
         $this->laptop_id = $queue->laptop_id;
-        $this->technician_id = $queue->technician_id;
+        $this->technician_user_id = $queue->technician_user_id;
         $this->status = $queue->status;
         $this->duration_minutes = $queue->duration_minutes;
         $this->description = $queue->description;
@@ -109,6 +128,8 @@ class Dashboard extends Component
 
     public function deleteQueue($id)
     {
+        abort_unless(Auth::user()->canViewAllQueues(), 403);
+
         Queue::findOrFail($id)->delete();
 
         $this->dispatch('show-toast', [
@@ -173,6 +194,8 @@ class Dashboard extends Component
 
     public function saveSettings()
     {
+        abort_unless(Auth::user()->canManageDisplaySettings(), 403);
+
         $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
 
         $validated = $this->validate([
@@ -219,16 +242,35 @@ class Dashboard extends Component
         return 'components.pagination-custom';
     }
 
+    private function queueQueryForUser()
+    {
+        $query = Queue::query();
+
+        if (Auth::user()->isTechnician()) {
+            $query->where('technician_user_id', Auth::id());
+        }
+
+        return $query;
+    }
+
+    private function findQueueForUser($id): Queue
+    {
+        return $this->queueQueryForUser()->findOrFail($id);
+    }
+
     public function render()
     {
+        $queueStatsQuery = $this->queueQueryForUser();
+
         $stats = [
-            'total' => Queue::count(),
-            'waiting' => Queue::where('status', 'waiting')->count(),
-            'progress' => Queue::where('status', 'progress')->count(),
+            'total' => (clone $queueStatsQuery)->count(),
+            'waiting' => (clone $queueStatsQuery)->where('status', 'waiting')->count(),
+            'progress' => (clone $queueStatsQuery)->where('status', 'progress')->count(),
         ];
 
         // LOGIKA FILTER & PAGINATION
-        $queues = Queue::with('technician')
+        $queues = $this->queueQueryForUser()
+            ->with('technician')
             ->where(function ($query) {
                 // 1. Tampilkan semua yang BELUM selesai (Waiting/Progress) mau kapanpun (agar tidak ada yg terlewat)
                 $query->where('status', '!=', 'done')
@@ -249,6 +291,9 @@ class Dashboard extends Component
         return view('livewire.dashboard', [
             'queues' => $queues,
             'stats' => $stats,
+            'canAssignTechnician' => Auth::user()->canViewAllQueues(),
+            'canDeleteQueue' => Auth::user()->canViewAllQueues(),
+            'canManageDisplaySettings' => Auth::user()->canManageDisplaySettings(),
             'logoPreviewUrl' => $this->uploadedImagePreviewUrl($this->logo_file, $logoPreviewUrl),
             'faviconPreviewUrl' => $this->uploadedImagePreviewUrl($this->favicon_file, $faviconPreviewUrl),
         ])->layout('components.app-backend');

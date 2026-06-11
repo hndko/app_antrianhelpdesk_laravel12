@@ -22,6 +22,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'role',
+        'status',
     ];
 
     /**
@@ -44,6 +46,47 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
+    }
+
+    public function assignedQueues()
+    {
+        return $this->hasMany(Queue::class, 'technician_user_id');
+    }
+
+    public function isSuperadmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
+
+    public function isServiceDesk(): bool
+    {
+        return $this->role === 'service_desk';
+    }
+
+    public function isTechnician(): bool
+    {
+        return $this->role === 'technician';
+    }
+
+    public function canManageUsers(): bool
+    {
+        return $this->isSuperadmin();
+    }
+
+    public function canManageDisplaySettings(): bool
+    {
+        return $this->isSuperadmin();
+    }
+
+    public function canViewAllQueues(): bool
+    {
+        return $this->isSuperadmin() || $this->isServiceDesk();
+    }
+
+    public function canViewReports(): bool
+    {
+        return $this->isSuperadmin() || $this->isServiceDesk();
     }
 }

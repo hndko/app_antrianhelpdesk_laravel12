@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DisplaySettingSeeder::class,
             SettingSeeder::class,
-            TechnicianSeeder::class,
             QueueSeeder::class,
         ]);
     }

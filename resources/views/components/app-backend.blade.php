@@ -83,37 +83,41 @@
                     <span :class="{ 'lg:hidden': sidebarCollapsed }">Dashboard</span>
                 </a>
 
-                <a href="{{ route('technicians.index') }}"
-                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
-                    {{ request()->routeIs('technicians.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                    @click="sidebarOpen = false">
-                    <span
-                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
-                        {{ request()->routeIs('technicians.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-6a4 4 0 11-8 0 4 4 0 018 0zm8 1a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </span>
-                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Teknisi</span>
-                </a>
+                @if (auth()->user()->canManageUsers())
+                    <a href="{{ route('accounts.index') }}"
+                        class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                        {{ request()->routeIs('accounts.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                        :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
+                        @click="sidebarOpen = false">
+                        <span
+                            class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                            {{ request()->routeIs('accounts.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-6a4 4 0 11-8 0 4 4 0 018 0zm8 1a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </span>
+                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Manajemen Akun</span>
+                    </a>
+                @endif
 
-                <a href="{{ route('reports.daily') }}"
-                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
-                    {{ request()->routeIs('reports.daily') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                    @click="sidebarOpen = false">
-                    <span
-                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
-                        {{ request()->routeIs('reports.daily') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-6m4 6V7m4 10v-3M5 19h14M5 5h14v14H5V5z" />
-                        </svg>
-                    </span>
-                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Laporan Harian</span>
-                </a>
+                @if (auth()->user()->canViewReports())
+                    <a href="{{ route('reports.daily') }}"
+                        class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                        {{ request()->routeIs('reports.daily') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                        :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
+                        @click="sidebarOpen = false">
+                        <span
+                            class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                            {{ request()->routeIs('reports.daily') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 17v-6m4 6V7m4 10v-3M5 19h14M5 5h14v14H5V5z" />
+                            </svg>
+                        </span>
+                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Laporan Harian</span>
+                    </a>
+                @endif
             </nav>
 
             <div class="border-t border-slate-200 p-4">

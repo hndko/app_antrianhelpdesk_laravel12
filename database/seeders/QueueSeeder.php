@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Queue;
-use App\Models\Technician;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class QueueSeeder extends Seeder
@@ -13,8 +13,9 @@ class QueueSeeder extends Seeder
      */
     public function run(): void
     {
-        $technicians = Technician::query()
-            ->whereIn('name', TechnicianSeeder::technicians())
+        $technicians = User::query()
+            ->where('role', 'technician')
+            ->whereIn('name', $this->technicianNames())
             ->get()
             ->keyBy('name');
 
@@ -33,7 +34,7 @@ class QueueSeeder extends Seeder
                 'queue_number' => 901,
                 'user_name' => 'User Waiting',
                 'laptop_id' => 'TEST-WAITING-001',
-                'technician_id' => $technicians['Teknisi Waiting']->id,
+                'technician_user_id' => $technicians['Teknisi Waiting']->id,
                 'status' => 'waiting',
                 'duration_minutes' => 30,
                 'description' => 'Data kolom queue dengan status waiting.',
@@ -42,7 +43,7 @@ class QueueSeeder extends Seeder
                 'queue_number' => 902,
                 'user_name' => 'User Progress',
                 'laptop_id' => 'TEST-PROGRESS-001',
-                'technician_id' => $technicians['Teknisi Progress']->id,
+                'technician_user_id' => $technicians['Teknisi Progress']->id,
                 'status' => 'progress',
                 'duration_minutes' => 45,
                 'description' => 'Data kolom queue dengan status progress.',
@@ -51,7 +52,7 @@ class QueueSeeder extends Seeder
                 'queue_number' => 903,
                 'user_name' => 'User Done',
                 'laptop_id' => 'TEST-DONE-001',
-                'technician_id' => $technicians['Teknisi Done']->id,
+                'technician_user_id' => $technicians['Teknisi Done']->id,
                 'status' => 'done',
                 'duration_minutes' => 60,
                 'description' => 'Data kolom queue dengan status done.',
@@ -60,11 +61,21 @@ class QueueSeeder extends Seeder
                 'queue_number' => 904,
                 'user_name' => 'User Completed',
                 'laptop_id' => 'TEST-COMPLETED-001',
-                'technician_id' => $technicians['Teknisi Completed']->id,
+                'technician_user_id' => $technicians['Teknisi Completed']->id,
                 'status' => 'completed',
                 'duration_minutes' => 75,
                 'description' => 'Data kolom queue dengan status completed.',
             ],
+        ];
+    }
+
+    private function technicianNames(): array
+    {
+        return [
+            'Teknisi Waiting',
+            'Teknisi Progress',
+            'Teknisi Done',
+            'Teknisi Completed',
         ];
     }
 }

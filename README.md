@@ -2,7 +2,7 @@
 
 Sistem manajemen antrian dan digital signage berbasis web untuk helpdesk IT, service center, bengkel, klinik, loket pelayanan, atau unit layanan internal.
 
-Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan untuk mengelola antrian, teknisi, pengaturan display, serta laporan harian pekerjaan teknisi.
+Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan untuk mengelola antrian, akun service desk/teknisi, pengaturan display, serta laporan harian pekerjaan teknisi.
 
 ## Fitur Utama
 
@@ -23,17 +23,18 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Layout backend menggunakan sidebar responsif dengan tombol hamburger untuk mobile dan desktop.
 - Statistik total antrian, antrian menunggu, dan antrian diproses.
 - Tambah, edit, dan hapus data antrian.
-- Assign teknisi ke antrian.
-- Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, dan video YouTube.
+- Assign teknisi ke antrian untuk role `superadmin` dan `service_desk`.
+- Teknisi hanya melihat antrian miliknya dan saat membuat antrian otomatis ditugaskan ke dirinya sendiri.
+- Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, dan video YouTube khusus `superadmin`.
 - Pengaturan favicon browser untuk login, dashboard, dan public display.
 - Toast notification menggunakan IziToast.
 
-### Manajemen Teknisi
+### Manajemen Akun dan Role
 
-- Tambah dan edit teknisi.
-- Hapus teknisi jika belum punya riwayat antrian.
-- Nonaktifkan teknisi jika sudah memiliki riwayat antrian.
-- Jumlah pekerjaan selesai hari ini dihitung tanpa query langsung di Blade.
+- Role utama: `superadmin`, `service_desk`, dan `technician`.
+- Akun `helpdesk` berperan sebagai `superadmin`.
+- Superadmin dapat membuat dan mengubah akun service desk, teknisi, dan superadmin.
+- Akun dengan riwayat antrian dinonaktifkan saat dihapus agar histori tetap aman.
 
 ### Laporan Harian
 
@@ -71,7 +72,6 @@ Seeder dipecah per tabel/modul:
 - `UserSeeder`
 - `DisplaySettingSeeder`
 - `SettingSeeder`
-- `TechnicianSeeder`
 - `QueueSeeder`
 
 Akun development:
@@ -80,6 +80,12 @@ Akun development:
 - Username: `helpdesk`
 - Email: `operator@example.com`
 - Password: `password`
+- Role: `superadmin`
+
+Akun demo tambahan:
+
+- Service desk: `servicedesk` / `password`
+- Teknisi: `teknisiwaiting`, `teknisiprogress`, `teknisidone`, `teknisicompleted` / `password`
 
 Password di seeder ditulis sebagai plain string karena model `User` sudah memakai cast `password => hashed`.
 
@@ -91,7 +97,7 @@ Layout utama berada di `resources/views/components`:
 - `app-backend.blade.php` untuk dashboard dan halaman internal.
 - `app-frontend.blade.php` untuk public display.
 
-Login operator dan teknisi menggunakan satu halaman `/login`, dengan akun tersimpan di tabel `users`.
+Login superadmin, service desk, dan teknisi menggunakan satu halaman `/login`, dengan akun tersimpan di tabel `users`.
 
 ## Brand Asset
 
@@ -146,7 +152,7 @@ Catatan untuk agent: jangan menjalankan `npm run build` atau `php artisan serve`
 - `/` - public display.
 - `/login` - login operator.
 - `/dashboard` - dashboard.
-- `/technicians` - manajemen teknisi.
+- `/accounts` - manajemen akun khusus superadmin.
 - `/reports/daily` - laporan harian.
 
 ## Workflow Agent
