@@ -73,6 +73,14 @@ php artisan migrate --seed
 php artisan storage:link
 ```
 
+Seeder default akan membuat akun admin development dan pengaturan display awal.
+
+Untuk mengisi data dummy khusus pengecekan migration, jalankan:
+
+```bash
+php artisan db:seed --class=MigrationTestSeeder
+```
+
 ### 5\. Build Assets & Jalankan Server
 
 Buka dua terminal:
@@ -96,6 +104,7 @@ Aplikasi dapat diakses di: `http://127.0.0.1:8000`
 Gunakan akun ini untuk masuk ke halaman Admin:
 
 -   **Login URL:** `/login`
+-   **Username:** `helpdesk`
 -   **Email:** `admin@service.com`
 -   **Password:** `admin`
 
