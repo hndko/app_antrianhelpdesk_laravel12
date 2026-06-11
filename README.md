@@ -83,7 +83,6 @@ php artisan db:seed
 
 Seeder schema dipecah per tabel:
 
-- `AdminUserSeeder`
 - `DisplaySettingSeeder`
 - `UserSeeder`
 - `SettingSeeder`

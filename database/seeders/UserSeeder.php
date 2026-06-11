@@ -8,18 +8,35 @@ use Illuminate\Database\Seeder;
 class UserSeeder extends Seeder
 {
     /**
-     * Seed a user for validating the users table.
+     * Seed users for development and schema validation.
      */
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'user@example.com'],
+        foreach ($this->users() as $user) {
+            User::updateOrCreate(
+                ['email' => $user['email']],
+                $user
+            );
+        }
+    }
+
+    private function users(): array
+    {
+        return [
+            [
+                'name' => 'Administrator',
+                'username' => 'helpdesk',
+                'email' => 'admin@example.com',
+                'password' => 'password',
+                'email_verified_at' => now(),
+            ],
             [
                 'name' => 'User Seeder',
                 'username' => 'userseeder',
+                'email' => 'user@example.com',
                 'password' => 'password',
                 'email_verified_at' => now(),
-            ]
-        );
+            ],
+        ];
     }
 }
