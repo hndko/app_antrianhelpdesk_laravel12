@@ -44,16 +44,16 @@
 </head>
 
 <body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
-    <div x-data="{ sidebarOpen: false }" class="min-h-screen lg:flex">
+    <div x-data="{ sidebarOpen: false, sidebarCollapsed: false }" class="min-h-screen lg:flex">
         <div x-cloak x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-40 bg-slate-950/50 lg:hidden"
             @click="sidebarOpen = false"></div>
 
         <aside
-            class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-200 lg:static lg:translate-x-0 lg:shadow-none"
-            :class="{ 'translate-x-0': sidebarOpen }">
+            class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white shadow-2xl transition-all duration-200 lg:static lg:translate-x-0 lg:shadow-none"
+            :class="{ 'translate-x-0': sidebarOpen, 'lg:w-20': sidebarCollapsed, 'lg:w-72': !sidebarCollapsed }">
             <div class="flex h-16 items-center gap-3 border-b border-slate-200 px-5">
                 <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="h-10 w-10 rounded-lg object-contain">
-                <div class="min-w-0">
+                <div class="min-w-0" :class="{ 'lg:hidden': sidebarCollapsed }">
                     <p class="truncate text-sm font-extrabold text-slate-950">{{ $brand['title'] }}</p>
                     <p class="text-xs font-semibold text-slate-500">Panel Helpdesk</p>
                 </div>
@@ -70,6 +70,7 @@
                 <a href="{{ route('dashboard') }}"
                     class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                     {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
                     @click="sidebarOpen = false">
                     <span
                         class="flex h-10 w-10 items-center justify-center rounded-lg transition
@@ -79,12 +80,13 @@
                                 d="M4 13h6V4H4v9zm10 7h6V4h-6v16zM4 20h6v-5H4v5z" />
                         </svg>
                     </span>
-                    <span>Dashboard</span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Dashboard</span>
                 </a>
 
                 <a href="{{ route('technicians.index') }}"
                     class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                     {{ request()->routeIs('technicians.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
                     @click="sidebarOpen = false">
                     <span
                         class="flex h-10 w-10 items-center justify-center rounded-lg transition
@@ -94,12 +96,13 @@
                                 d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-6a4 4 0 11-8 0 4 4 0 018 0zm8 1a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </span>
-                    <span>Teknisi</span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Teknisi</span>
                 </a>
 
                 <a href="{{ route('reports.daily') }}"
                     class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                     {{ request()->routeIs('reports.daily') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
                     @click="sidebarOpen = false">
                     <span
                         class="flex h-10 w-10 items-center justify-center rounded-lg transition
@@ -109,7 +112,7 @@
                                 d="M9 17v-6m4 6V7m4 10v-3M5 19h14M5 5h14v14H5V5z" />
                         </svg>
                     </span>
-                    <span>Laporan Harian</span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Laporan Harian</span>
                 </a>
             </nav>
 
@@ -122,7 +125,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        Logout
+                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Logout</span>
                     </button>
                 </form>
             </div>
@@ -133,8 +136,9 @@
                 <div class="flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
                     <div class="flex min-w-0 items-center gap-3">
                         <button type="button"
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 lg:hidden"
-                            @click="sidebarOpen = true" aria-label="Buka menu">
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 hover:text-slate-950"
+                            @click="window.innerWidth >= 1024 ? sidebarCollapsed = ! sidebarCollapsed : sidebarOpen = true"
+                            aria-label="Toggle sidebar">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16" />
                             </svg>
