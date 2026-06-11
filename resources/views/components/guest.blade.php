@@ -19,13 +19,7 @@
             <section class="relative hidden min-h-[620px] overflow-hidden bg-slate-950 text-white lg:block">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.36),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.22),transparent_28%),linear-gradient(135deg,#020617_0%,#0f172a_52%,#1e293b_100%)]"></div>
                 <div class="relative flex h-full flex-col justify-between p-10">
-                    <div class="flex items-center gap-3">
-                        <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="h-12 w-auto max-w-[190px] rounded-lg object-contain shadow-lg shadow-blue-950/30">
-                        <div>
-                            <p class="text-sm font-bold uppercase tracking-wide text-blue-100">Service Display</p>
-                            <h1 class="text-2xl font-extrabold leading-tight">Helpdesk</h1>
-                        </div>
-                    </div>
+                    <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="h-12 w-auto max-w-[220px] rounded-lg object-contain shadow-lg shadow-blue-950/30">
 
                     <div class="max-w-md">
                         <p class="text-sm font-black uppercase tracking-[0.24em] text-blue-200">Operator Area</p>
@@ -56,7 +50,6 @@
                 <div class="mx-auto w-full max-w-md">
                     <div class="mb-8 lg:hidden">
                         <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="mb-5 h-12 w-auto max-w-[210px] object-contain">
-                        <p class="text-sm font-black uppercase tracking-wide text-blue-600">Service Display Helpdesk</p>
                     </div>
 
                     <div class="mb-8">
