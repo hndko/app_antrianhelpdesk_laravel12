@@ -75,14 +75,16 @@ php artisan storage:link
 
 Seeder default akan membuat akun admin development dan pengaturan display awal.
 
-Untuk mengisi data dummy khusus pengecekan schema, jalankan:
+Untuk mengisi data awal dan data pengecekan schema, jalankan:
 
 ```bash
-php artisan db:seed --class=DataSeeder
+php artisan db:seed
 ```
 
 Seeder schema dipecah per tabel:
 
+- `AdminUserSeeder`
+- `DisplaySettingSeeder`
 - `UserSeeder`
 - `SettingSeeder`
 - `TechnicianSeeder`
