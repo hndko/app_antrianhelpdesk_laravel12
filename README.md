@@ -112,8 +112,8 @@ Gunakan akun ini untuk masuk ke halaman Admin:
 
 -   **Login URL:** `/login`
 -   **Username:** `helpdesk`
--   **Email:** `admin@service.com`
--   **Password:** `admin`
+-   **Email:** `admin@example.com`
+-   **Password:** `password`
 
 ## 📖 Cara Penggunaan
 
