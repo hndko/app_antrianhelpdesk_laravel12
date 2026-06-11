@@ -6,7 +6,7 @@ use App\Models\Queue;
 use App\Models\Technician;
 use Illuminate\Database\Seeder;
 
-class MigrationTestQueueSeeder extends Seeder
+class TestQueueSeeder extends Seeder
 {
     /**
      * Seed sample queues for validating queue columns and statuses.
@@ -14,7 +14,7 @@ class MigrationTestQueueSeeder extends Seeder
     public function run(): void
     {
         $technicians = Technician::query()
-            ->whereIn('name', MigrationTestTechnicianSeeder::technicians())
+            ->whereIn('name', TestTechnicianSeeder::technicians())
             ->get()
             ->keyBy('name');
 

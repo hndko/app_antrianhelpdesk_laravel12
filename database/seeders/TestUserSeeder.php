@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class MigrationTestUserSeeder extends Seeder
+class TestUserSeeder extends Seeder
 {
     /**
      * Seed a sample user for validating the users table.
@@ -13,10 +13,10 @@ class MigrationTestUserSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'migration-test@example.com'],
+            ['email' => 'schema-test@example.com'],
             [
-                'name' => 'Migration Test User',
-                'username' => 'migrationtest',
+                'name' => 'Schema Test User',
+                'username' => 'schematest',
                 'password' => 'password',
                 'email_verified_at' => now(),
             ]

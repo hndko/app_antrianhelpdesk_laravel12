@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
-class MigrationTestSettingSeeder extends Seeder
+class TestSettingSeeder extends Seeder
 {
     /**
      * Seed a sample display setting for validating the settings table.
@@ -15,11 +15,11 @@ class MigrationTestSettingSeeder extends Seeder
         Setting::updateOrCreate(
             ['id' => 99],
             [
-                'app_title' => 'Migration Test Display',
+                'app_title' => 'Schema Test Display',
                 'logo_url' => 'https://example.test/logo.png',
                 'video_url' => 'dQw4w9WgXcQ',
                 'video_type' => 'youtube',
-                'running_text' => 'Data testing migration service display.',
+                'running_text' => 'Data testing schema service display.',
                 'marquee_speed' => 45,
             ]
         );

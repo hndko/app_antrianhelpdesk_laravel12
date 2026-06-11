@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Technician;
 use Illuminate\Database\Seeder;
 
-class MigrationTestTechnicianSeeder extends Seeder
+class TestTechnicianSeeder extends Seeder
 {
     /**
      * Seed sample technicians for validating the technicians table.
@@ -21,7 +21,7 @@ class MigrationTestTechnicianSeeder extends Seeder
     }
 
     /**
-     * Get technician names used by migration test queue data.
+     * Get technician names used by test queue data.
      *
      * @return array<int, string>
      */

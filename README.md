@@ -75,18 +75,18 @@ php artisan storage:link
 
 Seeder default akan membuat akun admin development dan pengaturan display awal.
 
-Untuk mengisi data dummy khusus pengecekan migration, jalankan:
+Untuk mengisi data dummy khusus pengecekan schema, jalankan:
 
 ```bash
-php artisan db:seed --class=MigrationTestSeeder
+php artisan db:seed --class=TestDataSeeder
 ```
 
-Seeder testing migration dipecah per tabel:
+Seeder testing schema dipecah per tabel:
 
-- `MigrationTestUserSeeder`
-- `MigrationTestSettingSeeder`
-- `MigrationTestTechnicianSeeder`
-- `MigrationTestQueueSeeder`
+- `TestUserSeeder`
+- `TestSettingSeeder`
+- `TestTechnicianSeeder`
+- `TestQueueSeeder`
 
 ### 5\. Build Assets & Jalankan Server
 
