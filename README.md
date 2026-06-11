@@ -120,6 +120,13 @@ Gunakan akun ini untuk masuk ke halaman Admin:
 
 Pull requests dipersilakan. Untuk perubahan besar, harap buka issue terlebih dahulu untuk mendiskusikan apa yang ingin Anda ubah.
 
+## Workflow Agent
+
+- Agent wajib mengikuti aturan kerja di `AGENTS.md`.
+- Setelah menyelesaikan perubahan, agent melakukan commit dan push otomatis jika remote dan branch tujuan tersedia.
+- Agent hanya boleh stage file yang dibuat atau diubah pada task berjalan.
+- Perubahan user yang tidak terkait tidak boleh direvert atau ikut distage.
+
 ### Tips Tambahan:
 
 Jangan lupa untuk mengambil **Screenshot** dari halaman _Display_ (yang ada videonya) dan halaman _Admin Dashboard_ Anda, lalu upload ke folder project atau image hosting, dan ganti link `https://via.placeholder.com...` di atas dengan link gambar asli Anda agar README terlihat menarik!

@@ -662,6 +662,26 @@ Added technician crud.
 update file
 ```
 
+## 23.3 Auto Commit dan Push
+
+Setelah agent menyelesaikan perubahan file yang diminta, agent wajib melakukan commit dan push otomatis jika kondisi berikut terpenuhi:
+
+- Repository memiliki remote aktif.
+- Branch saat ini sudah memiliki upstream atau remote tujuan yang jelas.
+- Perubahan sudah diverifikasi sesuai kebutuhan task.
+- Tidak ada konflik yang menghalangi commit atau push.
+
+Aturan auto commit dan push:
+
+- Jalankan `git status` sebelum staging.
+- Stage hanya file yang dibuat atau diubah oleh agent pada task berjalan.
+- Jangan stage perubahan user yang tidak terkait.
+- Jangan revert perubahan user tanpa permintaan eksplisit.
+- Gunakan Conventional Commits dalam bahasa Inggris.
+- Setelah commit berhasil, jalankan push ke branch aktif.
+- Jika push gagal karena konflik remote, credential, atau proteksi branch, laporkan dengan jelas.
+- Jika user secara eksplisit meminta tidak commit atau tidak push, ikuti instruksi user.
+
 ---
 
 # 24. Testing dan Verifikasi
