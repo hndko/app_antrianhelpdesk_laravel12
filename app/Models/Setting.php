@@ -10,6 +10,7 @@ class Setting extends Model
     protected $fillable = [
         'app_title',
         'logo_url',
+        'favicon_url',
         'video_url',
         'video_type',
         'running_text',

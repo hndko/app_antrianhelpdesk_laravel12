@@ -9,11 +9,25 @@ use Carbon\Carbon;
 
 class PublicDisplay extends Component
 {
+    private function resolveAssetUrl(?string $value, string $default): string
+    {
+        if (! $value) {
+            return asset($default);
+        }
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://') || str_starts_with($value, '/')) {
+            return $value;
+        }
+
+        return asset($value);
+    }
+
     public function render()
     {
         $settings = Setting::first() ?? new Setting([
             'app_title' => 'Service Display',
             'logo_url' => null,
+            'favicon_url' => null,
             'video_url' => null,
             'video_type' => 'youtube',
             'running_text' => '',
@@ -60,6 +74,7 @@ class PublicDisplay extends Component
             'queues' => $queues,
             'settings' => $settings,
             'queueStats' => $queueStats,
+            'displayLogoUrl' => $this->resolveAssetUrl($settings->logo_url, 'assets/helpdesk-logo.svg'),
         ])->layout('components.display', [
             'title' => $settings->app_title ?? 'Service Display',
             'appName' => $settings->app_title ?? 'Service Display',

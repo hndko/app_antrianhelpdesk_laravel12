@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Operator</title>
+    <title>Login Operator - {{ $brand['title'] }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ $brand['favicon_url'] }}">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap"
@@ -19,12 +20,7 @@
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.36),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.22),transparent_28%),linear-gradient(135deg,#020617_0%,#0f172a_52%,#1e293b_100%)]"></div>
                 <div class="relative flex h-full flex-col justify-between p-10">
                     <div class="flex items-center gap-3">
-                        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 shadow-lg shadow-blue-950/30">
-                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 17v-2a4 4 0 014-4h7M9 7h.01M5 7h.01M5 12h.01M9 12h.01M5 17h.01M4 4h16v16H4z" />
-                            </svg>
-                        </div>
+                        <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="h-12 w-auto max-w-[190px] rounded-lg object-contain shadow-lg shadow-blue-950/30">
                         <div>
                             <p class="text-sm font-bold uppercase tracking-wide text-blue-100">Service Display</p>
                             <h1 class="text-2xl font-extrabold leading-tight">Helpdesk</h1>
@@ -59,12 +55,7 @@
             <section class="flex min-h-[100svh] items-center px-5 py-8 sm:min-h-[640px] sm:px-8 lg:min-h-[620px] lg:px-10">
                 <div class="mx-auto w-full max-w-md">
                     <div class="mb-8 lg:hidden">
-                        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
-                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 17v-2a4 4 0 014-4h7M9 7h.01M5 7h.01M5 12h.01M9 12h.01M5 17h.01M4 4h16v16H4z" />
-                            </svg>
-                        </div>
+                        <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="mb-5 h-12 w-auto max-w-[210px] object-contain">
                         <p class="text-sm font-black uppercase tracking-wide text-blue-600">Service Display Helpdesk</p>
                     </div>
 

@@ -17,6 +17,7 @@ class SettingSeeder extends Seeder
             [
                 'app_title' => 'Schema Display',
                 'logo_url' => 'https://example.com/logo.png',
+                'favicon_url' => 'https://example.com/favicon.svg',
                 'video_url' => 'dQw4w9WgXcQ',
                 'video_type' => 'youtube',
                 'running_text' => 'Data schema service display.',

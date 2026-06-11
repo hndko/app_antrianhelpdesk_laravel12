@@ -2,16 +2,7 @@
     <header class="shrink-0 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div class="mx-auto flex max-w-[1920px] items-center justify-between gap-3 px-3 py-2 sm:px-6 sm:py-3 lg:px-8">
             <div class="flex min-w-0 items-center gap-3">
-                @if ($settings->logo_url)
-                    <img src="{{ $settings->logo_url }}" alt="Logo" class="h-10 w-auto shrink-0 object-contain sm:h-12">
-                @else
-                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm sm:h-11 sm:w-11">
-                        <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
-                        </svg>
-                    </div>
-                @endif
+                <img src="{{ $displayLogoUrl }}" alt="Logo" class="h-10 w-auto max-w-[180px] shrink-0 object-contain sm:h-12">
 
                 <div class="min-w-0">
                     <h1 class="truncate text-base font-extrabold leading-tight text-slate-950 sm:text-2xl lg:text-3xl">

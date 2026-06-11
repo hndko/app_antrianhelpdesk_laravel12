@@ -24,6 +24,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian.
 - Pengaturan judul aplikasi, logo URL, running text, kecepatan marquee, dan video YouTube.
+- Pengaturan favicon browser untuk login, dashboard, dan public display.
 - Toast notification menggunakan IziToast.
 
 ### Manajemen Teknisi
@@ -74,6 +75,15 @@ Akun development:
 - Password: `password`
 
 Password di seeder ditulis sebagai plain string karena model `User` sudah memakai cast `password => hashed`.
+
+## Brand Asset
+
+Logo dan favicon default tersedia di:
+
+- `/assets/helpdesk-logo.svg`
+- `/assets/helpdesk-favicon.svg`
+
+Keduanya dapat diganti dari dashboard melalui pengaturan `URL Logo` dan `URL Favicon`.
 
 ## Instalasi
 

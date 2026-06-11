@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
+  <title id="title">Service Display Helpdesk</title>
+  <desc id="desc">Logo Service Display Helpdesk berbentuk monitor layanan dan daftar antrian.</desc>
+  <rect width="640" height="180" rx="28" fill="#0f172a"/>
+  <rect x="28" y="28" width="124" height="124" rx="24" fill="#2563eb"/>
+  <rect x="54" y="52" width="72" height="54" rx="10" fill="#eff6ff"/>
+  <path d="M70 76h40M70 92h28" stroke="#2563eb" stroke-width="9" stroke-linecap="round"/>
+  <path d="M73 126h34" stroke="#bfdbfe" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="127" cy="127" r="14" fill="#10b981"/>
+  <path d="M121 127l4 4 9-11" fill="none" stroke="#ecfdf5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="180" y="82" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">Service Display</text>
+  <text x="182" y="125" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Helpdesk Queue System</text>
+  <path d="M514 52h72M514 84h48M514 116h64" stroke="#38bdf8" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+</svg>

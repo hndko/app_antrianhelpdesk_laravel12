@@ -22,7 +22,7 @@ class Dashboard extends Component
     public $technicians;
 
     // --- State Settings ---
-    public $app_title, $running_text, $marquee_speed, $logo_url, $youtube_id;
+    public $app_title, $running_text, $marquee_speed, $logo_url, $favicon_url, $youtube_id;
 
     public function mount()
     {
@@ -37,7 +37,8 @@ class Dashboard extends Component
         $this->app_title = $settings->app_title ?? 'Service Display';
         $this->running_text = $settings->running_text ?? '';
         $this->marquee_speed = $settings->marquee_speed ?? 60;
-        $this->logo_url = $settings->logo_url ?? '';
+        $this->logo_url = $settings->logo_url ?? '/assets/helpdesk-logo.svg';
+        $this->favicon_url = $settings->favicon_url ?? '/assets/helpdesk-favicon.svg';
         $this->youtube_id = $settings->video_url ?? '';
     }
 
@@ -116,6 +117,10 @@ class Dashboard extends Component
 
     private function extractYoutubeId($url)
     {
+        if (! $url) {
+            return null;
+        }
+
         $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i';
 
         if (preg_match($pattern, $url, $matches)) {
@@ -131,6 +136,19 @@ class Dashboard extends Component
         $this->youtube_id = $this->extractYoutubeId($value);
     }
 
+    private function resolveAssetUrl(?string $value, string $default): string
+    {
+        if (! $value) {
+            return asset($default);
+        }
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://') || str_starts_with($value, '/')) {
+            return $value;
+        }
+
+        return asset($value);
+    }
+
     public function saveSettings()
     {
         $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
@@ -139,8 +157,9 @@ class Dashboard extends Component
             'app_title' => 'required|string|max:255',
             'running_text' => 'nullable|string|max:1000',
             'logo_url' => 'nullable|string|max:255',
+            'favicon_url' => 'nullable|string|max:255',
             'marquee_speed' => 'required|integer|min:10|max:200',
-            'youtube_id' => 'required|string',
+            'youtube_id' => 'nullable|string|max:255',
         ]);
 
         Setting::updateOrCreate(['id' => 1], [
@@ -148,13 +167,14 @@ class Dashboard extends Component
             'running_text' => $validated['running_text'],
             'marquee_speed' => $validated['marquee_speed'],
             'logo_url' => $validated['logo_url'],
+            'favicon_url' => $validated['favicon_url'],
             'video_url' => $validated['youtube_id'],
             'video_type' => 'youtube',
         ]);
 
         $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Video YouTube berhasil disimpan!'
+            'message' => 'Pengaturan display berhasil disimpan.'
         ]);
     }
 
@@ -189,7 +209,9 @@ class Dashboard extends Component
 
         return view('livewire.dashboard', [
             'queues' => $queues,
-            'stats' => $stats
+            'stats' => $stats,
+            'logoPreviewUrl' => $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo.svg'),
+            'faviconPreviewUrl' => $this->resolveAssetUrl($this->favicon_url, 'assets/helpdesk-favicon.svg'),
         ])->layout('components.layout');
     }
 }

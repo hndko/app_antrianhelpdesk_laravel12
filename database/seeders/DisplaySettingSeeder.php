@@ -16,7 +16,8 @@ class DisplaySettingSeeder extends Seeder
             ['id' => 1],
             [
                 'app_title' => 'Service Display',
-                'logo_url' => null,
+                'logo_url' => '/assets/helpdesk-logo.svg',
+                'favicon_url' => '/assets/helpdesk-favicon.svg',
                 'video_url' => null,
                 'video_type' => 'local',
                 'running_text' => 'Selamat Datang di Layanan Service. Mohon menunggu antrian dengan tertib.',

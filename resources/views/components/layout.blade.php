@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - Service Display</title>
+    <title>Dashboard - {{ $brand['title'] }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ $brand['favicon_url'] }}">
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -45,13 +46,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center gap-3">
-                    <div class="bg-blue-600 text-white p-1.5 rounded-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm2 0v12h12V6H6z">
-                            </path>
-                        </svg>
-                    </div>
+                    <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="h-10 w-auto max-w-[180px] object-contain">
                     <span class="font-bold text-xl tracking-tight text-slate-900">Panel Aplikasi</span>
                 </div>
                 <div class="flex items-center">
@@ -115,9 +110,6 @@
             });
         });
     </script>
-</body>
-
-</html>
 </body>
 
 </html>

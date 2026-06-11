@@ -224,9 +224,27 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">URL Logo (Opsional)</label>
-                        <input type="text" wire:model="logo_url" placeholder="https://..."
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">URL Logo</label>
+                        <input type="text" wire:model="logo_url" placeholder="/assets/helpdesk-logo.svg atau https://..."
                             class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="mt-1 text-xs text-slate-500">Kosongkan atau isi path/URL gambar untuk logo header dan display.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">URL Favicon</label>
+                        <input type="text" wire:model="favicon_url" placeholder="/assets/helpdesk-favicon.svg atau https://..."
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="mt-1 text-xs text-slate-500">Favicon tampil di tab browser untuk halaman login, dashboard, dan display.</p>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-500">Preview Brand</p>
+                        <div class="flex items-center gap-4">
+                            <img src="{{ $logoPreviewUrl }}" alt="Preview Logo"
+                                class="h-12 w-auto max-w-[220px] rounded-lg object-contain">
+                            <img src="{{ $faviconPreviewUrl }}" alt="Preview Favicon"
+                                class="h-10 w-10 rounded-lg border border-slate-200 bg-white object-contain p-1">
+                        </div>
                     </div>
 
                     <div x-data="{ speed: @entangle('marquee_speed') }">
