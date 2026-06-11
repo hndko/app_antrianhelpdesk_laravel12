@@ -81,6 +81,13 @@ Untuk mengisi data dummy khusus pengecekan migration, jalankan:
 php artisan db:seed --class=MigrationTestSeeder
 ```
 
+Seeder testing migration dipecah per tabel:
+
+- `MigrationTestUserSeeder`
+- `MigrationTestSettingSeeder`
+- `MigrationTestTechnicianSeeder`
+- `MigrationTestQueueSeeder`
+
 ### 5\. Build Assets & Jalankan Server
 
 Buka dua terminal:
