@@ -14,7 +14,8 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Countdown estimasi pengerjaan untuk status `progress`.
 - Running text dengan kecepatan yang dapat diatur.
 - Video display berbasis YouTube ID atau URL YouTube.
-- Layout responsif untuk layar TV/monitor.
+- Layout responsif untuk layar TV/monitor dan mobile.
+- Autoscroll daftar antrian saat data melebihi tinggi panel.
 
 ### Dashboard
 
