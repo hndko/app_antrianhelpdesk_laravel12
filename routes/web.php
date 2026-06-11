@@ -1,7 +1,7 @@
 <?php
 
 use App\Livewire\PublicDisplay;
-use App\Livewire\AdminDashboard;
+use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -14,14 +14,14 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'authenticate'])->middleware('throttle:5,1');
 });
 
-// Route Admin (Protected)
+// Route Backend (Protected)
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-    Route::get('/admin', AdminDashboard::class)->name('admin.dashboard');
-    Route::get('/admin/technicians', function () {
-        return view('admin.technicians.index');
-    })->name('admin.technicians.index');
-    Route::get('/admin/reports/daily', function () {
-        return view('admin.reports.daily');
-    })->name('admin.reports.daily');
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/technicians', function () {
+        return view('backend.technicians.index');
+    })->name('technicians.index');
+    Route::get('/reports/daily', function () {
+        return view('backend.reports.daily');
+    })->name('reports.daily');
 });

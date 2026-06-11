@@ -2,7 +2,7 @@
 
 Sistem manajemen antrian dan digital signage berbasis web untuk helpdesk IT, service center, bengkel, klinik, loket pelayanan, atau unit layanan internal.
 
-Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel admin untuk mengelola antrian, teknisi, pengaturan display, serta laporan harian pekerjaan teknisi.
+Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan untuk mengelola antrian, teknisi, pengaturan display, serta laporan harian pekerjaan teknisi.
 
 ## Fitur Utama
 
@@ -16,9 +16,9 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel admin untuk 
 - Video display berbasis YouTube ID atau URL YouTube.
 - Layout responsif untuk layar TV/monitor.
 
-### Admin Dashboard
+### Dashboard
 
-- Login admin/operator.
+- Login operator.
 - Statistik total antrian, antrian menunggu, dan antrian diproses.
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian.
@@ -65,11 +65,11 @@ Seeder dipecah per tabel/modul:
 - `TechnicianSeeder`
 - `QueueSeeder`
 
-Akun admin development:
+Akun development:
 
 - Login URL: `/login`
 - Username: `helpdesk`
-- Email: `admin@example.com`
+- Email: `operator@example.com`
 - Password: `password`
 
 Password di seeder ditulis sebagai plain string karena model `User` sudah memakai cast `password => hashed`.
@@ -116,10 +116,10 @@ Catatan untuk agent: jangan menjalankan `npm run build` atau `php artisan serve`
 ## Route Utama
 
 - `/` - public display.
-- `/login` - login admin/operator.
-- `/admin` - admin dashboard.
-- `/admin/technicians` - manajemen teknisi.
-- `/admin/reports/daily` - laporan harian.
+- `/login` - login operator.
+- `/dashboard` - dashboard.
+- `/technicians` - manajemen teknisi.
+- `/reports/daily` - laporan harian.
 
 ## Workflow Agent
 

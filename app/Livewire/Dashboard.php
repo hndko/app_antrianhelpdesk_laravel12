@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class AdminDashboard extends Component
+class Dashboard extends Component
 {
     use WithPagination;
 
@@ -187,7 +187,7 @@ class AdminDashboard extends Component
             ->orderBy('queue_number', 'asc')
             ->paginate(5);
 
-        return view('livewire.admin-dashboard', [
+        return view('livewire.dashboard', [
             'queues' => $queues,
             'stats' => $stats
         ])->layout('components.layout');

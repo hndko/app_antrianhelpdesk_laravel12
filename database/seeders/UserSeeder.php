@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Administrator',
                 'username' => 'helpdesk',
-                'email' => 'admin@example.com',
+                'email' => 'operator@example.com',
                 'password' => 'password',
                 'email_verified_at' => now(),
             ],

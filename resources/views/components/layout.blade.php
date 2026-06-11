@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard - Service Display</title>
+    <title>Dashboard - Service Display</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -52,7 +52,7 @@
                             </path>
                         </svg>
                     </div>
-                    <span class="font-bold text-xl tracking-tight text-slate-900">Admin Panel</span>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Panel Aplikasi</span>
                 </div>
                 <div class="flex items-center">
                     <form method="POST" action="{{ route('logout') }}">
@@ -75,9 +75,9 @@
     <div class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex gap-8">
-                <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('admin.dashboard') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Dashboard</a>
-                <a href="{{ route('admin.technicians.index') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('admin.technicians.index') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Technicians</a>
-                <a href="{{ route('admin.reports.daily') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('admin.reports.daily') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Daily Report</a>
+                <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('dashboard') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Dashboard</a>
+                <a href="{{ route('technicians.index') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('technicians.index') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Technicians</a>
+                <a href="{{ route('reports.daily') }}" class="text-sm font-medium text-slate-500 hover:text-blue-600 py-3 border-b-2 {{ request()->routeIs('reports.daily') ? 'border-blue-600 text-blue-600' : 'border-transparent' }}">Daily Report</a>
             </div>
         </div>
     </div>
