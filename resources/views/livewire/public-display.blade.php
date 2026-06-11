@@ -96,17 +96,28 @@
 
         <section class="flex min-h-[420px] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm lg:min-h-0 lg:flex-[0.95]">
             <div class="shrink-0 border-b border-slate-200 px-4 py-4 sm:px-5">
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex flex-col gap-4">
                     <div>
                         <h2 class="text-xl font-black text-slate-950 sm:text-2xl">Daftar Antrian</h2>
                         <p class="mt-1 text-sm font-medium text-slate-500">Status layanan diperbarui otomatis.</p>
                     </div>
-                    <div class="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-blue-700">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span class="text-xs font-black uppercase tracking-wide">Realtime</span>
+                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Total</p>
+                            <p class="font-mono text-xl font-black text-slate-900">{{ $queueStats['total'] }}</p>
+                        </div>
+                        <div class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-blue-500">Proses</p>
+                            <p class="font-mono text-xl font-black text-blue-700">{{ $queueStats['progress'] }}</p>
+                        </div>
+                        <div class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-amber-600">Antri</p>
+                            <p class="font-mono text-xl font-black text-amber-700">{{ $queueStats['waiting'] }}</p>
+                        </div>
+                        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-emerald-600">Selesai</p>
+                            <p class="font-mono text-xl font-black text-emerald-700">{{ $queueStats['done'] }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,14 +154,14 @@
 
                                 <div class="min-w-0 md:col-span-2">
                                     <p class="text-xs font-black uppercase tracking-wide text-slate-400 md:hidden">Unit</p>
-                                    <p class="truncate font-bold text-slate-700">{{ $q->laptop_id }}</p>
+                                    <p class="break-words text-sm font-bold leading-tight text-slate-700 sm:text-base">{{ $q->laptop_id }}</p>
                                 </div>
 
                                 <div class="min-w-0 md:col-span-2">
                                     <p class="text-xs font-black uppercase tracking-wide text-slate-400 md:hidden">Teknisi</p>
                                     <div class="flex min-w-0 items-center gap-2">
                                         <span class="h-2.5 w-2.5 shrink-0 rounded-full {{ $q->status === 'progress' ? 'bg-blue-500' : 'bg-slate-300' }}"></span>
-                                        <p class="truncate font-semibold text-slate-700">{{ $q->technician->name ?? '-' }}</p>
+                                        <p class="break-words text-sm font-semibold leading-tight text-slate-700 sm:text-base">{{ $q->technician->name ?? '-' }}</p>
                                     </div>
                                 </div>
 
@@ -282,7 +293,9 @@
                     const scroller = this.$refs.scroller;
                     const content = this.$refs.content;
                     let scrollPosition = 0;
-                    const speed = 0.25;
+                    let direction = 1;
+                    let pauseFrames = 90;
+                    const speed = 0.35;
 
                     this.$nextTick(() => {
                         if (!scroller || !content || content.offsetHeight <= scroller.clientHeight || window.innerWidth < 1024) {
@@ -290,12 +303,26 @@
                         }
 
                         const run = () => {
-                            scrollPosition += speed;
-                            scroller.scrollTop = scrollPosition;
+                            if (pauseFrames > 0) {
+                                pauseFrames--;
+                                requestAnimationFrame(run);
+                                return;
+                            }
 
-                            if (scroller.scrollTop + scroller.clientHeight >= content.offsetHeight) {
+                            scrollPosition += speed * direction;
+                            scroller.scrollTop = scrollPosition;
+                            const maxScroll = Math.max(0, content.offsetHeight - scroller.clientHeight);
+
+                            if (scrollPosition >= maxScroll) {
+                                scrollPosition = maxScroll;
+                                direction = -1;
+                                pauseFrames = 120;
+                            }
+
+                            if (scrollPosition <= 0) {
                                 scrollPosition = 0;
-                                scroller.scrollTop = 0;
+                                direction = 1;
+                                pauseFrames = 120;
                             }
 
                             requestAnimationFrame(run);

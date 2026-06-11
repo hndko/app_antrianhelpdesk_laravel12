@@ -49,9 +49,17 @@ class PublicDisplay extends Component
                 return $q;
             });
 
+        $queueStats = [
+            'total' => $queues->count(),
+            'progress' => $queues->where('status', 'progress')->count(),
+            'waiting' => $queues->where('status', 'waiting')->count(),
+            'done' => $queues->whereIn('status', ['done', 'completed'])->count(),
+        ];
+
         return view('livewire.public-display', [
             'queues' => $queues,
             'settings' => $settings,
+            'queueStats' => $queueStats,
         ])->layout('components.display', [
             'title' => $settings->app_title ?? 'Service Display',
             'appName' => $settings->app_title ?? 'Service Display',
