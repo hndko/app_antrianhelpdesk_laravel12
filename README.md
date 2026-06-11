@@ -100,7 +100,7 @@ Logo dan favicon default tersedia di:
 - `/assets/helpdesk-logo-icon.svg`
 - `/assets/helpdesk-favicon.svg`
 
-Keduanya dapat diganti dari dashboard melalui tombol `Upload Files` pada pengaturan display. File upload disimpan ke disk `public` Laravel dan ditampilkan melalui path `/storage/...`, sehingga `php artisan storage:link` perlu tersedia di environment lokal/production.
+Keduanya dapat diganti dari dashboard melalui tombol `Upload Files` pada pengaturan display, lengkap dengan preview gambar sebelum disimpan. File upload disimpan ke disk `public` Laravel dan ditampilkan melalui path `/storage/...`, sehingga `php artisan storage:link` perlu tersedia di environment lokal/production.
 
 ## Instalasi
 

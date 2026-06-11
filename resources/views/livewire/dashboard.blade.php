@@ -304,9 +304,10 @@
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
+                        <div x-data="{ previewUrl: @json($logoPreviewUrl), updatePreview(event) { const file = event.target.files[0]; if (! file) return; this.previewUrl = URL.createObjectURL(file); } }">
                             <label class="mb-2 block text-sm font-bold text-slate-700">Logo</label>
-                            <input id="logo_file" type="file" wire:model="logo_file" accept=".jpg,.jpeg,.png,.webp,.svg,image/*" class="sr-only">
+                            <input id="logo_file" type="file" wire:model="logo_file" accept=".jpg,.jpeg,.png,.webp,.svg,image/*" class="sr-only"
+                                x-on:change="updatePreview($event)">
                             <label for="logo_file"
                                 class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-blue-300 bg-blue-50 px-4 py-2.5 text-sm font-extrabold text-blue-700 transition hover:border-blue-500 hover:bg-blue-100">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -315,6 +316,9 @@
                                 </svg>
                                 Upload Files
                             </label>
+                            <div class="mt-3 flex min-h-24 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-3">
+                                <img :src="previewUrl" alt="Preview Logo" class="max-h-20 w-auto max-w-full rounded-lg object-contain">
+                            </div>
                             <p class="mt-2 truncate text-xs font-medium text-slate-500">
                                 @if ($logo_file)
                                     {{ $logo_file->getClientOriginalName() }}
@@ -326,9 +330,10 @@
                                 <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div>
+                        <div x-data="{ previewUrl: @json($faviconPreviewUrl), updatePreview(event) { const file = event.target.files[0]; if (! file) return; this.previewUrl = URL.createObjectURL(file); } }">
                             <label class="mb-2 block text-sm font-bold text-slate-700">Favicon</label>
-                            <input id="favicon_file" type="file" wire:model="favicon_file" accept=".jpg,.jpeg,.png,.webp,.svg,.ico,image/*" class="sr-only">
+                            <input id="favicon_file" type="file" wire:model="favicon_file" accept=".jpg,.jpeg,.png,.webp,.svg,.ico,image/*" class="sr-only"
+                                x-on:change="updatePreview($event)">
                             <label for="favicon_file"
                                 class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-blue-300 bg-blue-50 px-4 py-2.5 text-sm font-extrabold text-blue-700 transition hover:border-blue-500 hover:bg-blue-100">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -337,6 +342,9 @@
                                 </svg>
                                 Upload Files
                             </label>
+                            <div class="mt-3 flex min-h-24 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-3">
+                                <img :src="previewUrl" alt="Preview Favicon" class="h-16 w-16 rounded-lg border border-slate-200 bg-white object-contain p-1">
+                            </div>
                             <p class="mt-2 truncate text-xs font-medium text-slate-500">
                                 @if ($favicon_file)
                                     {{ $favicon_file->getClientOriginalName() }}
