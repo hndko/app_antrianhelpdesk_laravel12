@@ -143,10 +143,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16" />
                             </svg>
                         </button>
-                        <div class="min-w-0">
-                            <p class="truncate text-sm font-black uppercase tracking-wide text-blue-600">Backend</p>
-                            <h1 class="truncate text-lg font-extrabold text-slate-950 sm:text-xl">Dashboard Operasional</h1>
-                        </div>
                     </div>
 
                     <a href="{{ route('home') }}"
