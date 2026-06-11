@@ -44,6 +44,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Akun `helpdesk` berperan sebagai `superadmin`.
 - Superadmin dapat membuat dan mengubah akun service desk, teknisi, dan superadmin.
 - Akun dengan riwayat antrian dinonaktifkan saat dihapus agar histori tetap aman.
+- Setiap user dapat mengubah profil dan password dari menu `Edit Profile`.
 
 ### Laporan Harian
 
@@ -161,6 +162,7 @@ Catatan untuk agent: jangan menjalankan `npm run build` atau `php artisan serve`
 - `/` - public display.
 - `/login` - login operator.
 - `/dashboard` - analytics dashboard.
+- `/profile` - edit profil user login.
 - `/queues` - manajemen antrian.
 - `/accounts` - manajemen akun khusus superadmin.
 - `/display-settings` - pengaturan display khusus superadmin.

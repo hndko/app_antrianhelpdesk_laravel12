@@ -152,9 +152,34 @@
                         <span :class="{ 'lg:hidden': sidebarCollapsed }">Laporan Harian</span>
                     </a>
                 @endif
+
+                <a href="{{ route('profile.edit') }}"
+                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                    {{ request()->routeIs('profile.edit') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
+                    @click="sidebarOpen = false">
+                    <span
+                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                        {{ request()->routeIs('profile.edit') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5.121 17.804A9 9 0 1118.88 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0zm-8.5 7.2A6.978 6.978 0 0112 15.5c2.1 0 3.98.925 5.263 2.388" />
+                        </svg>
+                    </span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Edit Profile</span>
+                </a>
             </nav>
 
             <div class="border-t border-slate-200 p-4">
+                <div class="mb-3 flex items-center gap-3 rounded-lg bg-slate-50 p-3" :class="{ 'lg:justify-center': sidebarCollapsed }">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <div class="min-w-0" :class="{ 'lg:hidden': sidebarCollapsed }">
+                        <p class="truncate text-sm font-extrabold text-slate-950">{{ auth()->user()->name }}</p>
+                        <p class="truncate text-xs font-semibold text-slate-500">{{ str_replace('_', ' ', auth()->user()->role) }}</p>
+                    </div>
+                </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
@@ -183,14 +208,35 @@
                         </button>
                     </div>
 
-                    <a href="{{ route('home') }}"
-                        class="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600 sm:inline-flex">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                        Public Display
-                    </a>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('home') }}"
+                            class="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600 sm:inline-flex">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Public Display
+                        </a>
+                        <a href="{{ route('profile.edit') }}"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+                            aria-label="Edit Profile">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5.121 17.804A9 9 0 1118.88 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0zm-8.5 7.2A6.978 6.978 0 0112 15.5c2.1 0 3.98.925 5.263 2.388" />
+                            </svg>
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-red-100 bg-red-50 text-red-600 transition hover:bg-red-100"
+                                aria-label="Logout">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </header>
 

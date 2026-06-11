@@ -49,6 +49,7 @@ Saat ini project menggunakan akses berbasis kolom `role` pada tabel `users`:
 - `superadmin` dengan akses penuh.
 - `service_desk` untuk menerima keluhan, membuat antrian, dan assign ke teknisi.
 - `technician` untuk melihat antrian miliknya, membuat antrian, mengoper antrian ke teknisi lain, dan update status pekerjaan.
+- Semua user login dapat mengubah profil dan password sendiri.
 
 Project tidak memakai role table, permission table, atau Spatie Laravel Permission.
 
@@ -395,6 +396,7 @@ GET  /login                    login
 POST /login                    login submit
 POST /logout                   logout
 GET  /dashboard                dashboard
+GET  /profile                  profile.edit
 GET  /queues                   queues.index
 GET  /accounts                 accounts.index
 GET  /display-settings         display-settings.index

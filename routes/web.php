@@ -3,6 +3,7 @@
 use App\Livewire\PublicDisplay;
 use App\Livewire\Dashboard;
 use App\Livewire\DisplaySettings;
+use App\Livewire\ProfileManager;
 use App\Livewire\QueueManager;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -20,6 +21,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/profile', ProfileManager::class)->name('profile.edit');
     Route::get('/queues', QueueManager::class)->name('queues.index');
     Route::get('/display-settings', DisplaySettings::class)->name('display-settings.index');
     Route::get('/accounts', function () {
