@@ -239,7 +239,7 @@
                 dateEl.innerText = now.toLocaleDateString('id-ID', {
                     weekday: 'long',
                     day: 'numeric',
-                    month: 'short',
+                    month: 'long',
                     year: 'numeric'
                 });
             }

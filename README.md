@@ -51,6 +51,12 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - IziToast
 - Pest / PHPUnit
 
+## Format Lokal
+
+- Locale aplikasi menggunakan bahasa Indonesia (`id`).
+- Timezone default menggunakan `Asia/Jakarta`.
+- Tanggal yang ditampilkan ke pengguna memakai format Indonesia, misalnya `11 Juni 2026`.
+
 ## Struktur Seeder
 
 Seeder utama menggunakan bawaan Laravel:

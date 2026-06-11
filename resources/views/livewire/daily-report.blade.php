@@ -36,7 +36,7 @@
                     Total pekerjaan selesai oleh
                     <span class="font-bold text-slate-700">{{ $technicians->find($selectedTechnician)->name }}</span>
                     pada tanggal
-                    <span class="font-bold text-slate-700">{{ \Carbon\Carbon::parse($selectedDate)->format('d M Y') }}</span>
+                    <span class="font-bold text-slate-700">{{ \Carbon\Carbon::parse($selectedDate)->translatedFormat('d F Y') }}</span>
                 </p>
                 <p class="text-6xl font-mono font-bold text-blue-600 mt-4">{{ $reportData }}</p>
                 <p class="text-lg font-medium text-blue-500">Tugas</p>
@@ -56,4 +56,3 @@
         @endif
     </div>
 </div>
-
