@@ -17,11 +17,17 @@
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21a8 8 0 0116 0" />
                     </svg>
                 </span>
-                <input type="text" name="username" id="username" value="{{ old('username') }}" required autofocus
-                    autocomplete="username"
-                    class="block min-h-12 w-full rounded-lg border bg-slate-50 py-3 pl-11 pr-4 text-base font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100
-                    @error('username') border-red-300 focus:border-red-500 focus:ring-red-100 @else border-slate-200 @enderror"
-                    placeholder="Masukkan username">
+                @error('username')
+                    <input type="text" name="username" id="username" value="{{ old('username') }}" required autofocus
+                        autocomplete="username"
+                        class="block min-h-12 w-full rounded-lg border border-red-300 bg-slate-50 py-3 pl-11 pr-4 text-base font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-100"
+                        placeholder="Masukkan username">
+                @else
+                    <input type="text" name="username" id="username" value="{{ old('username') }}" required autofocus
+                        autocomplete="username"
+                        class="block min-h-12 w-full rounded-lg border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-base font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                        placeholder="Masukkan username">
+                @enderror
             </div>
         </div>
 

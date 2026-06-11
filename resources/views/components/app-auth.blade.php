@@ -44,7 +44,7 @@
                 </div>
             </section>
 
-            <section class="flex min-h-[100svh] items-center px-5 py-8 sm:min-h-[640px] sm:px-8 lg:min-h-[620px] lg:px-10">
+            <section class="flex min-h-svh items-center px-5 py-8 sm:min-h-[640px] sm:px-8 lg:min-h-[620px] lg:px-10">
                 <div class="mx-auto w-full max-w-md">
                     <div class="mb-8">
                         <h1 class="text-2xl font-extrabold leading-tight text-slate-950 sm:text-3xl">Masuk Dashboard</h1>
