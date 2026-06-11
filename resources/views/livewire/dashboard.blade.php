@@ -304,7 +304,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div x-data="{ previewUrl: @json($logoPreviewUrl), updatePreview(event) { const file = event.target.files[0]; if (! file) return; this.previewUrl = URL.createObjectURL(file); } }">
+                        <div x-data="{ updatePreview(event) { const file = event.target.files[0]; if (! file) return; this.$refs.preview.src = URL.createObjectURL(file); } }">
                             <label class="mb-2 block text-sm font-bold text-slate-700">Logo</label>
                             <input id="logo_file" type="file" wire:model="logo_file" accept=".jpg,.jpeg,.png,.webp,.svg,image/*" class="sr-only"
                                 x-on:change="updatePreview($event)">
@@ -317,7 +317,7 @@
                                 Upload Files
                             </label>
                             <div class="mt-3 flex min-h-24 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-3">
-                                <img :src="previewUrl" alt="Preview Logo" class="max-h-20 w-auto max-w-full rounded-lg object-contain">
+                                <img x-ref="preview" src="{{ $logoPreviewUrl }}" alt="Preview Logo" class="max-h-20 w-auto max-w-full rounded-lg object-contain">
                             </div>
                             <p class="mt-2 truncate text-xs font-medium text-slate-500">
                                 @if ($logo_file)
@@ -330,7 +330,7 @@
                                 <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div x-data="{ previewUrl: @json($faviconPreviewUrl), updatePreview(event) { const file = event.target.files[0]; if (! file) return; this.previewUrl = URL.createObjectURL(file); } }">
+                        <div x-data="{ updatePreview(event) { const file = event.target.files[0]; if (! file) return; this.$refs.preview.src = URL.createObjectURL(file); } }">
                             <label class="mb-2 block text-sm font-bold text-slate-700">Favicon</label>
                             <input id="favicon_file" type="file" wire:model="favicon_file" accept=".jpg,.jpeg,.png,.webp,.svg,.ico,image/*" class="sr-only"
                                 x-on:change="updatePreview($event)">
@@ -343,7 +343,7 @@
                                 Upload Files
                             </label>
                             <div class="mt-3 flex min-h-24 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-3">
-                                <img :src="previewUrl" alt="Preview Favicon" class="h-16 w-16 rounded-lg border border-slate-200 bg-white object-contain p-1">
+                                <img x-ref="preview" src="{{ $faviconPreviewUrl }}" alt="Preview Favicon" class="h-16 w-16 rounded-lg border border-slate-200 bg-white object-contain p-1">
                             </div>
                             <p class="mt-2 truncate text-xs font-medium text-slate-500">
                                 @if ($favicon_file)
