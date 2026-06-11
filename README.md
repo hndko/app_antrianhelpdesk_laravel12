@@ -78,15 +78,15 @@ Seeder default akan membuat akun admin development dan pengaturan display awal.
 Untuk mengisi data dummy khusus pengecekan schema, jalankan:
 
 ```bash
-php artisan db:seed --class=TestDataSeeder
+php artisan db:seed --class=SampleDataSeeder
 ```
 
-Seeder testing schema dipecah per tabel:
+Seeder sample schema dipecah per tabel:
 
-- `TestUserSeeder`
-- `TestSettingSeeder`
-- `TestTechnicianSeeder`
-- `TestQueueSeeder`
+- `SampleUserSeeder`
+- `SampleSettingSeeder`
+- `SampleTechnicianSeeder`
+- `SampleQueueSeeder`
 
 ### 5\. Build Assets & Jalankan Server
 

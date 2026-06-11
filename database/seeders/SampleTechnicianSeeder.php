@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Technician;
 use Illuminate\Database\Seeder;
 
-class TestTechnicianSeeder extends Seeder
+class SampleTechnicianSeeder extends Seeder
 {
     /**
      * Seed sample technicians for validating the technicians table.
@@ -21,17 +21,17 @@ class TestTechnicianSeeder extends Seeder
     }
 
     /**
-     * Get technician names used by test queue data.
+     * Get technician names used by sample queue data.
      *
      * @return array<int, string>
      */
     public static function technicians(): array
     {
         return [
-            'Teknisi Test Waiting',
-            'Teknisi Test Progress',
-            'Teknisi Test Done',
-            'Teknisi Test Completed',
+            'Teknisi Sample Waiting',
+            'Teknisi Sample Progress',
+            'Teknisi Sample Done',
+            'Teknisi Sample Completed',
         ];
     }
 }
