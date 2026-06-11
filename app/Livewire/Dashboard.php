@@ -37,7 +37,7 @@ class Dashboard extends Component
         $this->app_title = $settings->app_title ?? 'Service Display';
         $this->running_text = $settings->running_text ?? '';
         $this->marquee_speed = $settings->marquee_speed ?? 60;
-        $this->logo_url = $settings->logo_url ?? '/assets/helpdesk-logo.svg';
+        $this->logo_url = $settings->logo_url ?? '/assets/helpdesk-logo-icon.svg';
         $this->favicon_url = $settings->favicon_url ?? '/assets/helpdesk-favicon.svg';
         $this->youtube_id = $settings->video_url ?? '';
     }
@@ -210,7 +210,7 @@ class Dashboard extends Component
         return view('livewire.dashboard', [
             'queues' => $queues,
             'stats' => $stats,
-            'logoPreviewUrl' => $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo.svg'),
+            'logoPreviewUrl' => $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo-icon.svg'),
             'faviconPreviewUrl' => $this->resolveAssetUrl($this->favicon_url, 'assets/helpdesk-favicon.svg'),
         ])->layout('components.layout');
     }

@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             'components.guest',
             'components.guest-layout',
         ], function ($view) {
-            $defaultLogoUrl = asset('assets/helpdesk-logo.svg');
+            $defaultLogoUrl = asset('assets/helpdesk-logo-icon.svg');
             $defaultFaviconUrl = asset('assets/helpdesk-favicon.svg');
 
             $settings = null;

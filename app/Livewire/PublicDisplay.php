@@ -74,7 +74,7 @@ class PublicDisplay extends Component
             'queues' => $queues,
             'settings' => $settings,
             'queueStats' => $queueStats,
-            'displayLogoUrl' => $this->resolveAssetUrl($settings->logo_url, 'assets/helpdesk-logo.svg'),
+            'displayLogoUrl' => $this->resolveAssetUrl($settings->logo_url, 'assets/helpdesk-logo-icon.svg'),
         ])->layout('components.display', [
             'title' => $settings->app_title ?? 'Service Display',
             'appName' => $settings->app_title ?? 'Service Display',

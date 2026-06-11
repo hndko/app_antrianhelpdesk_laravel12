@@ -225,7 +225,7 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">URL Logo</label>
-                        <input type="text" wire:model="logo_url" placeholder="/assets/helpdesk-logo.svg atau https://..."
+                        <input type="text" wire:model="logo_url" placeholder="/assets/helpdesk-logo-icon.svg atau https://..."
                             class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                         <p class="mt-1 text-xs text-slate-500">Kosongkan atau isi path/URL gambar untuk logo header dan display.</p>
                     </div>

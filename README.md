@@ -80,7 +80,7 @@ Password di seeder ditulis sebagai plain string karena model `User` sudah memaka
 
 Logo dan favicon default tersedia di:
 
-- `/assets/helpdesk-logo.svg`
+- `/assets/helpdesk-logo-icon.svg`
 - `/assets/helpdesk-favicon.svg`
 
 Keduanya dapat diganti dari dashboard melalui pengaturan `URL Logo` dan `URL Favicon`.
