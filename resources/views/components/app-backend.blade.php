@@ -83,6 +83,22 @@
                     <span :class="{ 'lg:hidden': sidebarCollapsed }">Dashboard</span>
                 </a>
 
+                <a href="{{ route('queues.index') }}"
+                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                    {{ request()->routeIs('queues.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
+                    @click="sidebarOpen = false">
+                    <span
+                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                        {{ request()->routeIs('queues.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5h6m-7 4h8m-9 4h10m-8 4h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                        </svg>
+                    </span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Antrian</span>
+                </a>
+
                 @if (auth()->user()->canManageUsers())
                     <a href="{{ route('accounts.index') }}"
                         class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
@@ -98,6 +114,24 @@
                             </svg>
                         </span>
                         <span :class="{ 'lg:hidden': sidebarCollapsed }">Manajemen Akun</span>
+                    </a>
+                @endif
+
+                @if (auth()->user()->canManageDisplaySettings())
+                    <a href="{{ route('display-settings.index') }}"
+                        class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                        {{ request()->routeIs('display-settings.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
+                        :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
+                        @click="sidebarOpen = false">
+                        <span
+                            class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                            {{ request()->routeIs('display-settings.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6V4m0 16v-2m8-6h-2M6 12H4m12.95-4.95l-1.414 1.414M8.464 15.536 7.05 16.95m9.9 0-1.414-1.414M8.464 8.464 7.05 7.05M12 9a3 3 0 100 6 3 3 0 000-6z" />
+                            </svg>
+                        </span>
+                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Pengaturan Display</span>
                     </a>
                 @endif
 

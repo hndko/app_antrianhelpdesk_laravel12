@@ -56,7 +56,7 @@ Project tidak memakai role table, permission table, atau Spatie Laravel Permissi
 
 - Authentication
 - Public Display
-- Admin Dashboard
+- Analytics Dashboard
 - Queue Management
 - Account and Role Management
 - Display Settings
@@ -170,6 +170,8 @@ resources/views/
 │   ├── daily-report.blade.php
 │   ├── public-display.blade.php
 │   ├── dashboard.blade.php
+│   ├── queue-manager.blade.php
+│   ├── display-settings.blade.php
 │   └── user-manager.blade.php
 └── components/
 ```
@@ -181,6 +183,7 @@ resources/views/
 - Tampilan backend wajib menggunakan layout `components.app-backend`.
 - Tampilan public display wajib menggunakan layout `components.app-frontend`.
 - Halaman auth wajib menggunakan layout `components.app-auth`.
+- Dashboard `/dashboard` hanya untuk analytics/ringkasan/grafik; CRUD antrian dan pengaturan display wajib berada di menu/module terpisah.
 - Gunakan `@vite(['resources/css/app.css', 'resources/js/app.js'])` untuk asset utama.
 - Gunakan `@livewireStyles` dan `@livewireScripts` pada layout Livewire.
 - Jangan query model langsung di Blade.
@@ -362,7 +365,7 @@ Kolom penting:
 | Item | Konvensi | Contoh |
 | --- | --- | --- |
 | Controller | PascalCase + Controller | LoginController |
-| Livewire Component | PascalCase | AdminDashboard |
+| Livewire Component | PascalCase | QueueManager |
 | Model | PascalCase Singular | Queue |
 | Migration | snake_case | create_queues_table |
 | Seeder | PascalCaseSeeder | InitialDataSeeder |
@@ -392,7 +395,9 @@ GET  /login                    login
 POST /login                    login submit
 POST /logout                   logout
 GET  /dashboard                dashboard
+GET  /queues                   queues.index
 GET  /accounts                 accounts.index
+GET  /display-settings         display-settings.index
 GET  /reports/daily            reports.daily
 ```
 

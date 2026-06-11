@@ -21,11 +21,19 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 - Login operator/teknisi dengan satu halaman auth responsif.
 - Layout backend menggunakan sidebar responsif dengan tombol hamburger untuk mobile dan desktop.
-- Statistik total antrian, antrian menunggu, dan antrian diproses.
+- Dashboard fokus sebagai halaman analytics graph.
+- Statistik total antrian, antrian menunggu, antrian diproses, dan selesai hari ini.
+- Grafik tren antrian 7 hari, komposisi status, dan performa teknisi.
+
+### Manajemen Antrian
+
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian untuk role `superadmin` dan `service_desk`.
 - Teknisi hanya melihat antrian miliknya, bisa membuat antrian, dan bisa mengoper antrian ke teknisi lain.
 - History log mencatat pembuatan antrian, perubahan status, perpindahan teknisi, dan penghapusan.
+
+### Pengaturan Display
+
 - Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, dan video YouTube khusus `superadmin`.
 - Pengaturan favicon browser untuk login, dashboard, dan public display.
 - Toast notification menggunakan IziToast.
@@ -152,8 +160,10 @@ Catatan untuk agent: jangan menjalankan `npm run build` atau `php artisan serve`
 
 - `/` - public display.
 - `/login` - login operator.
-- `/dashboard` - dashboard.
+- `/dashboard` - analytics dashboard.
+- `/queues` - manajemen antrian.
 - `/accounts` - manajemen akun khusus superadmin.
+- `/display-settings` - pengaturan display khusus superadmin.
 - `/reports/daily` - laporan harian.
 
 ## Workflow Agent
