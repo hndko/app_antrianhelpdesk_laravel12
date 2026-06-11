@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Queue;
+use App\Models\QueueLog;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -20,9 +21,22 @@ class QueueSeeder extends Seeder
             ->keyBy('name');
 
         foreach ($this->queues($technicians) as $queue) {
-            Queue::updateOrCreate(
+            $createdQueue = Queue::updateOrCreate(
                 ['laptop_id' => $queue['laptop_id']],
                 $queue
+            );
+
+            QueueLog::updateOrCreate(
+                [
+                    'queue_id' => $createdQueue->id,
+                    'action' => 'created',
+                ],
+                [
+                    'actor_user_id' => User::query()->where('username', 'helpdesk')->value('id'),
+                    'to_technician_user_id' => $createdQueue->technician_user_id,
+                    'to_status' => $createdQueue->status,
+                    'note' => 'Antrian dibuat dari seeder.',
+                ]
             );
         }
     }

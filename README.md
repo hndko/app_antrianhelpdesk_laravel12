@@ -24,7 +24,8 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Statistik total antrian, antrian menunggu, dan antrian diproses.
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian untuk role `superadmin` dan `service_desk`.
-- Teknisi hanya melihat antrian miliknya dan saat membuat antrian otomatis ditugaskan ke dirinya sendiri.
+- Teknisi hanya melihat antrian miliknya, bisa membuat antrian, dan bisa mengoper antrian ke teknisi lain.
+- History log mencatat pembuatan antrian, perubahan status, perpindahan teknisi, dan penghapusan.
 - Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, dan video YouTube khusus `superadmin`.
 - Pengaturan favicon browser untuk login, dashboard, dan public display.
 - Toast notification menggunakan IziToast.

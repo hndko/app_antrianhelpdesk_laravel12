@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use App\Models\Queue;
+use App\Models\QueueLog;
 use App\Models\Setting;
 use App\Models\User;
 use Livewire\Component;
@@ -70,7 +71,7 @@ class Dashboard extends Component
     {
         $user = Auth::user();
 
-        if ($user->isTechnician()) {
+        if ($user->isTechnician() && ! $this->technician_user_id) {
             $this->technician_user_id = $user->id;
         }
 
@@ -88,17 +89,70 @@ class Dashboard extends Component
 
         if ($this->isEditing) {
             $queue = $this->findQueueForUser($this->queue_id);
-            $queue->update($validated);
+
+            DB::transaction(function () use ($queue, $validated, $user) {
+                $oldTechnicianId = $queue->technician_user_id;
+                $oldStatus = $queue->status;
+
+                $queue->update($validated);
+
+                if ((int) $oldTechnicianId !== (int) $validated['technician_user_id']) {
+                    $this->writeQueueLog(
+                        $queue,
+                        $user,
+                        'transferred',
+                        $oldTechnicianId,
+                        $validated['technician_user_id'],
+                        $oldStatus,
+                        $validated['status']
+                    );
+                }
+
+                if ($oldStatus !== $validated['status']) {
+                    $this->writeQueueLog(
+                        $queue,
+                        $user,
+                        'status_changed',
+                        $oldTechnicianId,
+                        $validated['technician_user_id'],
+                        $oldStatus,
+                        $validated['status']
+                    );
+                }
+
+                if ((int) $oldTechnicianId === (int) $validated['technician_user_id'] && $oldStatus === $validated['status']) {
+                    $this->writeQueueLog(
+                        $queue,
+                        $user,
+                        'updated',
+                        $oldTechnicianId,
+                        $validated['technician_user_id'],
+                        $oldStatus,
+                        $validated['status']
+                    );
+                }
+            });
+
             $msg = 'Data antrian berhasil diperbarui!';
         } else {
-            DB::transaction(function () use ($validated) {
+            DB::transaction(function () use ($validated, $user) {
                 $lastQueue = Queue::whereDate('created_at', Carbon::today())
                     ->lockForUpdate()
                     ->max('queue_number') ?? 0;
 
-                Queue::create($validated + [
+                $queue = Queue::create($validated + [
                     'queue_number' => $lastQueue + 1,
                 ]);
+
+                $this->writeQueueLog(
+                    $queue,
+                    $user,
+                    'created',
+                    null,
+                    $validated['technician_user_id'],
+                    null,
+                    $validated['status']
+                );
             });
 
             $msg = 'Antrian baru berhasil ditambahkan!';
@@ -130,7 +184,19 @@ class Dashboard extends Component
     {
         abort_unless(Auth::user()->canViewAllQueues(), 403);
 
-        Queue::findOrFail($id)->delete();
+        $queue = Queue::findOrFail($id);
+
+        $this->writeQueueLog(
+            $queue,
+            Auth::user(),
+            'deleted',
+            $queue->technician_user_id,
+            null,
+            $queue->status,
+            null
+        );
+
+        $queue->delete();
 
         $this->dispatch('show-toast', [
             'type' => 'success',
@@ -258,6 +324,38 @@ class Dashboard extends Component
         return $this->queueQueryForUser()->findOrFail($id);
     }
 
+    private function writeQueueLog(
+        Queue $queue,
+        User $actor,
+        string $action,
+        $fromTechnicianId = null,
+        $toTechnicianId = null,
+        ?string $fromStatus = null,
+        ?string $toStatus = null
+    ): void {
+        QueueLog::create([
+            'queue_id' => $queue->id,
+            'actor_user_id' => $actor->id,
+            'from_technician_user_id' => $fromTechnicianId,
+            'to_technician_user_id' => $toTechnicianId,
+            'from_status' => $fromStatus,
+            'to_status' => $toStatus,
+            'action' => $action,
+            'note' => $this->queueLogNote($action),
+        ]);
+    }
+
+    private function queueLogNote(string $action): string
+    {
+        return match ($action) {
+            'created' => 'Antrian dibuat.',
+            'transferred' => 'Antrian dioper ke teknisi lain.',
+            'status_changed' => 'Status antrian diperbarui.',
+            'deleted' => 'Antrian dihapus.',
+            default => 'Data antrian diperbarui.',
+        };
+    }
+
     public function render()
     {
         $queueStatsQuery = $this->queueQueryForUser();
@@ -270,7 +368,12 @@ class Dashboard extends Component
 
         // LOGIKA FILTER & PAGINATION
         $queues = $this->queueQueryForUser()
-            ->with('technician')
+            ->with([
+                'technician',
+                'logs' => fn ($query) => $query
+                    ->with(['actor', 'fromTechnician', 'toTechnician'])
+                    ->latest(),
+            ])
             ->where(function ($query) {
                 // 1. Tampilkan semua yang BELUM selesai (Waiting/Progress) mau kapanpun (agar tidak ada yg terlewat)
                 $query->where('status', '!=', 'done')
@@ -291,7 +394,7 @@ class Dashboard extends Component
         return view('livewire.dashboard', [
             'queues' => $queues,
             'stats' => $stats,
-            'canAssignTechnician' => Auth::user()->canViewAllQueues(),
+            'canTransferQueue' => true,
             'canDeleteQueue' => Auth::user()->canViewAllQueues(),
             'canManageDisplaySettings' => Auth::user()->canManageDisplaySettings(),
             'logoPreviewUrl' => $this->uploadedImagePreviewUrl($this->logo_file, $logoPreviewUrl),

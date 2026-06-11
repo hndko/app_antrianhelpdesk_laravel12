@@ -29,6 +29,11 @@ class Queue extends Model
         return $this->belongsTo(User::class, 'technician_user_id');
     }
 
+    public function logs()
+    {
+        return $this->hasMany(QueueLog::class);
+    }
+
     // Helper untuk badge warna status (nanti dipakai di blade)
     public function getStatusColorAttribute()
     {

@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(Queue::class, 'technician_user_id');
     }
 
+    public function queueLogs()
+    {
+        return $this->hasMany(QueueLog::class, 'actor_user_id');
+    }
+
     public function isSuperadmin(): bool
     {
         return $this->role === 'superadmin';

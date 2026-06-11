@@ -48,7 +48,7 @@ Saat ini project menggunakan akses berbasis kolom `role` pada tabel `users`:
 - Public display tanpa login.
 - `superadmin` dengan akses penuh.
 - `service_desk` untuk menerima keluhan, membuat antrian, dan assign ke teknisi.
-- `technician` untuk melihat antrian miliknya, membuat antrian untuk dirinya sendiri, dan update status pekerjaan.
+- `technician` untuk melihat antrian miliknya, membuat antrian, mengoper antrian ke teknisi lain, dan update status pekerjaan.
 
 Project tidak memakai role table, permission table, atau Spatie Laravel Permission.
 
@@ -311,6 +311,24 @@ Kolom penting:
 
 Tabel legacy untuk data lama. Fitur utama tidak lagi memakai tabel ini; teknisi aktif disimpan sebagai user dengan `role = technician`.
 
+### `queue_logs`
+
+Menyimpan history perubahan antrian.
+
+Kolom penting:
+
+- `id`
+- `queue_id`
+- `actor_user_id`
+- `from_technician_user_id`
+- `to_technician_user_id`
+- `from_status`
+- `to_status`
+- `action`
+- `note`
+- `created_at`
+- `updated_at`
+
 ### `settings`
 
 Menyimpan konfigurasi display.
@@ -435,6 +453,7 @@ Aturan display:
 - Antrian `done` hanya tampil sementara sesuai logic display.
 - Urutan prioritas tampilan: `progress`, `waiting`, lalu `done`.
 - Query public display harus eager load teknisi.
+- Perubahan assignment teknisi dan status antrian wajib dicatat pada history log.
 
 ---
 
@@ -445,7 +464,9 @@ Aturan display:
 - `superadmin` dapat mengelola akun, seluruh antrian, laporan, dan pengaturan display.
 - `service_desk` dapat melihat semua antrian dan assign pekerjaan ke teknisi.
 - `technician` hanya boleh melihat antrian dengan `technician_user_id` miliknya.
-- Saat teknisi membuat antrian, `technician_user_id` wajib otomatis memakai akun teknisi yang sedang login.
+- Saat teknisi membuat antrian, `technician_user_id` boleh memakai akun teknisi yang sedang login atau teknisi tujuan jika antrian langsung dioper.
+- Teknisi dan service desk boleh mengoper antrian ke teknisi lain.
+- Oper antrian dan update status wajib membuat history log.
 - Jika akun teknisi sudah punya riwayat antrian, gunakan nonaktifkan `status` daripada delete permanen.
 - Laporan harian teknisi dihitung dari antrian selesai pada tanggal tertentu.
 
