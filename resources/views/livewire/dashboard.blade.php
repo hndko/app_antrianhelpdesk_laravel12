@@ -1,71 +1,102 @@
-<div>
-    {{-- STATS CARDS --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+<div class="space-y-6">
+    <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-                <p class="text-sm font-medium text-slate-500">Total Antrian</p>
-                <p class="text-3xl font-bold text-slate-800 mt-1">{{ $stats['total'] }}</p>
+                <p class="text-sm font-black uppercase tracking-wide text-blue-600">Ringkasan Hari Ini</p>
+                <h2 class="mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">Kelola Antrian Helpdesk</h2>
+                <p class="mt-2 max-w-2xl text-sm font-medium leading-6 text-slate-500">
+                    Tambah antrian, pantau progres, dan perbarui tampilan public display dari satu panel.
+                </p>
             </div>
-            <div class="p-3 bg-blue-50 rounded-xl text-blue-600"><svg class="w-6 h-6" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                    </path>
-                </svg></div>
-        </div>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-slate-500">Sedang Dikerjakan</p>
-                <p class="text-3xl font-bold text-yellow-600 mt-1">{{ $stats['progress'] }}</p>
-            </div>
-            <div class="p-3 bg-yellow-50 rounded-xl text-yellow-600"><svg class="w-6 h-6" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg></div>
-        </div>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-slate-500">Menunggu</p>
-                <p class="text-3xl font-bold text-slate-800 mt-1">{{ $stats['waiting'] }}</p>
-            </div>
-            <div class="p-3 bg-slate-100 rounded-xl text-slate-600"><svg class="w-6 h-6" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                    </path>
-                </svg></div>
-        </div>
-    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <a href="{{ route('home') }}"
+                class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Buka Display
+            </a>
+        </div>
 
-        {{-- KOLOM KIRI: FORM INPUT ANTRIAN --}}
-        <div class="lg:col-span-4 space-y-8">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
-                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200">
-                    <h2 class="font-bold text-slate-800 text-lg">
-                        {{ $isEditing ? 'Edit Data Antrian' : 'Input Antrian Baru' }}
+        <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div class="rounded-lg border border-blue-100 bg-blue-50 p-4">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-wide text-blue-500">Total</p>
+                        <p class="mt-1 font-mono text-3xl font-black text-blue-700">{{ $stats['total'] }}</p>
+                    </div>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-white">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-lg border border-amber-100 bg-amber-50 p-4">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-wide text-amber-600">Dikerjakan</p>
+                        <p class="mt-1 font-mono text-3xl font-black text-amber-700">{{ $stats['progress'] }}</p>
+                    </div>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-500 text-white">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-wide text-slate-500">Menunggu</p>
+                        <p class="mt-1 font-mono text-3xl font-black text-slate-800">{{ $stats['waiting'] }}</p>
+                    </div>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-700 text-white">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-12">
+        <section class="xl:col-span-4">
+            <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm xl:sticky xl:top-24">
+                <div class="border-b border-slate-200 bg-slate-50 px-5 py-4">
+                    <h2 class="text-lg font-extrabold text-slate-950">
+                        {{ $isEditing ? 'Edit Antrian' : 'Input Antrian' }}
                     </h2>
+                    <p class="mt-1 text-sm font-medium text-slate-500">
+                        {{ $isEditing ? 'Perbarui data layanan yang dipilih.' : 'Tambahkan antrian baru ke display.' }}
+                    </p>
                 </div>
 
-                <form wire:submit.prevent="saveQueue" class="p-6 space-y-5">
+                <form wire:submit.prevent="saveQueue" class="space-y-5 p-5">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Nama User / Pelanggan</label>
-                        <input type="text" wire:model="user_name" placeholder="Cth: Bpk. Budi" required
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">No. Laptop / ID</label>
-                        <input type="text" wire:model="laptop_id" placeholder="Cth: LPT-001" required
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Nama User / Pelanggan</label>
+                        <input type="text" wire:model="user_name" placeholder="Cth: Budi" required
+                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Helpdesk / Teknisi</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">No. Laptop / ID</label>
+                        <input type="text" wire:model="laptop_id" placeholder="Cth: LPT-001" required
+                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                    </div>
+
+                    <div>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Helpdesk / Teknisi</label>
                         <select wire:model="technician_id" required
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer">
-                            <option value="">-- Pilih Teknisi --</option>
+                            class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <option value="">Pilih Teknisi</option>
                             @foreach ($technicians as $technician)
                                 <option value="{{ $technician->id }}">{{ $technician->name }}</option>
                             @endforeach
@@ -73,60 +104,63 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi / Keluhan</label>
-                        <textarea wire:model="description" rows="3" placeholder="Keluhan..."
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Deskripsi / Keluhan</label>
+                        <textarea wire:model="description" rows="3" placeholder="Tuliskan keluhan singkat..."
+                            class="w-full resize-none rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">Status</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Status</label>
                             <select wire:model="status"
-                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
                                 <option value="waiting">Menunggu</option>
                                 <option value="progress">Dikerjakan</option>
                                 <option value="done">Selesai</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">Durasi (Mnt)</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Durasi (Menit)</label>
                             <input type="number" wire:model="duration_minutes" required
-                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
                         </div>
                     </div>
 
-                    <div class="pt-2 flex gap-3">
+                    <div class="flex flex-col gap-3 pt-2 sm:flex-row">
                         <button type="submit"
-                            class="flex-1 py-3 px-4 rounded-xl text-white font-bold shadow-lg transition-all transform hover:-translate-y-0.5
-                            {{ $isEditing ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-600 hover:bg-blue-700' }}">
+                            class="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-extrabold text-white shadow-lg transition hover:-translate-y-0.5
+                            {{ $isEditing ? 'bg-amber-500 shadow-amber-500/20 hover:bg-amber-600' : 'bg-blue-600 shadow-blue-600/20 hover:bg-blue-700' }}">
                             {{ $isEditing ? 'Simpan Perubahan' : 'Tambah Antrian' }}
                         </button>
                         @if ($isEditing)
                             <button type="button" wire:click="resetQueueForm"
-                                class="px-4 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition-colors">
+                                class="inline-flex min-h-11 items-center justify-center rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
                                 Batal
                             </button>
                         @endif
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
 
-        {{-- KOLOM KANAN: TABEL DATA --}}
-        <div class="lg:col-span-8">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-200 bg-white flex justify-between items-center">
-                    <h2 class="font-bold text-slate-800 text-lg">Daftar Antrian Hari Ini</h2>
-                    <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded font-mono">Live Data</span>
+        <section class="xl:col-span-8">
+            <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-950">Daftar Antrian Hari Ini</h2>
+                        <p class="mt-1 text-sm font-medium text-slate-500">Data aktif yang tampil di dashboard operator.</p>
+                    </div>
+                    <span class="inline-flex w-fit items-center rounded-lg bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-wide text-emerald-700">
+                        Live Data
+                    </span>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                <div class="hidden overflow-x-auto lg:block">
+                    <table class="w-full text-left">
                         <thead>
-                            <tr
-                                class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-bold border-b border-slate-200">
-                                <th class="p-4 w-16 text-center">No</th>
-                                <th class="p-4">ID Unit</th>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-xs font-black uppercase tracking-wide text-slate-500">
+                                <th class="w-16 p-4 text-center">No</th>
+                                <th class="p-4">User / Unit</th>
                                 <th class="p-4">Teknisi</th>
                                 <th class="p-4 text-center">Status</th>
                                 <th class="p-4 text-right">Aksi</th>
@@ -134,186 +168,209 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @forelse($queues as $q)
-                                <tr class="hover:bg-blue-50/50 transition-colors group">
-                                    <td class="p-4 text-center font-mono font-bold text-slate-700">
-                                        {{ $q->queue_number }}</td>
+                                <tr class="transition hover:bg-blue-50/50">
+                                    <td class="p-4 text-center font-mono text-lg font-black text-slate-700">{{ $q->queue_number }}</td>
                                     <td class="p-4">
-                                        <div class="font-bold text-slate-800 text-base">{{ $q->user_name }}</div>
-                                        <div class="font-bold text-slate-800">{{ $q->laptop_id }}</div>
-                                        <div class="text-xs text-slate-500">{{ $q->duration_minutes }} Menit</div>
+                                        <div class="font-extrabold text-slate-900">{{ $q->user_name }}</div>
+                                        <div class="mt-0.5 text-sm font-bold text-slate-600">{{ $q->laptop_id }}</div>
+                                        <div class="mt-1 text-xs font-medium text-slate-500">{{ $q->duration_minutes }} menit</div>
                                         @if ($q->description)
-                                            <div
-                                                class="text-[11px] text-slate-400 italic leading-tight truncate max-w-[200px]">
-                                                {{ Str::limit($q->description, 30) }}</div>
+                                            <div class="mt-1 max-w-[260px] truncate text-xs italic text-slate-400">{{ Str::limit($q->description, 48) }}</div>
                                         @endif
                                     </td>
-                                    <td class="p-4"><span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">{{ $q->technician->name ?? 'N/A' }}</span>
+                                    <td class="p-4">
+                                        <span class="inline-flex rounded-lg bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
+                                            {{ $q->technician->name ?? 'N/A' }}
+                                        </span>
                                     </td>
                                     <td class="p-4 text-center">
                                         @if ($q->status == 'waiting')
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700">Menunggu</span>
+                                            <span class="inline-flex rounded-lg bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">Menunggu</span>
                                         @elseif($q->status == 'progress')
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"><span
-                                                    class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-1.5 animate-pulse"></span>Proses</span>
+                                            <span class="inline-flex items-center rounded-lg border border-amber-200 bg-amber-100 px-3 py-1 text-xs font-black text-amber-700">
+                                                <span class="mr-1.5 h-1.5 w-1.5 rounded-full bg-amber-500"></span>Proses
+                                            </span>
                                         @else
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">Selesai</span>
+                                            <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-700">Selesai</span>
                                         @endif
                                     </td>
-                                    <td class="p-4 text-right space-x-2">
-                                        <button wire:click="editQueue({{ $q->id }})"
-                                            class="text-blue-600 hover:text-blue-800 p-2 hover:bg-blue-50 rounded-lg transition-colors"><svg
-                                                class="w-5 h-5" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                </path>
-                                            </svg></button>
-                                        <button wire:click="deleteQueue({{ $q->id }})"
-                                            onclick="return confirm('Hapus?') || event.stopImmediatePropagation()"
-                                            class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-colors"><svg
-                                                class="w-5 h-5" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
-                                            </svg></button>
+                                    <td class="p-4 text-right">
+                                        <div class="inline-flex gap-2">
+                                            <button wire:click="editQueue({{ $q->id }})"
+                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-blue-600 transition hover:bg-blue-50 hover:text-blue-800"
+                                                aria-label="Edit antrian">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <button wire:click="deleteQueue({{ $q->id }})"
+                                                onclick="return confirm('Hapus antrian ini?') || event.stopImmediatePropagation()"
+                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-500 transition hover:bg-red-50 hover:text-red-700"
+                                                aria-label="Hapus antrian">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="p-12 text-center text-slate-500">Tidak ada antrian aktif
-                                    </td>
+                                    <td colspan="5" class="p-12 text-center text-slate-500">Tidak ada antrian aktif</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                {{-- PAGINATION LINKS --}}
-                <div class="px-6 py-4 border-t border-slate-100">
+                <div class="divide-y divide-slate-100 lg:hidden">
+                    @forelse($queues as $q)
+                        <article class="p-4">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="font-mono text-2xl font-black text-slate-900">{{ $q->queue_number }}</p>
+                                    <h3 class="mt-1 truncate text-base font-extrabold text-slate-950">{{ $q->user_name }}</h3>
+                                    <p class="mt-0.5 text-sm font-bold text-slate-600">{{ $q->laptop_id }}</p>
+                                </div>
+                                @if ($q->status == 'waiting')
+                                    <span class="shrink-0 rounded-lg bg-slate-100 px-2.5 py-1 text-[11px] font-black text-slate-700">Menunggu</span>
+                                @elseif($q->status == 'progress')
+                                    <span class="shrink-0 rounded-lg border border-amber-200 bg-amber-100 px-2.5 py-1 text-[11px] font-black text-amber-700">Proses</span>
+                                @else
+                                    <span class="shrink-0 rounded-lg border border-emerald-200 bg-emerald-100 px-2.5 py-1 text-[11px] font-black text-emerald-700">Selesai</span>
+                                @endif
+                            </div>
+
+                            <div class="mt-3 grid grid-cols-2 gap-2 text-xs font-semibold text-slate-500">
+                                <div class="rounded-lg bg-slate-50 p-2">
+                                    <p class="text-slate-400">Teknisi</p>
+                                    <p class="mt-1 truncate text-slate-700">{{ $q->technician->name ?? 'N/A' }}</p>
+                                </div>
+                                <div class="rounded-lg bg-slate-50 p-2">
+                                    <p class="text-slate-400">Durasi</p>
+                                    <p class="mt-1 text-slate-700">{{ $q->duration_minutes }} menit</p>
+                                </div>
+                            </div>
+
+                            @if ($q->description)
+                                <p class="mt-3 line-clamp-2 text-sm text-slate-500">{{ $q->description }}</p>
+                            @endif
+
+                            <div class="mt-4 flex gap-2">
+                                <button wire:click="editQueue({{ $q->id }})"
+                                    class="flex-1 rounded-lg bg-blue-50 px-3 py-2 text-sm font-bold text-blue-700 transition hover:bg-blue-100">
+                                    Edit
+                                </button>
+                                <button wire:click="deleteQueue({{ $q->id }})"
+                                    onclick="return confirm('Hapus antrian ini?') || event.stopImmediatePropagation()"
+                                    class="flex-1 rounded-lg bg-red-50 px-3 py-2 text-sm font-bold text-red-600 transition hover:bg-red-100">
+                                    Hapus
+                                </button>
+                            </div>
+                        </article>
+                    @empty
+                        <div class="p-10 text-center text-slate-500">Tidak ada antrian aktif</div>
+                    @endforelse
+                </div>
+
+                <div class="border-t border-slate-100 px-5 py-4">
                     {{ $queues->links() }}
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 
-    {{-- FORM SETTING DISPLAY --}}
-    <div class="mt-12 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="px-8 py-6 border-b border-slate-200 bg-slate-50/50">
-            <h2 class="font-bold text-slate-800 text-xl">Pengaturan Tampilan (TV Display)</h2>
-            <p class="text-slate-500 text-sm mt-1">Sesuaikan konten yang tampil di layar publik.</p>
+    <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div class="border-b border-slate-200 bg-slate-50/80 px-5 py-4 sm:px-6">
+            <h2 class="text-xl font-extrabold text-slate-950">Pengaturan Display</h2>
+            <p class="mt-1 text-sm font-medium text-slate-500">Atur branding, running text, dan video untuk layar publik.</p>
         </div>
 
-        <form wire:submit.prevent="saveSettings" class="p-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="space-y-6">
+        <form wire:submit.prevent="saveSettings" class="p-5 sm:p-6">
+            <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <div class="space-y-5">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Aplikasi</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Nama Aplikasi</label>
                         <input type="text" wire:model="app_title"
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Running Text (Info Bar)</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Running Text</label>
                         <textarea wire:model="running_text" rows="3"
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">URL Logo</label>
-                        <input type="text" wire:model="logo_url" placeholder="/assets/helpdesk-logo-icon.svg atau https://..."
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                        <p class="mt-1 text-xs text-slate-500">Kosongkan atau isi path/URL gambar untuk logo header dan display.</p>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">URL Logo</label>
+                            <input type="text" wire:model="logo_url" placeholder="/assets/helpdesk-logo-icon.svg"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">URL Favicon</label>
+                            <input type="text" wire:model="favicon_url" placeholder="/assets/helpdesk-favicon.svg"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">URL Favicon</label>
-                        <input type="text" wire:model="favicon_url" placeholder="/assets/helpdesk-favicon.svg atau https://..."
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                        <p class="mt-1 text-xs text-slate-500">Favicon tampil di tab browser untuk halaman login, dashboard, dan display.</p>
-                    </div>
-
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <p class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-500">Preview Brand</p>
+                    <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                        <p class="mb-3 text-xs font-black uppercase tracking-wide text-slate-500">Preview Brand</p>
                         <div class="flex items-center gap-4">
-                            <img src="{{ $logoPreviewUrl }}" alt="Preview Logo"
-                                class="h-12 w-auto max-w-[220px] rounded-lg object-contain">
+                            <img src="{{ $logoPreviewUrl }}" alt="Preview Logo" class="h-12 w-auto max-w-[160px] rounded-lg object-contain">
                             <img src="{{ $faviconPreviewUrl }}" alt="Preview Favicon"
                                 class="h-10 w-10 rounded-lg border border-slate-200 bg-white object-contain p-1">
                         </div>
                     </div>
 
                     <div x-data="{ speed: @entangle('marquee_speed') }">
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Kecepatan Teks (Detik)</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Kecepatan Teks</label>
                         <div class="flex items-center gap-4">
                             <input type="range" x-model="speed" min="10" max="120"
-                                class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                            <span
-                                class="font-mono bg-slate-800 text-white px-3 py-1 rounded text-sm min-w-[60px] text-center"
+                                class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-blue-600">
+                            <span class="min-w-[64px] rounded-lg bg-slate-900 px-3 py-1.5 text-center font-mono text-sm font-bold text-white"
                                 x-text="speed + 's'">{{ $marquee_speed }}s</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-4">
-                    <label class="block text-sm font-semibold text-slate-700">Video YouTube</label>
-
-                    {{-- INPUT ID YOUTUBE --}}
-                    <div class="bg-slate-50 border-2 border-slate-300 rounded-2xl p-6">
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Link / YouTube Video
-                            ID</label>
-
-                        {{-- WIRE:MODEL.LIVE PENTING UNTUK AUTO PREVIEW --}}
-                        <input type="text" wire:model.live="youtube_id"
-                            placeholder="Paste link YouTube di sini..."
-                            class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-600 outline-none font-mono text-lg text-slate-800 placeholder:text-slate-400">
-
-                        <div
-                            class="mt-3 flex items-start gap-2 p-3 bg-blue-50 rounded-lg text-blue-700 text-xs border border-blue-100">
-                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <p>
-                                Anda bisa paste link lengkap (misal:
-                                <b>https://www.youtube.com/watch?v=okyPItn6n2Y</b>), sistem otomatis mengambil ID-nya
-                                saja.
-                            </p>
-                        </div>
+                    <div class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Link / YouTube Video ID</label>
+                        <input type="text" wire:model.live="youtube_id" placeholder="Paste link YouTube di sini..."
+                            class="min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-base text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-red-500 focus:ring-4 focus:ring-red-100">
+                        <p class="mt-3 text-xs font-medium leading-5 text-slate-500">
+                            Link YouTube lengkap akan otomatis diubah menjadi ID video.
+                        </p>
                     </div>
 
-                    {{-- PREVIEW YOUTUBE --}}
                     @if ($youtube_id)
-                        <div class="mt-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
-                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Preview Video:
-                            </p>
-                            <div class="aspect-video bg-black rounded-lg overflow-hidden relative shadow-md">
-                                <iframe width="100%" height="100%"
-                                    src="https://www.youtube.com/embed/{{ $youtube_id }}" frameborder="0"
+                        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+                            <p class="mb-2 text-xs font-black uppercase tracking-wide text-slate-500">Preview Video</p>
+                            <div class="aspect-video overflow-hidden rounded-lg bg-black">
+                                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ $youtube_id }}"
+                                    frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen>
                                 </iframe>
                             </div>
                         </div>
                     @else
-                        <div
-                            class="mt-4 p-6 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-400 text-sm italic">
-                            Masukkan Link/ID Video untuk melihat preview.
+                        <div class="flex min-h-[220px] items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm font-semibold text-slate-400">
+                            Masukkan link atau ID video untuk melihat preview.
                         </div>
                     @endif
                 </div>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-slate-100 flex justify-end">
+            <div class="mt-6 flex justify-end border-t border-slate-100 pt-5">
                 <button type="submit"
-                    class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-transform transform hover:-translate-y-0.5">
-                    Simpan Semua Pengaturan
+                    class="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-slate-900 px-6 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 sm:w-auto">
+                    Simpan Pengaturan
                 </button>
             </div>
         </form>
-    </div>
+    </section>
 </div>

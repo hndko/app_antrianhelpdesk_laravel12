@@ -20,6 +20,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 ### Dashboard
 
 - Login operator/teknisi dengan satu halaman auth responsif.
+- Layout backend menggunakan sidebar responsif dengan tombol hamburger di mobile.
 - Statistik total antrian, antrian menunggu, dan antrian diproses.
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian.
