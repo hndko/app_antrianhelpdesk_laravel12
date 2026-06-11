@@ -36,18 +36,12 @@ class PublicDisplay extends Component
 
         $queues = Queue::with('technician')
             ->where(function ($query) {
-                // 1. Tampilkan semua yang BELUM selesai (Waiting/Progress) mau kapanpun dibuatnya
-                $query->where('status', '!=', 'done')
-
-                    // 2. ATAU jika sudah SELESAI (Done), cek waktunya
+                $query->whereNotIn('status', Queue::doneStatuses())
                     ->orWhere(function ($subQuery) {
-                        $subQuery->where('status', 'done')
-                            // HANYA ambil data yang diupdate dalam 60 menit terakhir
+                        $subQuery->whereIn('status', Queue::doneStatuses())
                             ->where('updated_at', '>=', Carbon::now()->subMinutes(60));
                     });
             })
-            // -----------------------
-
             ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END")
             ->orderBy('queue_number', 'asc')
             ->take(50)
@@ -67,7 +61,7 @@ class PublicDisplay extends Component
             'total' => $queues->count(),
             'progress' => $queues->where('status', 'progress')->count(),
             'waiting' => $queues->where('status', 'waiting')->count(),
-            'done' => $queues->whereIn('status', ['done', 'completed'])->count(),
+            'done' => $queues->whereIn('status', Queue::doneStatuses())->count(),
         ];
 
         return view('livewire.public-display', [

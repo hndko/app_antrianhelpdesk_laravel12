@@ -32,7 +32,7 @@ class Dashboard extends Component
             'waiting' => (clone $queueQuery)->where('status', 'waiting')->count(),
             'progress' => (clone $queueQuery)->where('status', 'progress')->count(),
             'done_today' => (clone $queueQuery)
-                ->whereIn('status', ['done', 'completed'])
+                ->whereIn('status', Queue::doneStatuses())
                 ->whereDate('updated_at', $today)
                 ->count(),
         ];
@@ -46,7 +46,6 @@ class Dashboard extends Component
             'waiting' => 'Menunggu',
             'progress' => 'Dikerjakan',
             'done' => 'Selesai',
-            'completed' => 'Completed',
         ])->map(function ($label, $status) use ($statusCounts, $stats) {
             $total = (int) ($statusCounts[$status] ?? 0);
 
@@ -76,7 +75,7 @@ class Dashboard extends Component
             ->withCount([
                 'assignedQueues as active_queues_count' => fn ($query) => $query->whereIn('status', ['waiting', 'progress']),
                 'assignedQueues as done_today_count' => fn ($query) => $query
-                    ->whereIn('status', ['done', 'completed'])
+                    ->whereIn('status', Queue::doneStatuses())
                     ->whereDate('updated_at', $today),
             ])
             ->orderByDesc('done_today_count')

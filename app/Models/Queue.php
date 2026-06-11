@@ -34,6 +34,11 @@ class Queue extends Model
         return $this->hasMany(QueueLog::class);
     }
 
+    public static function doneStatuses(): array
+    {
+        return ['done'];
+    }
+
     // Helper untuk badge warna status (nanti dipakai di blade)
     public function getStatusColorAttribute()
     {

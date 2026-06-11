@@ -139,8 +139,7 @@
                                                 </svg>
                                             </button>
                                             @if (auth()->id() !== $user->id)
-                                                <button wire:click="delete({{ $user->id }})"
-                                                    onclick="return confirm('Hapus atau nonaktifkan akun ini?') || event.stopImmediatePropagation()"
+                                                <button wire:click="askDelete({{ $user->id }})"
                                                     class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-500 transition hover:bg-red-50 hover:text-red-700"
                                                     aria-label="Hapus akun">
                                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,4 +166,25 @@
             </div>
         </section>
     </div>
+
+    @if ($userPendingDeleteId)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+            <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-2xl">
+                <h3 class="text-lg font-extrabold text-slate-950">Hapus atau Nonaktifkan Akun?</h3>
+                <p class="mt-2 text-sm font-medium leading-6 text-slate-500">
+                    Akun yang sudah memiliki riwayat antrian akan dinonaktifkan agar data lama tetap aman.
+                </p>
+                <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                    <button type="button" wire:click="cancelDelete"
+                        class="inline-flex min-h-11 justify-center rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
+                        Batal
+                    </button>
+                    <button type="button" wire:click="confirmDelete"
+                        class="inline-flex min-h-11 justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700">
+                        Lanjutkan
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

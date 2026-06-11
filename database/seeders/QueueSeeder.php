@@ -47,38 +47,29 @@ class QueueSeeder extends Seeder
             [
                 'queue_number' => 901,
                 'user_name' => 'User Waiting',
-                'laptop_id' => 'TEST-WAITING-001',
+                'laptop_id' => 'LPT-WAITING-001',
                 'technician_user_id' => $technicians['Teknisi Waiting']->id,
                 'status' => 'waiting',
                 'duration_minutes' => 30,
-                'description' => 'Data kolom queue dengan status waiting.',
+                'description' => 'Keluhan perangkat untuk antrian menunggu.',
             ],
             [
                 'queue_number' => 902,
                 'user_name' => 'User Progress',
-                'laptop_id' => 'TEST-PROGRESS-001',
+                'laptop_id' => 'LPT-PROGRESS-001',
                 'technician_user_id' => $technicians['Teknisi Progress']->id,
                 'status' => 'progress',
                 'duration_minutes' => 45,
-                'description' => 'Data kolom queue dengan status progress.',
+                'description' => 'Keluhan perangkat yang sedang dikerjakan.',
             ],
             [
                 'queue_number' => 903,
                 'user_name' => 'User Done',
-                'laptop_id' => 'TEST-DONE-001',
+                'laptop_id' => 'LPT-DONE-001',
                 'technician_user_id' => $technicians['Teknisi Done']->id,
                 'status' => 'done',
                 'duration_minutes' => 60,
-                'description' => 'Data kolom queue dengan status done.',
-            ],
-            [
-                'queue_number' => 904,
-                'user_name' => 'User Completed',
-                'laptop_id' => 'TEST-COMPLETED-001',
-                'technician_user_id' => $technicians['Teknisi Completed']->id,
-                'status' => 'completed',
-                'duration_minutes' => 75,
-                'description' => 'Data kolom queue dengan status completed.',
+                'description' => 'Keluhan perangkat yang sudah selesai.',
             ],
         ];
     }
@@ -89,7 +80,6 @@ class QueueSeeder extends Seeder
             'Teknisi Waiting',
             'Teknisi Progress',
             'Teknisi Done',
-            'Teknisi Completed',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -62,10 +63,12 @@ class DisplaySettings extends Component
         ]);
 
         if ($this->logo_file) {
+            $this->deleteStoredBrandFile($this->logo_url);
             $validated['logo_url'] = $this->storeBrandFile($this->logo_file);
         }
 
         if ($this->favicon_file) {
+            $this->deleteStoredBrandFile($this->favicon_url);
             $validated['favicon_url'] = $this->storeBrandFile($this->favicon_file);
         }
 
@@ -120,6 +123,15 @@ class DisplaySettings extends Component
     private function storeBrandFile($file): string
     {
         return '/storage/'.$file->store('branding', 'public');
+    }
+
+    private function deleteStoredBrandFile(?string $path): void
+    {
+        if (! $path || ! str_starts_with($path, '/storage/branding/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(str_replace('/storage/', '', $path));
     }
 
     private function uploadedImagePreviewUrl($file, string $fallback): string

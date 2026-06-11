@@ -161,8 +161,7 @@
                                                 </svg>
                                             </button>
                                             @if ($canDeleteQueue)
-                                                <button wire:click="deleteQueue({{ $q->id }})"
-                                                    onclick="return confirm('Hapus antrian ini?') || event.stopImmediatePropagation()"
+                                                <button wire:click="askDeleteQueue({{ $q->id }})"
                                                     class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-500 transition hover:bg-red-50 hover:text-red-700"
                                                     aria-label="Hapus antrian">
                                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,8 +234,7 @@
                                     Edit
                                 </button>
                                 @if ($canDeleteQueue)
-                                    <button wire:click="deleteQueue({{ $q->id }})"
-                                        onclick="return confirm('Hapus antrian ini?') || event.stopImmediatePropagation()"
+                                    <button wire:click="askDeleteQueue({{ $q->id }})"
                                         class="flex-1 rounded-lg bg-red-50 px-3 py-2 text-sm font-bold text-red-600 transition hover:bg-red-100">
                                         Hapus
                                     </button>
@@ -254,4 +252,25 @@
             </div>
         </section>
     </div>
+
+    @if ($queuePendingDeleteId)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+            <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-2xl">
+                <h3 class="text-lg font-extrabold text-slate-950">Hapus Antrian?</h3>
+                <p class="mt-2 text-sm font-medium leading-6 text-slate-500">
+                    Riwayat perubahan akan tetap disimpan, tetapi data antrian tidak tampil lagi di daftar operasional.
+                </p>
+                <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                    <button type="button" wire:click="cancelDeleteQueue"
+                        class="inline-flex min-h-11 justify-center rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
+                        Batal
+                    </button>
+                    <button type="button" wire:click="confirmDeleteQueue"
+                        class="inline-flex min-h-11 justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700">
+                        Hapus
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

@@ -37,7 +37,7 @@ class DailyReport extends Component
 
         $this->reportData = Queue::where('technician_user_id', $this->selectedTechnician)
             ->whereDate('updated_at', $this->selectedDate)
-            ->whereIn('status', ['done', 'completed'])
+            ->whereIn('status', Queue::doneStatuses())
             ->count();
     }
 

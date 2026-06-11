@@ -19,7 +19,7 @@ Aplikasi ini adalah sistem manajemen antrian helpdesk/service center berbasis we
 - Tampilan antrian publik untuk TV/monitor.
 - Panel admin untuk operator/helpdesk.
 - Manajemen data antrian service.
-- Manajemen teknisi.
+- Manajemen akun service desk dan teknisi.
 - Pengaturan judul aplikasi, running text, logo, dan video display.
 - Video display menggunakan YouTube ID atau URL YouTube.
 - Countdown estimasi pengerjaan untuk antrian yang sedang diproses.
@@ -311,10 +311,6 @@ Kolom penting:
 - `created_at`
 - `updated_at`
 
-### `technicians`
-
-Tabel legacy untuk data lama. Fitur utama tidak lagi memakai tabel ini; teknisi aktif disimpan sebagai user dengan `role = technician`.
-
 ### `queue_logs`
 
 Menyimpan history perubahan antrian.
@@ -330,6 +326,9 @@ Kolom penting:
 - `to_status`
 - `action`
 - `note`
+- `queue_number`
+- `user_name`
+- `laptop_id`
 - `created_at`
 - `updated_at`
 
@@ -438,7 +437,6 @@ Status antrian yang digunakan:
 waiting
 progress
 done
-completed
 ```
 
 Aturan status:
@@ -446,7 +444,6 @@ Aturan status:
 - `waiting`: antrian baru atau belum diproses.
 - `progress`: sedang dikerjakan dan menampilkan countdown.
 - `done`: selesai dan masih tampil sementara di display.
-- `completed`: status selesai alternatif; gunakan hati-hati karena sebagian logic utama memakai `done`.
 
 Aturan nomor antrian:
 
@@ -510,7 +507,7 @@ Aturan:
 
 - Filter wajib menggunakan teknisi dan tanggal.
 - Hitung hanya status selesai.
-- Status selesai yang saat ini dihitung: `done` dan `completed`.
+- Status selesai yang saat ini dihitung: `done`.
 - Jangan export semua data tanpa filter jika fitur export ditambahkan.
 - Jika laporan makin kompleks, pindahkan query ke service atau query object.
 

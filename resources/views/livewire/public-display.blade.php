@@ -171,7 +171,7 @@
                                 <div class="flex justify-end md:col-span-2">
                                     @if ($q->status === 'progress')
                                         <span class="rounded-lg border border-blue-200 bg-blue-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-blue-700 sm:px-3 sm:py-2 sm:text-xs">Proses</span>
-                                    @elseif($q->status === 'done' || $q->status === 'completed')
+                                    @elseif($q->status === 'done')
                                         <span class="rounded-lg border border-emerald-200 bg-emerald-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700 sm:px-3 sm:py-2 sm:text-xs">Selesai</span>
                                     @else
                                         <span class="rounded-lg border border-slate-200 bg-slate-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-slate-600 sm:px-3 sm:py-2 sm:text-xs">Antri</span>

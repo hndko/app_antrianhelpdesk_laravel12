@@ -10,7 +10,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 - Tampilan antrian publik di `/`.
 - Update otomatis menggunakan Livewire polling.
-- Daftar antrian dengan status `waiting`, `progress`, `done`, dan `completed`.
+- Daftar antrian dengan status `waiting`, `progress`, dan `done`.
 - Countdown estimasi pengerjaan untuk status `progress`.
 - Running text dengan kecepatan yang dapat diatur.
 - Video display berbasis YouTube ID atau URL YouTube.
@@ -49,7 +49,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 ### Laporan Harian
 
 - Filter laporan berdasarkan teknisi dan tanggal.
-- Menghitung pekerjaan selesai dari status `done` dan `completed`.
+- Menghitung pekerjaan selesai dari status `done`.
 
 ## Teknologi
 
@@ -81,7 +81,6 @@ Seeder dipecah per tabel/modul:
 
 - `UserSeeder`
 - `DisplaySettingSeeder`
-- `SettingSeeder`
 - `QueueSeeder`
 
 Akun development:
@@ -95,7 +94,7 @@ Akun development:
 Akun demo tambahan:
 
 - Service desk: `servicedesk` / `password`
-- Teknisi: `teknisiwaiting`, `teknisiprogress`, `teknisidone`, `teknisicompleted` / `password`
+- Teknisi: `teknisiwaiting`, `teknisiprogress`, `teknisidone`, `teknisibackup` / `password`
 
 Password di seeder ditulis sebagai plain string karena model `User` sudah memakai cast `password => hashed`.
 
@@ -108,6 +107,7 @@ Layout utama berada di `resources/views/components`:
 - `app-frontend.blade.php` untuk public display.
 
 Login superadmin, service desk, dan teknisi menggunakan satu halaman `/login`, dengan akun tersimpan di tabel `users`.
+Tabel teknisi lama sudah dipensiunkan dari fitur utama; assignment antrian memakai `queues.technician_user_id`.
 
 ## Brand Asset
 

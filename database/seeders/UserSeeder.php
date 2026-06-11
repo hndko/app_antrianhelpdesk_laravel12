@@ -69,9 +69,9 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ],
             [
-                'name' => 'Teknisi Completed',
-                'username' => 'teknisicompleted',
-                'email' => 'teknisi.completed@example.com',
+                'name' => 'Teknisi Backup',
+                'username' => 'teknisibackup',
+                'email' => 'teknisi.backup@example.com',
                 'password' => 'password',
                 'role' => 'technician',
                 'status' => true,

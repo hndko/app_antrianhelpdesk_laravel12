@@ -15,6 +15,9 @@ class QueueLog extends Model
         'to_status',
         'action',
         'note',
+        'queue_number',
+        'user_name',
+        'laptop_id',
     ];
 
     public function queue()
@@ -54,7 +57,8 @@ class QueueLog extends Model
             'created' => 'Dibuat untuk '.($this->toTechnician->name ?? 'teknisi'),
             'transferred' => 'Dari '.($this->fromTechnician->name ?? '-').' ke '.($this->toTechnician->name ?? '-'),
             'status_changed' => 'Status '.$this->statusLabel($this->from_status).' ke '.$this->statusLabel($this->to_status),
-            'deleted' => 'Antrian dihapus',
+            'updated' => 'Data antrian diperbarui',
+            'deleted' => 'Antrian #'.($this->queue_number ?? '-').' dihapus',
             default => $this->note ?? 'Data diperbarui',
         };
     }
@@ -65,7 +69,6 @@ class QueueLog extends Model
             'waiting' => 'Menunggu',
             'progress' => 'Dikerjakan',
             'done' => 'Selesai',
-            'completed' => 'Selesai',
             default => '-',
         };
     }

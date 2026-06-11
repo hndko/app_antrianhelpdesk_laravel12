@@ -25,6 +25,7 @@ class QueueManager extends Component
     public $description;
     public $isEditing = false;
     public $technicians;
+    public $queuePendingDeleteId;
 
     public function mount()
     {
@@ -67,7 +68,7 @@ class QueueManager extends Component
                 'required',
                 Rule::exists('users', 'id')->where('role', 'technician')->where('status', true),
             ],
-            'status' => ['required', Rule::in(['waiting', 'progress', 'done', 'completed'])],
+            'status' => ['required', Rule::in(['waiting', 'progress', 'done'])],
             'duration_minutes' => 'required|integer|min:1|max:1440',
             'description' => 'nullable|string|max:5000',
         ]);
@@ -132,15 +133,31 @@ class QueueManager extends Component
         $this->isEditing = true;
     }
 
-    public function deleteQueue($id)
+    public function askDeleteQueue($id): void
     {
         abort_unless(Auth::user()->canViewAllQueues(), 403);
 
-        $queue = Queue::findOrFail($id);
+        $this->queuePendingDeleteId = $this->queueQueryForUser()->findOrFail($id)->id;
+    }
 
-        $this->writeQueueLog($queue, Auth::user(), 'deleted', $queue->technician_user_id, null, $queue->status, null);
+    public function cancelDeleteQueue(): void
+    {
+        $this->queuePendingDeleteId = null;
+    }
 
-        $queue->delete();
+    public function confirmDeleteQueue()
+    {
+        abort_unless(Auth::user()->canViewAllQueues(), 403);
+
+        $queue = $this->queueQueryForUser()->findOrFail($this->queuePendingDeleteId);
+
+        DB::transaction(function () use ($queue) {
+            $this->writeQueueLog($queue, Auth::user(), 'deleted', $queue->technician_user_id, null, $queue->status, null);
+
+            $queue->delete();
+        });
+
+        $this->queuePendingDeleteId = null;
 
         $this->dispatch('show-toast', [
             'type' => 'success',
@@ -187,6 +204,9 @@ class QueueManager extends Component
             'to_status' => $toStatus,
             'action' => $action,
             'note' => $this->queueLogNote($action),
+            'queue_number' => $queue->queue_number,
+            'user_name' => $queue->user_name,
+            'laptop_id' => $queue->laptop_id,
         ]);
     }
 
@@ -211,9 +231,9 @@ class QueueManager extends Component
                     ->latest(),
             ])
             ->where(function ($query) {
-                $query->where('status', '!=', 'done')
+                $query->whereNotIn('status', Queue::doneStatuses())
                     ->orWhere(function ($sub) {
-                        $sub->where('status', 'done')
+                        $sub->whereIn('status', Queue::doneStatuses())
                             ->whereDate('updated_at', Carbon::today());
                     });
             })

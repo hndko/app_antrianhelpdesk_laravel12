@@ -19,6 +19,7 @@ class UserManager extends Component
     public $role = 'technician';
     public $status = true;
     public $isEditing = false;
+    public $userPendingDeleteId;
 
     public function mount(): void
     {
@@ -36,6 +37,7 @@ class UserManager extends Component
             'role',
             'status',
             'isEditing',
+            'userPendingDeleteId',
         ]);
 
         $this->role = 'technician';
@@ -95,12 +97,25 @@ class UserManager extends Component
         $this->isEditing = true;
     }
 
-    public function delete(int $id): void
+    public function askDelete(int $id): void
     {
         abort_unless(auth()->user()->canManageUsers(), 403);
         abort_if(auth()->id() === $id, 403);
 
-        $user = User::findOrFail($id);
+        $this->userPendingDeleteId = User::findOrFail($id)->id;
+    }
+
+    public function cancelDelete(): void
+    {
+        $this->userPendingDeleteId = null;
+    }
+
+    public function confirmDelete(): void
+    {
+        abort_unless(auth()->user()->canManageUsers(), 403);
+        abort_if(auth()->id() === (int) $this->userPendingDeleteId, 403);
+
+        $user = User::findOrFail($this->userPendingDeleteId);
 
         if ($user->assignedQueues()->exists()) {
             $user->update(['status' => false]);
