@@ -4,22 +4,82 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Admin</title>
+    <title>Login Operator</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap"
+        rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen bg-slate-100 font-sans text-slate-900 antialiased">
+    <main class="flex min-h-screen w-full items-center justify-center px-4 py-6 sm:px-6 lg:px-8">
+        <div class="grid w-full max-w-5xl overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl lg:grid-cols-[1fr_0.92fr]">
+            <section class="relative hidden min-h-[620px] overflow-hidden bg-slate-950 text-white lg:block">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.36),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.22),transparent_28%),linear-gradient(135deg,#020617_0%,#0f172a_52%,#1e293b_100%)]"></div>
+                <div class="relative flex h-full flex-col justify-between p-10">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 shadow-lg shadow-blue-950/30">
+                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 17v-2a4 4 0 014-4h7M9 7h.01M5 7h.01M5 12h.01M9 12h.01M5 17h.01M4 4h16v16H4z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold uppercase tracking-wide text-blue-100">Service Display</p>
+                            <h1 class="text-2xl font-extrabold leading-tight">Helpdesk</h1>
+                        </div>
+                    </div>
 
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-200">
-        <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-slate-800">Admin Login</h1>
-            <p class="text-slate-500 text-sm mt-1">Silakan masuk untuk mengelola antrian</p>
+                    <div class="max-w-md">
+                        <p class="text-sm font-black uppercase tracking-[0.24em] text-blue-200">Operator Area</p>
+                        <h2 class="mt-4 text-4xl font-extrabold leading-tight">Kelola antrian dengan tampilan yang tenang.</h2>
+                        <p class="mt-5 text-base font-medium leading-7 text-slate-300">
+                            Masuk untuk memperbarui antrian, teknisi, laporan, dan pengaturan display layanan.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="rounded-lg border border-white/10 bg-white/10 p-4 backdrop-blur">
+                            <p class="font-mono text-2xl font-black text-white">01</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wide text-slate-300">Antrian</p>
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/10 p-4 backdrop-blur">
+                            <p class="font-mono text-2xl font-black text-white">02</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wide text-slate-300">Teknisi</p>
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/10 p-4 backdrop-blur">
+                            <p class="font-mono text-2xl font-black text-white">03</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wide text-slate-300">Display</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="flex min-h-[100svh] items-center px-5 py-8 sm:min-h-[640px] sm:px-8 lg:min-h-[620px] lg:px-10">
+                <div class="mx-auto w-full max-w-md">
+                    <div class="mb-8 lg:hidden">
+                        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
+                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 17v-2a4 4 0 014-4h7M9 7h.01M5 7h.01M5 12h.01M9 12h.01M5 17h.01M4 4h16v16H4z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm font-black uppercase tracking-wide text-blue-600">Service Display Helpdesk</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h1 class="text-2xl font-extrabold leading-tight text-slate-950 sm:text-3xl">Masuk Dashboard</h1>
+                        <p class="mt-2 text-sm font-medium leading-6 text-slate-500">
+                            Gunakan akun operator untuk melanjutkan.
+                        </p>
+                    </div>
+
+                    {{ $slot }}
+                </div>
+            </section>
         </div>
-
-        {{ $slot }}
-    </div>
+    </main>
 
 </body>
 
