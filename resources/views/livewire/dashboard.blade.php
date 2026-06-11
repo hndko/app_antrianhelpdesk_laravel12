@@ -305,14 +305,48 @@
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">URL Logo</label>
-                            <input type="text" wire:model="logo_url" placeholder="/assets/helpdesk-logo-icon.svg"
-                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Logo</label>
+                            <input id="logo_file" type="file" wire:model="logo_file" accept=".jpg,.jpeg,.png,.webp,.svg,image/*" class="sr-only">
+                            <label for="logo_file"
+                                class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-blue-300 bg-blue-50 px-4 py-2.5 text-sm font-extrabold text-blue-700 transition hover:border-blue-500 hover:bg-blue-100">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 4v12m0-12l-4 4m4-4l4 4" />
+                                </svg>
+                                Upload Files
+                            </label>
+                            <p class="mt-2 truncate text-xs font-medium text-slate-500">
+                                @if ($logo_file)
+                                    {{ $logo_file->getClientOriginalName() }}
+                                @else
+                                    {{ $logo_url }}
+                                @endif
+                            </p>
+                            @error('logo_file')
+                                <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">URL Favicon</label>
-                            <input type="text" wire:model="favicon_url" placeholder="/assets/helpdesk-favicon.svg"
-                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Favicon</label>
+                            <input id="favicon_file" type="file" wire:model="favicon_file" accept=".jpg,.jpeg,.png,.webp,.svg,.ico,image/*" class="sr-only">
+                            <label for="favicon_file"
+                                class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-blue-300 bg-blue-50 px-4 py-2.5 text-sm font-extrabold text-blue-700 transition hover:border-blue-500 hover:bg-blue-100">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 4v12m0-12l-4 4m4-4l4 4" />
+                                </svg>
+                                Upload Files
+                            </label>
+                            <p class="mt-2 truncate text-xs font-medium text-slate-500">
+                                @if ($favicon_file)
+                                    {{ $favicon_file->getClientOriginalName() }}
+                                @else
+                                    {{ $favicon_url }}
+                                @endif
+                            </p>
+                            @error('favicon_file')
+                                <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 

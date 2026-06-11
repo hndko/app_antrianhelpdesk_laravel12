@@ -7,13 +7,14 @@ use App\Models\Queue;
 use App\Models\Setting;
 use Livewire\Component;
 use App\Models\Technician;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class Dashboard extends Component
 {
-    use WithPagination;
+    use WithFileUploads, WithPagination;
 
     // --- State Queue ---
     public $queue_id;
@@ -23,6 +24,7 @@ class Dashboard extends Component
 
     // --- State Settings ---
     public $app_title, $running_text, $marquee_speed, $logo_url, $favicon_url, $youtube_id;
+    public $logo_file, $favicon_file;
 
     public function mount()
     {
@@ -149,6 +151,26 @@ class Dashboard extends Component
         return asset($value);
     }
 
+    private function storeBrandFile($file): string
+    {
+        return '/storage/'.$file->store('branding', 'public');
+    }
+
+    private function uploadedImagePreviewUrl($file, string $fallback): string
+    {
+        if (! $file) {
+            return $fallback;
+        }
+
+        $extension = strtolower($file->getClientOriginalExtension());
+
+        if (! in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+            return $fallback;
+        }
+
+        return $file->temporaryUrl();
+    }
+
     public function saveSettings()
     {
         $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
@@ -158,9 +180,19 @@ class Dashboard extends Component
             'running_text' => 'nullable|string|max:1000',
             'logo_url' => 'nullable|string|max:255',
             'favicon_url' => 'nullable|string|max:255',
+            'logo_file' => 'nullable|file|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'favicon_file' => 'nullable|file|mimes:jpg,jpeg,png,webp,svg,ico|max:2048',
             'marquee_speed' => 'required|integer|min:10|max:200',
             'youtube_id' => 'nullable|string|max:255',
         ]);
+
+        if ($this->logo_file) {
+            $validated['logo_url'] = $this->storeBrandFile($this->logo_file);
+        }
+
+        if ($this->favicon_file) {
+            $validated['favicon_url'] = $this->storeBrandFile($this->favicon_file);
+        }
 
         Setting::updateOrCreate(['id' => 1], [
             'app_title' => $validated['app_title'],
@@ -171,6 +203,10 @@ class Dashboard extends Component
             'video_url' => $validated['youtube_id'],
             'video_type' => 'youtube',
         ]);
+
+        $this->logo_url = $validated['logo_url'];
+        $this->favicon_url = $validated['favicon_url'];
+        $this->reset('logo_file', 'favicon_file');
 
         $this->dispatch('show-toast', [
             'type' => 'success',
@@ -207,11 +243,14 @@ class Dashboard extends Component
             ->orderBy('queue_number', 'asc')
             ->paginate(5);
 
+        $logoPreviewUrl = $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo-icon.svg');
+        $faviconPreviewUrl = $this->resolveAssetUrl($this->favicon_url, 'assets/helpdesk-favicon.svg');
+
         return view('livewire.dashboard', [
             'queues' => $queues,
             'stats' => $stats,
-            'logoPreviewUrl' => $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo-icon.svg'),
-            'faviconPreviewUrl' => $this->resolveAssetUrl($this->favicon_url, 'assets/helpdesk-favicon.svg'),
+            'logoPreviewUrl' => $this->uploadedImagePreviewUrl($this->logo_file, $logoPreviewUrl),
+            'faviconPreviewUrl' => $this->uploadedImagePreviewUrl($this->favicon_file, $faviconPreviewUrl),
         ])->layout('components.app-backend');
     }
 }

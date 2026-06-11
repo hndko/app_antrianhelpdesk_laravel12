@@ -24,7 +24,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Statistik total antrian, antrian menunggu, dan antrian diproses.
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian.
-- Pengaturan judul aplikasi, logo URL, running text, kecepatan marquee, dan video YouTube.
+- Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, dan video YouTube.
 - Pengaturan favicon browser untuk login, dashboard, dan public display.
 - Toast notification menggunakan IziToast.
 
@@ -100,7 +100,7 @@ Logo dan favicon default tersedia di:
 - `/assets/helpdesk-logo-icon.svg`
 - `/assets/helpdesk-favicon.svg`
 
-Keduanya dapat diganti dari dashboard melalui pengaturan `URL Logo` dan `URL Favicon`.
+Keduanya dapat diganti dari dashboard melalui tombol `Upload Files` pada pengaturan display. File upload disimpan ke disk `public` Laravel dan ditampilkan melalui path `/storage/...`, sehingga `php artisan storage:link` perlu tersedia di environment lokal/production.
 
 ## Instalasi
 
