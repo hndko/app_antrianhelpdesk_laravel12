@@ -23,7 +23,7 @@ class DailyReport extends Component
     public function generateReport()
     {
         $this->validate([
-            'selectedTechnician' => 'required',
+            'selectedTechnician' => 'required|exists:technicians,id',
             'selectedDate' => 'required|date',
         ]);
 

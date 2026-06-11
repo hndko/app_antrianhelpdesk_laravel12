@@ -11,7 +11,14 @@ class PublicDisplay extends Component
 {
     public function render()
     {
-        $settings = Setting::first();
+        $settings = Setting::first() ?? new Setting([
+            'app_title' => 'Service Display',
+            'logo_url' => null,
+            'video_url' => null,
+            'video_type' => 'youtube',
+            'running_text' => '',
+            'marquee_speed' => 60,
+        ]);
 
         $queues = Queue::with('technician')
             ->where(function ($query) {
@@ -27,7 +34,7 @@ class PublicDisplay extends Component
             })
             // -----------------------
 
-            ->orderByRaw("FIELD(status, 'progress', 'waiting', 'done')")
+            ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END")
             ->orderBy('queue_number', 'asc')
             ->take(50)
             ->get()

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Technician;
 use Livewire\WithPagination;
@@ -16,11 +17,16 @@ class TechnicianManager extends Component
     public function render()
     {
         return view('livewire.technician-manager', [
-            'technicians' => Technician::latest()->paginate(5)
+            'technicians' => Technician::withCount([
+                'queues as completed_today_count' => function ($query) {
+                    $query->whereDate('updated_at', Carbon::today())
+                        ->whereIn('status', ['done', 'completed']);
+                },
+            ])->latest()->paginate(5),
         ]);
     }
 
-    private function resetInput()
+    public function resetInput()
     {
         $this->name = '';
         $this->technician_id = null;
@@ -30,11 +36,12 @@ class TechnicianManager extends Component
     public function store()
     {
         $this->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
         ]);
 
         Technician::updateOrCreate(['id' => $this->technician_id], [
             'name' => $this->name,
+            'status' => true,
         ]);
 
         $this->dispatch('show-toast', [
@@ -55,10 +62,24 @@ class TechnicianManager extends Component
 
     public function delete($id)
     {
-        Technician::find($id)->delete();
+        $technician = Technician::findOrFail($id);
+
+        if ($technician->queues()->exists()) {
+            $technician->update(['status' => false]);
+
+            $this->dispatch('show-toast', [
+                'type' => 'success',
+                'message' => 'Teknisi memiliki riwayat antrian dan dinonaktifkan.'
+            ]);
+
+            return;
+        }
+
+        $technician->delete();
+
         $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Technician Deleted Successfully.'
+            'message' => 'Teknisi berhasil dihapus.'
         ]);
     }
 }

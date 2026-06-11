@@ -11,13 +11,12 @@ Route::get('/', PublicDisplay::class)->name('home');
 // Route Auth
 Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'index'])->name('login');
-    Route::post('login', [LoginController::class, 'authenticate']);
+    Route::post('login', [LoginController::class, 'authenticate'])->middleware('throttle:5,1');
 });
-
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route Admin (Protected)
 Route::middleware('auth')->group(function () {
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/admin', AdminDashboard::class)->name('admin.dashboard');
     Route::get('/admin/technicians', function () {
         return view('admin.technicians.index');

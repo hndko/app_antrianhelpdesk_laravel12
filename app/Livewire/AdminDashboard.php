@@ -7,13 +7,12 @@ use App\Models\Queue;
 use App\Models\Setting;
 use Livewire\Component;
 use App\Models\Technician;
-use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class AdminDashboard extends Component
 {
-    use WithFileUploads;
     use WithPagination;
 
     // --- State Queue ---
@@ -34,13 +33,12 @@ class AdminDashboard extends Component
     public function loadSettings()
     {
         $settings = Setting::first();
-        if ($settings) {
-            $this->app_title = $settings->app_title;
-            $this->running_text = $settings->running_text;
-            $this->marquee_speed = $settings->marquee_speed;
-            $this->logo_url = $settings->logo_url;
-            $this->youtube_id = $settings->video_url;
-        }
+
+        $this->app_title = $settings->app_title ?? 'Service Display';
+        $this->running_text = $settings->running_text ?? '';
+        $this->marquee_speed = $settings->marquee_speed ?? 60;
+        $this->logo_url = $settings->logo_url ?? '';
+        $this->youtube_id = $settings->video_url ?? '';
     }
 
     public function resetQueueForm()
@@ -57,38 +55,30 @@ class AdminDashboard extends Component
 
     public function saveQueue()
     {
-        $this->validate([
+        $validated = $this->validate([
             'user_name' => 'nullable|string|max:255',
-            'laptop_id' => 'required',
-            'technician_id' => 'required',
-            'status' => 'required',
-            'duration_minutes' => 'required|integer',
-            'description' => 'nullable|string',
+            'laptop_id' => 'required|string|max:255',
+            'technician_id' => 'required|exists:technicians,id',
+            'status' => ['required', Rule::in(['waiting', 'progress', 'done', 'completed'])],
+            'duration_minutes' => 'required|integer|min:1|max:1440',
+            'description' => 'nullable|string|max:5000',
         ]);
 
         if ($this->isEditing) {
-            $queue = Queue::find($this->queue_id);
-            $queue->update([
-                'user_name' => $this->user_name,
-                'laptop_id' => $this->laptop_id,
-                'technician_id' => $this->technician_id,
-                'status' => $this->status,
-                'duration_minutes' => $this->duration_minutes,
-                'description' => $this->description,
-            ]);
+            $queue = Queue::findOrFail($this->queue_id);
+            $queue->update($validated);
             $msg = 'Data antrian berhasil diperbarui!';
         } else {
-            $lastQueue = Queue::whereDate('created_at', Carbon::today())
-                ->max('queue_number') ?? 0;
-            Queue::create([
-                'queue_number' => $lastQueue + 1,
-                'user_name' => $this->user_name,
-                'laptop_id' => $this->laptop_id,
-                'technician_id' => $this->technician_id,
-                'status' => $this->status,
-                'duration_minutes' => $this->duration_minutes,
-                'description' => $this->description,
-            ]);
+            DB::transaction(function () use ($validated) {
+                $lastQueue = Queue::whereDate('created_at', Carbon::today())
+                    ->lockForUpdate()
+                    ->max('queue_number') ?? 0;
+
+                Queue::create($validated + [
+                    'queue_number' => $lastQueue + 1,
+                ]);
+            });
+
             $msg = 'Antrian baru berhasil ditambahkan!';
         }
 
@@ -103,7 +93,7 @@ class AdminDashboard extends Component
 
     public function editQueue($id)
     {
-        $queue = Queue::find($id);
+        $queue = Queue::findOrFail($id);
         $this->queue_id = $queue->id;
         $this->user_name = $queue->user_name;
         $this->laptop_id = $queue->laptop_id;
@@ -116,38 +106,13 @@ class AdminDashboard extends Component
 
     public function deleteQueue($id)
     {
-        Queue::find($id)->delete();
+        Queue::findOrFail($id)->delete();
 
         $this->dispatch('show-toast', [
             'type' => 'success',
             'message' => 'Antrian berhasil dihapus.'
         ]);
     }
-
-    // public function deleteVideo()
-    // {
-    //     $settings = Setting::first();
-
-    //     // Hapus file fisik jika ada
-    //     if ($settings->video_url && Storage::disk('public')->exists($settings->video_url)) {
-    //         Storage::disk('public')->delete($settings->video_url);
-    //     }
-
-    //     // Reset database
-    //     $settings->update([
-    //         'video_url' => null,
-    //         'video_type' => 'local' // Atau default lain
-    //     ]);
-
-    //     // Reset state
-    //     $this->existing_video_url = null;
-    //     $this->video_type = null;
-
-    //     $this->dispatch('show-toast', [
-    //         'type' => 'success',
-    //         'message' => 'Video berhasil dihapus!'
-    //     ]);
-    // }
 
     private function extractYoutubeId($url)
     {
@@ -170,20 +135,20 @@ class AdminDashboard extends Component
     {
         $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
 
-        $this->validate([
-            'app_title' => 'required',
+        $validated = $this->validate([
+            'app_title' => 'required|string|max:255',
+            'running_text' => 'nullable|string|max:1000',
+            'logo_url' => 'nullable|string|max:255',
             'marquee_speed' => 'required|integer|min:10|max:200',
             'youtube_id' => 'required|string',
         ]);
 
-        $settings = Setting::first();
-
-        $settings->update([
-            'app_title' => $this->app_title,
-            'running_text' => $this->running_text,
-            'marquee_speed' => $this->marquee_speed,
-            'logo_url' => $this->logo_url,
-            'video_url' => $this->youtube_id, // Simpan ID bersih ke DB
+        Setting::updateOrCreate(['id' => 1], [
+            'app_title' => $validated['app_title'],
+            'running_text' => $validated['running_text'],
+            'marquee_speed' => $validated['marquee_speed'],
+            'logo_url' => $validated['logo_url'],
+            'video_url' => $validated['youtube_id'],
             'video_type' => 'youtube',
         ]);
 
@@ -217,11 +182,9 @@ class AdminDashboard extends Component
                             ->whereDate('updated_at', Carbon::today());
                     });
             })
-            // Urutkan: Progress -> Waiting -> Done
-            ->orderByRaw("FIELD(status, 'progress', 'waiting', 'done')")
+            ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END")
             // Urutkan nomor antrian
             ->orderBy('queue_number', 'asc')
-            // Pagination: 10 data per halaman
             ->paginate(5);
 
         return view('livewire.admin-dashboard', [

@@ -59,7 +59,7 @@
                                 {{ $technician->name }}
                             </td>
                             <td class="p-4 text-center font-mono text-slate-600">
-                                {{ $technician->queues()->whereDate('updated_at', today())->whereIn('status', ['done', 'completed'])->count() }}
+                                {{ $technician->completed_today_count }}
                             </td>
                             <td class="p-4 text-right space-x-2">
                                 <button wire:click="edit({{ $technician->id }})"

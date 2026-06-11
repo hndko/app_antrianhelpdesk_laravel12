@@ -1,141 +1,125 @@
-# Service Display System 🖥️
+# Service Display Helpdesk
 
-Sistem Manajemen Antrian dan _Digital Signage_ (Papan Informasi Digital) modern berbasis web. Dibangun menggunakan **Laravel** dan **Livewire** untuk performa real-time yang ringan tanpa memerlukan konfigurasi WebSocket server yang rumit.
+Sistem manajemen antrian dan digital signage berbasis web untuk helpdesk IT, service center, bengkel, klinik, loket pelayanan, atau unit layanan internal.
 
-Aplikasi ini cocok digunakan untuk bengkel, service center, klinik, atau kantor pelayanan publik yang membutuhkan tampilan antrian di TV/Monitor dan panel admin untuk operator.
+Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel admin untuk mengelola antrian, teknisi, pengaturan display, serta laporan harian pekerjaan teknisi.
 
-![Service Display Preview](https://github.com/user-attachments/assets/8f02bb20-3fbe-4e9a-8b63-cec86944f7dd)
+## Fitur Utama
 
-## ✨ Fitur Utama
+### Public Display
 
-### 📺 Public Display (Halaman TV)
+- Tampilan antrian publik di `/`.
+- Update otomatis menggunakan Livewire polling.
+- Daftar antrian dengan status `waiting`, `progress`, `done`, dan `completed`.
+- Countdown estimasi pengerjaan untuk status `progress`.
+- Running text dengan kecepatan yang dapat diatur.
+- Video display berbasis YouTube ID atau URL YouTube.
+- Layout responsif untuk layar TV/monitor.
 
--   **Real-time Updates:** Tampilan otomatis berubah setiap 2 detik (menggunakan `wire:poll`) saat Admin mengupdate data.
--   **Fluid Layout:** Desain responsif memenuhi layar (Full Width & Height) tanpa celah kosong.
--   **Multimedia Player:** Mendukung pemutaran video promosi via **Upload Lokal (MP4)** atau **YouTube Embed**.
--   **Dynamic Marquee:** Running text (teks berjalan) dengan kecepatan yang bisa diatur via Admin.
--   **Queue List:** Menampilkan daftar antrian dengan status (Menunggu, Proses, Selesai).
--   **Countdown Timer:** Menghitung mundur estimasi waktu pengerjaan secara otomatis untuk unit yang sedang diproses.
--   **Clock & Date:** Widget jam digital dan tanggal yang akurat (Client-side update).
+### Admin Dashboard
 
-### 🛠️ Admin Dashboard
+- Login admin/operator.
+- Statistik total antrian, antrian menunggu, dan antrian diproses.
+- Tambah, edit, dan hapus data antrian.
+- Assign teknisi ke antrian.
+- Pengaturan judul aplikasi, logo URL, running text, kecepatan marquee, dan video YouTube.
+- Toast notification menggunakan IziToast.
 
--   **Queue Management:** Tambah, Edit, dan Hapus data antrian dengan mudah.
--   **Settings Control:** Ubah Judul Aplikasi, Running Text, Kecepatan Teks, dan Upload Video langsung dari dashboard.
--   **Live Preview:** Angka kecepatan teks dan preview video tampil saat diedit.
--   **Modern UI:** Dibangun dengan Tailwind CSS dan IziToast untuk notifikasi yang elegan.
+### Manajemen Teknisi
 
-## 🚀 Teknologi yang Digunakan
+- Tambah dan edit teknisi.
+- Hapus teknisi jika belum punya riwayat antrian.
+- Nonaktifkan teknisi jika sudah memiliki riwayat antrian.
+- Jumlah pekerjaan selesai hari ini dihitung tanpa query langsung di Blade.
 
--   **Framework:** [Laravel 11](https://laravel.com)
--   **Frontend/Reactivity:** [Livewire 3](https://livewire.laravel.com) & [Alpine.js](https://alpinejs.dev)
--   **Styling:** [Tailwind CSS](https://tailwindcss.com)
--   **Database:** MySQL
--   **Assets Bundle:** Vite
+### Laporan Harian
 
-## 📦 Instalasi
+- Filter laporan berdasarkan teknisi dan tanggal.
+- Menghitung pekerjaan selesai dari status `done` dan `completed`.
 
-Ikuti langkah-langkah berikut untuk menjalankan project di komputer lokal Anda:
+## Teknologi
 
-### 1. Clone Repository
+- PHP 8.2+
+- Laravel 12
+- Livewire 3
+- Blade
+- Tailwind CSS 4
+- Vite
+- MySQL / MariaDB
+- IziToast
+- Pest / PHPUnit
+
+## Struktur Seeder
+
+Seeder utama menggunakan bawaan Laravel:
 
 ```bash
-git clone [https://github.com/username-anda/service-display.git](https://github.com/username-anda/service-display.git)
-cd service-display
+php artisan db:seed
 ```
 
-### 2\. Install Dependencies
+Seeder dipecah per tabel/modul:
 
-Pastikan Anda sudah menginstall PHP dan Node.js.
+- `UserSeeder`
+- `DisplaySettingSeeder`
+- `SettingSeeder`
+- `TechnicianSeeder`
+- `QueueSeeder`
+
+Akun admin development:
+
+- Login URL: `/login`
+- Username: `helpdesk`
+- Email: `admin@example.com`
+- Password: `password`
+
+Password di seeder ditulis sebagai plain string karena model `User` sudah memakai cast `password => hashed`.
+
+## Instalasi
+
+1. Clone repository.
+
+```bash
+git clone https://github.com/hndko/app_antrianhelpdesk_laravel12.git
+cd app_antrianhelpdesk_laravel12
+```
+
+2. Install dependency.
 
 ```bash
 composer install
 npm install
 ```
 
-### 3\. Konfigurasi Environment
-
-Duplikat file `.env.example` menjadi `.env` dan sesuaikan konfigurasi database Anda.
+3. Siapkan environment.
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-_Edit file `.env` dan pastikan `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` sesuai._
-
-### 4\. Setup Database & Storage
-
-Jalankan migrasi, seeder, dan link storage (PENTING untuk upload video).
+4. Atur database di `.env`, lalu jalankan migrasi dan seeder.
 
 ```bash
 php artisan migrate --seed
 php artisan storage:link
 ```
 
-Seeder default akan membuat akun admin development dan pengaturan display awal.
-
-Untuk mengisi data awal dan data pengecekan schema, jalankan:
-
-```bash
-php artisan db:seed
-```
-
-Seeder schema dipecah per tabel:
-
-- `DisplaySettingSeeder`
-- `UserSeeder`
-- `SettingSeeder`
-- `TechnicianSeeder`
-- `QueueSeeder`
-
-### 5\. Build Assets & Jalankan Server
-
-Buka dua terminal:
-
-**Terminal 1 (Build CSS/JS):**
+5. Jalankan frontend dan server lokal secara manual.
 
 ```bash
 npm run dev
-```
-
-**Terminal 2 (Jalankan Laravel):**
-
-```bash
 php artisan serve
 ```
 
-Aplikasi dapat diakses di: `http://127.0.0.1:8000`
+Catatan untuk agent: jangan menjalankan `npm run build` atau `php artisan serve` otomatis kecuali diminta eksplisit.
 
-## 🔑 Akun Default (Seeder)
+## Route Utama
 
-Gunakan akun ini untuk masuk ke halaman Admin:
-
--   **Login URL:** `/login`
--   **Username:** `helpdesk`
--   **Email:** `admin@example.com`
--   **Password:** `password`
-
-## 📖 Cara Penggunaan
-
-1.  **Login Admin:** Masuk ke `/login` menggunakan akun default.
-2.  **Setup Tampilan:**
-    -   Pergi ke bagian bawah dashboard (Pengaturan Tampilan).
-    -   Upload video promosi atau masukkan link YouTube.
-    -   Isi Running Text dan atur kecepatannya (geser slider).
-    -   Klik "Simpan".
-3.  **Kelola Antrian:**
-    -   Input data pelanggan (ID Laptop, Helpdesk, Durasi).
-    -   Status awal otomatis "Waiting".
-    -   Ubah status ke "Progress" untuk memunculkan Countdown di layar depan.
-4.  **Buka Display:**
-    -   Buka tab baru atau browser di monitor TV.
-    -   Akses URL utama (`/`).
-    -   Tekan `F11` untuk mode Fullscreen.
-
-## 🤝 Kontribusi
-
-Pull requests dipersilakan. Untuk perubahan besar, harap buka issue terlebih dahulu untuk mendiskusikan apa yang ingin Anda ubah.
+- `/` - public display.
+- `/login` - login admin/operator.
+- `/admin` - admin dashboard.
+- `/admin/technicians` - manajemen teknisi.
+- `/admin/reports/daily` - laporan harian.
 
 ## Workflow Agent
 
@@ -143,7 +127,3 @@ Pull requests dipersilakan. Untuk perubahan besar, harap buka issue terlebih dah
 - Setelah menyelesaikan perubahan, agent melakukan commit dan push otomatis jika remote dan branch tujuan tersedia.
 - Agent hanya boleh stage file yang dibuat atau diubah pada task berjalan.
 - Perubahan user yang tidak terkait tidak boleh direvert atau ikut distage.
-
-### Tips Tambahan:
-
-Jangan lupa untuk mengambil **Screenshot** dari halaman _Display_ (yang ada videonya) dan halaman _Admin Dashboard_ Anda, lalu upload ke folder project atau image hosting, dan ganti link `https://via.placeholder.com...` di atas dengan link gambar asli Anda agar README terlihat menarik!
