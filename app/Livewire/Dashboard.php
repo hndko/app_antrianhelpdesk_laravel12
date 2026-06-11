@@ -212,6 +212,6 @@ class Dashboard extends Component
             'stats' => $stats,
             'logoPreviewUrl' => $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo-icon.svg'),
             'faviconPreviewUrl' => $this->resolveAssetUrl($this->favicon_url, 'assets/helpdesk-favicon.svg'),
-        ])->layout('components.layout');
+        ])->layout('components.app-backend');
     }
 }

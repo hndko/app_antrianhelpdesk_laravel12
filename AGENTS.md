@@ -147,10 +147,9 @@ Gunakan layout yang sudah ada dan konsisten.
 
 ```text
 resources/views/components/
-├── display.blade.php
-├── guest.blade.php
-├── guest-layout.blade.php
-├── layout.blade.php
+├── app-auth.blade.php
+├── app-backend.blade.php
+├── app-frontend.blade.php
 └── pagination-custom.blade.php
 ```
 
@@ -158,9 +157,9 @@ resources/views/components/
 
 | Layout | File | Penggunaan |
 | --- | --- | --- |
-| Display | `components.display` | Tampilan TV/monitor publik |
-| Admin | `components.layout` | Dashboard admin dan halaman internal |
-| Guest/Auth | `components.guest` atau `components.guest-layout` | Login dan halaman guest |
+| Frontend | `components.app-frontend` | Tampilan TV/monitor publik |
+| Backend | `components.app-backend` | Dashboard dan halaman internal |
+| Auth | `components.app-auth` | Login operator/teknisi |
 
 ## 4.3 Struktur View Modul
 
@@ -185,9 +184,9 @@ resources/views/
 
 # 5. Aturan Blade
 
-- Tampilan admin wajib menggunakan layout `components.layout`.
-- Tampilan public display wajib menggunakan layout `components.display`.
-- Halaman auth wajib menggunakan layout guest/auth yang sudah ada.
+- Tampilan backend wajib menggunakan layout `components.app-backend`.
+- Tampilan public display wajib menggunakan layout `components.app-frontend`.
+- Halaman auth wajib menggunakan layout `components.app-auth`.
 - Gunakan `@vite(['resources/css/app.css', 'resources/js/app.js'])` untuk asset utama.
 - Gunakan `@livewireStyles` dan `@livewireScripts` pada layout Livewire.
 - Jangan query model langsung di Blade.
@@ -396,6 +395,8 @@ GET  /admin/reports/daily      admin.reports.daily
 
 # 12. Authentication Rules
 
+- Login operator dan teknisi menggunakan satu halaman auth yang sama.
+- Akun login disimpan di tabel `users`.
 - Login menggunakan `username` dan `password`.
 - Password wajib di-hash.
 - Seeder default boleh membuat akun admin untuk development.

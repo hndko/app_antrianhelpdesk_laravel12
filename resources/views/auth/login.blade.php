@@ -1,4 +1,4 @@
-<x-guest>
+<x-app-auth>
     <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
@@ -51,4 +51,4 @@
             </button>
         </div>
     </form>
-</x-guest>
+</x-app-auth>

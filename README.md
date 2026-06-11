@@ -19,7 +19,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 ### Dashboard
 
-- Login operator dengan tampilan responsif.
+- Login operator/teknisi dengan satu halaman auth responsif.
 - Statistik total antrian, antrian menunggu, dan antrian diproses.
 - Tambah, edit, dan hapus data antrian.
 - Assign teknisi ke antrian.
@@ -75,6 +75,16 @@ Akun development:
 - Password: `password`
 
 Password di seeder ditulis sebagai plain string karena model `User` sudah memakai cast `password => hashed`.
+
+## Struktur Layout
+
+Layout utama berada di `resources/views/components`:
+
+- `app-auth.blade.php` untuk halaman login operator/teknisi.
+- `app-backend.blade.php` untuk dashboard dan halaman internal.
+- `app-frontend.blade.php` untuk public display.
+
+Login operator dan teknisi menggunakan satu halaman `/login`, dengan akun tersimpan di tabel `users`.
 
 ## Brand Asset
 

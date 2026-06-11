@@ -23,10 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer([
-            'components.layout',
-            'components.display',
-            'components.guest',
-            'components.guest-layout',
+            'components.app-auth',
+            'components.app-backend',
+            'components.app-frontend',
         ], function ($view) {
             $defaultLogoUrl = asset('assets/helpdesk-logo-icon.svg');
             $defaultFaviconUrl = asset('assets/helpdesk-favicon.svg');
