@@ -1,8 +1,8 @@
-# AGENTS.md - Aturan Kerja Project Service Display Helpdesk
+# GEMINI.md - Aturan Kerja Project Service Display Helpdesk
 
 Dokumen ini adalah patokan wajib untuk semua agent, developer, AI assistant, atau kontributor saat mengubah source code project **Service Display Helpdesk**.
 
-Jika ada konflik antara kebiasaan umum development dan dokumen ini, maka ikuti aturan di `AGENTS.md`.
+Jika ada konflik antara kebiasaan umum development dan dokumen ini, maka ikuti aturan di `GEMINI.md`.
 
 ---
 
@@ -650,7 +650,7 @@ Tipe commit yang diperbolehkan:
 
 - `feat`: Penambahan fitur baru.
 - `fix`: Perbaikan bug atau error.
-- `docs`: Perubahan dokumentasi, seperti `README.md` atau `AGENTS.md`.
+- `docs`: Perubahan dokumentasi, seperti `README.md` atau `GEMINI.md`.
 - `refactor`: Merapikan kode atau optimasi tanpa fitur baru dan tanpa bugfix.
 - `style`: Perubahan format visual/penulisan tanpa mengubah logic.
 - `test`: Menambah atau mengubah test.

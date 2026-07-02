@@ -170,7 +170,7 @@ Catatan untuk agent: jangan menjalankan `npm run build` atau `php artisan serve`
 
 ## Workflow Agent
 
-- Agent wajib mengikuti aturan kerja di `AGENTS.md`.
+- Agent wajib mengikuti aturan kerja di `GEMINI.md`.
 - Setelah menyelesaikan perubahan, agent melakukan commit dan push otomatis jika remote dan branch tujuan tersedia.
 - Agent hanya boleh stage file yang dibuat atau diubah pada task berjalan.
 - Perubahan user yang tidak terkait tidak boleh direvert atau ikut distage.
