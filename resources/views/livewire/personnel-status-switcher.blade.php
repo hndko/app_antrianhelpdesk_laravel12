@@ -128,21 +128,35 @@
                     @error('status_note') <span class="mt-1 block text-xs text-rose-600">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
-                    <button wire:click="closeModal" type="button"
-                        class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50">
+                <div class="flex items-center justify-between border-t border-slate-100 pt-4">
+                    @if($personnel_status !== 'ready')
+                    <button wire:click="quickSwitchToReady" type="button"
+                        class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-700">
                         <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
-                        <span>Batal</span>
+                        <span>Otomatis Ready</span>
                     </button>
-                    <button type="submit"
-                        class="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700">
-                        <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Simpan Status</span>
-                    </button>
+                    @else
+                    <div></div>
+                    @endif
+
+                    <div class="flex items-center gap-2.5">
+                        <button wire:click="closeModal" type="button"
+                            class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50">
+                            <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span>Batal</span>
+                        </button>
+                        <button type="submit"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700">
+                            <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Simpan Status</span>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
