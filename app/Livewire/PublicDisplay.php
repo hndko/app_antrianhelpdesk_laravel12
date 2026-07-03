@@ -64,8 +64,15 @@ class PublicDisplay extends Component
             'done' => $queues->whereIn('status', Queue::doneStatuses())->count(),
         ];
 
+        $personnel = \App\Models\User::where('role', 'technician')
+            ->where('status', true)
+            ->orderByRaw("CASE personnel_status WHEN 'ready' THEN 1 WHEN 'visit' THEN 2 WHEN 'support_event' THEN 3 ELSE 4 END")
+            ->orderBy('name', 'asc')
+            ->get();
+
         return view('livewire.public-display', [
             'queues' => $queues,
+            'personnel' => $personnel,
             'settings' => $settings,
             'queueStats' => $queueStats,
             'displayLogoUrl' => $this->resolveAssetUrl($settings->logo_url, 'assets/helpdesk-logo-icon.svg'),

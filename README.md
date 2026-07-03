@@ -11,6 +11,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Tampilan antrian publik di `/`.
 - Update otomatis menggunakan Livewire polling.
 - Daftar antrian dengan status `waiting`, `progress`, dan `done`.
+- Panel informasi ketersediaan personil/teknisi siaga (`Ready`, `Visit`, `Support Acara`, `Tidak Tersedia`) beserta estimasi waktu dan catatan.
 - Countdown estimasi pengerjaan untuk status `progress`.
 - Running text dengan kecepatan yang dapat diatur.
 - Video display berbasis YouTube ID atau URL YouTube.
@@ -42,7 +43,8 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 - Role utama: `superadmin`, `service_desk`, dan `technician`.
 - Akun `helpdesk` berperan sebagai `superadmin`.
-- Superadmin dapat membuat dan mengubah akun service desk, teknisi, dan superadmin.
+- Superadmin dapat membuat dan mengubah akun service desk, teknisi, dan superadmin, termasuk status ketersediaan personil dan estimasi waktu.
+- Setiap teknisi dapat memperbarui status ketersediaan mandiri (Ready, Visit, Support Acara, Tidak Tersedia) secara cepat melalui topbar switcher.
 - Akun dengan riwayat antrian dinonaktifkan saat dihapus agar histori tetap aman.
 - Setiap user dapat mengubah profil dan password dari menu `Edit Profile`.
 

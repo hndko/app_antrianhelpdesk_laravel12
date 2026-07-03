@@ -17,6 +17,9 @@ class UserManager extends Component
     public $email = '';
     public $password = '';
     public $role = 'technician';
+    public $personnel_status = 'ready';
+    public $status_estimated_time = null;
+    public $status_note = null;
     public $status = true;
     public $isEditing = false;
     public $userPendingDeleteId;
@@ -35,12 +38,16 @@ class UserManager extends Component
             'email',
             'password',
             'role',
+            'personnel_status',
+            'status_estimated_time',
+            'status_note',
             'status',
             'isEditing',
             'userPendingDeleteId',
         ]);
 
         $this->role = 'technician';
+        $this->personnel_status = 'ready';
         $this->status = true;
         $this->resetValidation();
     }
@@ -55,6 +62,9 @@ class UserManager extends Component
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user_id)],
             'password' => [$this->isEditing ? 'nullable' : 'required', 'string', 'min:8', 'max:255'],
             'role' => ['required', Rule::in(['superadmin', 'service_desk', 'technician'])],
+            'personnel_status' => ['required', Rule::in(['ready', 'visit', 'support_event', 'unavailable'])],
+            'status_estimated_time' => ['nullable', 'string', 'max:50'],
+            'status_note' => ['nullable', 'string', 'max:100'],
             'status' => ['boolean'],
         ]);
 
@@ -63,6 +73,9 @@ class UserManager extends Component
             'username' => $validated['username'],
             'email' => $validated['email'],
             'role' => $validated['role'],
+            'personnel_status' => $validated['personnel_status'],
+            'status_estimated_time' => $validated['status_estimated_time'] ?: null,
+            'status_note' => $validated['status_note'] ?: null,
             'status' => (bool) $validated['status'],
             'email_verified_at' => now(),
         ];
@@ -93,6 +106,9 @@ class UserManager extends Component
         $this->email = $user->email;
         $this->password = '';
         $this->role = $user->role;
+        $this->personnel_status = $user->personnel_status ?? 'ready';
+        $this->status_estimated_time = $user->status_estimated_time;
+        $this->status_note = $user->status_note;
         $this->status = $user->status;
         $this->isEditing = true;
     }

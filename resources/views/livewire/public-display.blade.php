@@ -25,65 +25,115 @@
     </header>
 
     <main class="mx-auto flex w-full max-w-[1920px] flex-1 flex-col gap-3 p-3 lg:min-h-0 lg:flex-row lg:gap-4 lg:p-5">
-        <section class="flex h-[190px] flex-col overflow-hidden rounded-lg border border-slate-800 bg-slate-950 shadow-sm sm:h-[260px] lg:h-auto lg:min-h-0 lg:flex-[1.05]">
-            <div class="flex items-center justify-between border-b border-white/10 px-3 py-2 text-white sm:px-4 sm:py-3">
-                <div class="flex items-center gap-2">
-                    <span class="h-2.5 w-2.5 rounded-full bg-red-500"></span>
-                    <span class="text-xs font-black uppercase tracking-wide text-slate-200">Informasi Layanan</span>
+        <div class="flex flex-col gap-3 lg:min-h-0 lg:flex-[1.05] lg:gap-4">
+            <section class="flex min-h-[190px] flex-1 flex-col overflow-hidden rounded-lg border border-slate-800 bg-slate-950 shadow-sm sm:min-h-[260px] lg:min-h-0">
+                <div class="flex items-center justify-between border-b border-white/10 px-3 py-2 text-white sm:px-4 sm:py-3">
+                    <div class="flex items-center gap-2">
+                        <span class="h-2.5 w-2.5 rounded-full bg-red-500"></span>
+                        <span class="text-xs font-black uppercase tracking-wide text-slate-200">Informasi Layanan</span>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-400">Live Display</span>
                 </div>
-                <span class="text-xs font-semibold text-slate-400">Live Display</span>
-            </div>
 
-            <div class="relative flex-1 bg-black" wire:key="player-{{ $settings->video_type }}-{{ $settings->video_url }}">
-                @if ($settings->video_url)
-                    @if ($settings->video_type === 'youtube')
-                        <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore class="h-full w-full">
-                            <div id="youtube-player-container" class="h-full w-full"></div>
-                        </div>
-                    @else
-                        <div wire:ignore class="h-full w-full" x-data="{
-                            videoError: false,
-                            initVideo() {
-                                this.$nextTick(() => {
-                                    const video = this.$refs.videoPlayer;
-                                    if (!video) return;
-
-                                    video.addEventListener('error', () => this.videoError = true);
-                                    video.muted = false;
-
-                                    const playPromise = video.play();
-                                    if (playPromise !== undefined) {
-                                        playPromise.catch(() => {
-                                            video.muted = true;
-                                            video.play();
-                                        });
-                                    }
-                                });
-                            }
-                        }" x-init="initVideo()">
-                            <video x-ref="videoPlayer" class="h-full w-full object-contain" loop playsinline>
-                                <source src="{{ asset('storage/' . $settings->video_url) }}?t={{ time() }}" type="video/mp4">
-                            </video>
-
-                            <div x-show="videoError" style="display: none;"
-                                class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-white">
-                                <p class="text-base font-bold sm:text-xl">Gagal Memuat Video</p>
+                <div class="relative flex-1 bg-black" wire:key="player-{{ $settings->video_type }}-{{ $settings->video_url }}">
+                    @if ($settings->video_url)
+                        @if ($settings->video_type === 'youtube')
+                            <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore class="h-full w-full">
+                                <div id="youtube-player-container" class="h-full w-full"></div>
                             </div>
+                        @else
+                            <div wire:ignore class="h-full w-full" x-data="{
+                                videoError: false,
+                                initVideo() {
+                                    this.$nextTick(() => {
+                                        const video = this.$refs.videoPlayer;
+                                        if (!video) return;
+
+                                        video.addEventListener('error', () => this.videoError = true);
+                                        video.muted = false;
+
+                                        const playPromise = video.play();
+                                        if (playPromise !== undefined) {
+                                            playPromise.catch(() => {
+                                                video.muted = true;
+                                                video.play();
+                                            });
+                                        }
+                                    });
+                                }
+                            }" x-init="initVideo()">
+                                <video x-ref="videoPlayer" class="h-full w-full object-contain" loop playsinline>
+                                    <source src="{{ asset('storage/' . $settings->video_url) }}?t={{ time() }}" type="video/mp4">
+                                </video>
+
+                                <div x-show="videoError" style="display: none;"
+                                    class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-white">
+                                    <p class="text-base font-bold sm:text-xl">Gagal Memuat Video</p>
+                                </div>
+                            </div>
+                        @endif
+                    @else
+                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 px-6 text-center">
+                            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-slate-300">
+                                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <p class="text-sm font-bold uppercase tracking-[0.25em] text-slate-400">Menunggu Tayangan</p>
                         </div>
                     @endif
-                @else
-                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 px-6 text-center">
-                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-slate-300">
-                            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <p class="text-sm font-bold uppercase tracking-[0.25em] text-slate-400">Menunggu Tayangan</p>
+                </div>
+            </section>
+
+            <section class="shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 bg-slate-900 px-3 py-2.5 text-white sm:px-4 sm:py-3">
+                    <div class="flex items-center gap-2">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                        </span>
+                        <h2 class="text-xs font-black uppercase tracking-wider text-slate-100 sm:text-sm">Status Ketersediaan Teknisi</h2>
                     </div>
-                @endif
-            </div>
-        </section>
+                    <span class="rounded-full bg-slate-800 px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-300">{{ $personnel->count() }} Personil</span>
+                </div>
+
+                <div class="max-h-[180px] overflow-y-auto bg-slate-50 p-2.5 sm:max-h-[220px] sm:p-3.5">
+                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5">
+                        @forelse($personnel as $tech)
+                            <div class="flex flex-col justify-between rounded-lg border border-slate-200/80 bg-white p-2.5 shadow-2xs transition hover:border-blue-200">
+                                <div class="flex items-start justify-between gap-1.5">
+                                    <div class="min-w-0 flex-1">
+                                        <p class="truncate text-xs font-black text-slate-900 sm:text-sm">{{ $tech->name }}</p>
+                                        <p class="truncate text-[10px] font-semibold text-slate-400 sm:text-[11px]">{{ $tech->username }}</p>
+                                    </div>
+                                    <div class="shrink-0">
+                                        <span class="inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-extrabold {{ $tech->personnel_status_badge_color }}">
+                                            <span class="h-1.5 w-1.5 rounded-full {{ $tech->personnel_status_dot_color }}"></span>
+                                            <span>{{ $tech->personnel_status_label }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                @if($tech->status_estimated_time || $tech->status_note)
+                                    <div class="mt-2 flex flex-col gap-0.5 border-t border-slate-100 pt-1.5 text-[10px] font-bold text-slate-600 sm:text-[11px]">
+                                        @if($tech->status_estimated_time)
+                                            <span class="truncate text-blue-600">⏳ Est: {{ $tech->status_estimated_time }}</span>
+                                        @endif
+                                        @if($tech->status_note)
+                                            <span class="truncate text-slate-500">📝 {{ $tech->status_note }}</span>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        @empty
+                            <div class="col-span-full py-4 text-center text-xs font-semibold text-slate-400 sm:text-sm">
+                                Tidak ada teknisi aktif saat ini.
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <section class="flex h-[560px] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm sm:h-[640px] lg:h-auto lg:min-h-0 lg:flex-[0.95]">
             <div class="shrink-0 border-b border-slate-200 px-3 py-3 sm:px-5 sm:py-4">

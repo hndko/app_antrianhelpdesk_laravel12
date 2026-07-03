@@ -64,6 +64,25 @@
                             </select>
                             @error('status') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                         </div>
+
+                        <div>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Status Ketersediaan</label>
+                            <select wire:model="personnel_status"
+                                class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                                <option value="ready">Ready</option>
+                                <option value="visit">Visit</option>
+                                <option value="support_event">Support Acara</option>
+                                <option value="unavailable">Tidak Tersedia</option>
+                            </select>
+                            @error('personnel_status') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Estimasi Waktu / Catatan</label>
+                            <input type="text" wire:model="status_estimated_time" placeholder="Contoh: 14:30 WIB"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            @error('status_estimated_time') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                        </div>
                     </div>
 
                     <div>
@@ -104,6 +123,7 @@
                                 <th class="p-4">Akun</th>
                                 <th class="p-4">Role</th>
                                 <th class="p-4">Status</th>
+                                <th class="p-4">Ketersediaan</th>
                                 <th class="p-4 text-center">Antrian</th>
                                 <th class="p-4 text-right">Aksi</th>
                             </tr>
@@ -125,6 +145,15 @@
                                             <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">Aktif</span>
                                         @else
                                             <span class="inline-flex rounded-lg border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-black text-slate-600">Nonaktif</span>
+                                        @endif
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-bold {{ $user->personnel_status_badge_color }}">
+                                            <span class="h-1.5 w-1.5 rounded-full {{ $user->personnel_status_dot_color }}"></span>
+                                            <span>{{ $user->personnel_status_label }}</span>
+                                        </div>
+                                        @if ($user->status_estimated_time)
+                                            <div class="mt-1 text-[11px] font-semibold text-slate-500">⏳ {{ $user->status_estimated_time }}</div>
                                         @endif
                                     </td>
                                     <td class="p-4 text-center font-mono font-black text-slate-700">{{ $user->assigned_queues_count }}</td>
@@ -153,7 +182,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="p-12 text-center text-slate-500">Belum ada akun.</td>
+                                    <td colspan="6" class="p-12 text-center text-slate-500">Belum ada akun.</td>
                                 </tr>
                             @endforelse
                         </tbody>

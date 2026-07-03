@@ -209,6 +209,7 @@
                     </div>
 
                     <div class="flex items-center gap-2">
+                        @livewire('personnel-status-switcher')
                         <a href="{{ route('home') }}"
                             class="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600 sm:inline-flex">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
