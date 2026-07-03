@@ -513,10 +513,10 @@ Laporan saat ini adalah laporan harian teknisi.
 
 Aturan:
 
-- Filter wajib menggunakan teknisi dan tanggal.
+- Filter menggunakan teknisi (opsional; jika tidak dipilih teknisi maka secara default menampilkan laporan semua teknisi) dan tanggal.
 - Hitung hanya status selesai.
 - Status selesai yang saat ini dihitung: `done`.
-- Laporan harian wajib menampilkan kartu statistik ringkas dan tabel rincian tiket selesai beserta durasi dan catatan penanganan.
+- Laporan harian wajib menampilkan kartu statistik ringkas dan tabel rincian tiket selesai (termasuk kolom nama teknisi) beserta durasi dan catatan penanganan.
 - Jangan export semua data tanpa filter jika fitur export ditambahkan.
 - Jika laporan makin kompleks, pindahkan query ke service atau query object.
 

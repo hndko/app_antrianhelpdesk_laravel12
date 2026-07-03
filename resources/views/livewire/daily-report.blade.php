@@ -15,9 +15,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
-                        <select wire:model="selectedTechnician" id="technician" required
+                        <select wire:model="selectedTechnician" id="technician"
                             class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
-                            <option value="">-- Pilih Teknisi --</option>
+                            <option value="">-- Semua Teknisi (Default) --</option>
                             @foreach ($technicians as $technician)
                             <option value="{{ $technician->id }}">{{ $technician->name }} ({{
                                 $technician->personnel_status_label }})</option>
@@ -63,19 +63,19 @@
                 <div class="flex items-center gap-3 mb-4">
                     <div
                         class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-black text-xl">
-                        {{ substr($techObj->name ?? 'T', 0, 1) }}
+                        {{ $techObj ? substr($techObj->name, 0, 1) : 'S' }}
                     </div>
                     <div>
-                        <h3 class="font-extrabold text-slate-900 text-lg leading-tight">{{ $techObj->name ?? '-' }}</h3>
+                        <h3 class="font-extrabold text-slate-900 text-lg leading-tight">{{ $techObj->name ?? 'Semua Teknisi' }}</h3>
                         <span class="inline-flex items-center gap-1 mt-1 text-xs font-bold text-slate-500">
-                            <span>Teknisi IT Helpdesk</span>
+                            <span>{{ $techObj ? 'Teknisi IT Helpdesk' : 'Rekapitulasi Seluruh Tim' }}</span>
                         </span>
                     </div>
                 </div>
                 <div class="border-t border-slate-100 pt-4 space-y-2 text-sm">
                     <div class="flex justify-between text-slate-600">
                         <span>Status Personil:</span>
-                        <span class="font-bold text-slate-800">{{ $techObj->personnel_status_label ?? 'Ready' }}</span>
+                        <span class="font-bold text-slate-800">{{ $techObj->personnel_status_label ?? 'Semua Personil' }}</span>
                     </div>
                     <div class="flex justify-between text-slate-600">
                         <span>Periode Laporan:</span>
@@ -112,6 +112,7 @@
                         <th class="p-4 w-16 text-center">No</th>
                         <th class="p-4">Nama User</th>
                         <th class="p-4">Perangkat</th>
+                        <th class="p-4">Teknisi</th>
                         <th class="p-4">Keterangan / Keluhan</th>
                         <th class="p-4 text-center">Durasi</th>
                         <th class="p-4 text-right">Waktu Selesai</th>
@@ -123,13 +124,14 @@
                         <td class="p-4 text-center font-mono font-black text-slate-700">{{ $q->queue_number }}</td>
                         <td class="p-4 font-bold text-slate-900">{{ $q->user_name ?? '-' }}</td>
                         <td class="p-4 font-semibold text-slate-700">{{ $q->laptop_id }}</td>
+                        <td class="p-4 font-bold text-blue-600">{{ $q->technician->name ?? '-' }}</td>
                         <td class="p-4 text-slate-600 max-w-xs truncate">{{ $q->description ?: '-' }}</td>
                         <td class="p-4 text-center font-mono text-slate-700">{{ $q->duration_minutes }} mnt</td>
                         <td class="p-4 text-right font-mono text-slate-500">{{ $q->updated_at->format('H:i') }} WIB</td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="p-8 text-center text-slate-400 font-medium">Tidak ada rincian tiket untuk
+                        <td colspan="7" class="p-8 text-center text-slate-400 font-medium">Tidak ada rincian tiket untuk
                             tanggal ini.</td>
                     </tr>
                     @endforelse

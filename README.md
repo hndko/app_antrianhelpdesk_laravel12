@@ -54,9 +54,9 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 ### Laporan Harian
 
-- Filter laporan berdasarkan teknisi dan tanggal.
+- Filter laporan berdasarkan tanggal dan teknisi (opsional; jika tidak dipilih teknisi maka secara default langsung menampilkan rekapitulasi seluruh teknisi).
 - Kartu statistik ringkas menampilkan status teknisi, total selesai, total durasi, dan rata-rata durasi penanganan.
-- Tabel daftar rincian pekerjaan selesai dengan informasi lengkap termasuk catatan penanganan.
+- Tabel daftar rincian pekerjaan selesai dengan informasi lengkap termasuk kolom nama teknisi dan catatan penanganan.
 - Menghitung pekerjaan selesai dari status `done`.
 
 ## Teknologi

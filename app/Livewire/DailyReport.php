@@ -29,6 +29,7 @@ class DailyReport extends Component
             ->get();
 
         $this->selectedDate = Carbon::today()->format('Y-m-d');
+        $this->generateReport();
     }
 
     public function generateReport(): void
@@ -38,15 +39,18 @@ class DailyReport extends Component
         abort_unless($user?->canViewReports(), 403);
 
         $this->validate([
-            'selectedTechnician' => 'required|exists:users,id,role,technician,status,1',
+            'selectedTechnician' => 'nullable|exists:users,id,role,technician,status,1',
             'selectedDate' => 'required|date',
         ]);
 
         $query = Queue::query()
             ->with('technician')
-            ->where('technician_user_id', $this->selectedTechnician)
             ->whereDate('updated_at', $this->selectedDate)
             ->whereIn('status', Queue::doneStatuses());
+
+        if (!empty($this->selectedTechnician)) {
+            $query->where('technician_user_id', $this->selectedTechnician);
+        }
 
         $this->reportData = $query->count();
         $this->completedQueues = $query->orderBy('updated_at', 'desc')->get();
