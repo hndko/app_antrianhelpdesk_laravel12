@@ -9,26 +9,43 @@
                 <div class="md:col-span-5">
                     <label for="technician" class="block text-sm font-semibold text-slate-700 mb-2">Pilih
                         Teknisi</label>
-                    <select wire:model="selectedTechnician" id="technician" required
-                        class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
-                        <option value="">-- Pilih Teknisi --</option>
-                        @foreach ($technicians as $technician)
-                        <option value="{{ $technician->id }}">{{ $technician->name }} ({{
-                            $technician->personnel_status_label }})</option>
-                        @endforeach
-                    </select>
+                    <div class="relative">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <select wire:model="selectedTechnician" id="technician" required
+                            class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
+                            <option value="">-- Pilih Teknisi --</option>
+                            @foreach ($technicians as $technician)
+                            <option value="{{ $technician->id }}">{{ $technician->name }} ({{
+                                $technician->personnel_status_label }})</option>
+                            @endforeach
+                        </select>
+                    </div>
                     @error('selectedTechnician') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                 </div>
                 <div class="md:col-span-4">
                     <label for="date" class="block text-sm font-semibold text-slate-700 mb-2">Pilih Tanggal</label>
-                    <input type="date" wire:model="selectedDate" id="date" required
-                        class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                    <div class="relative">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <input type="date" wire:model="selectedDate" id="date" required
+                            class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                    </div>
                     @error('selectedDate') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                 </div>
                 <div class="md:col-span-3">
                     <button type="submit"
-                        class="w-full py-2.5 px-6 rounded-xl text-white font-bold shadow-lg bg-blue-600 hover:bg-blue-700 shadow-blue-500/30 transition-all transform hover:-translate-y-0.5">
-                        Tampilkan Laporan
+                        class="flex w-full items-center justify-center gap-2 py-2.5 px-6 rounded-xl text-white font-bold shadow-lg bg-blue-600 hover:bg-blue-700 shadow-blue-500/30 transition-all transform hover:-translate-y-0.5">
+                        <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>Tampilkan Laporan</span>
                     </button>
                 </div>
             </form>

@@ -15,14 +15,28 @@
                 <div class="space-y-5">
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Nama Aplikasi</label>
-                        <input type="text" wire:model="app_title"
-                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <input type="text" wire:model="app_title" placeholder="Masukkan nama aplikasi"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
                     </div>
 
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Running Text</label>
-                        <textarea wire:model="running_text" rows="3"
-                            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
+                        <div class="relative">
+                            <div class="pointer-events-none absolute top-3 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                </svg>
+                            </div>
+                            <textarea wire:model="running_text" rows="3" placeholder="Tuliskan informasi pengumuman running text..."
+                                class="w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -113,8 +127,15 @@
                 <div class="space-y-4">
                     <div class="rounded-lg border border-slate-200 bg-slate-50 p-5">
                         <label class="mb-2 block text-sm font-bold text-slate-700">Link / YouTube Video ID</label>
-                        <input type="text" wire:model.live="youtube_id" placeholder="Paste link YouTube di sini..."
-                            class="min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-base text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-red-500 focus:ring-4 focus:ring-red-100">
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <input type="text" wire:model.live="youtube_id" placeholder="Paste link YouTube di sini..."
+                                class="min-h-12 w-full rounded-lg border border-slate-300 bg-white pl-11 pr-4 py-3 font-mono text-base text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-red-500 focus:ring-4 focus:ring-red-100">
+                        </div>
                         <p class="mt-3 text-xs font-medium leading-5 text-slate-500">
                             Link YouTube lengkap akan otomatis diubah menjadi ID video.
                         </p>
@@ -142,8 +163,11 @@
 
             <div class="mt-6 flex justify-end border-t border-slate-100 pt-5">
                 <button type="submit"
-                    class="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-slate-900 px-6 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 sm:w-auto">
-                    Simpan Pengaturan
+                    class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-6 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 sm:w-auto">
+                    <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Simpan Pengaturan</span>
                 </button>
             </div>
         </form>

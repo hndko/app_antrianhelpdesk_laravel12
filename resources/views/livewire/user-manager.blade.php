@@ -24,64 +24,113 @@
                 <form wire:submit.prevent="save" class="space-y-5 p-5">
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Nama</label>
-                        <input type="text" wire:model="name"
-                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <input type="text" wire:model="name" placeholder="Masukkan nama lengkap"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
                         @error('name') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Username</label>
-                        <input type="text" wire:model="username"
-                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </div>
+                            <input type="text" wire:model="username" placeholder="Masukkan username"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
                         @error('username') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Email</label>
-                        <input type="email" wire:model="email"
-                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <input type="email" wire:model="email" placeholder="Masukkan alamat email"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
                         @error('email') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                             <label class="mb-2 block text-sm font-bold text-slate-700">Role</label>
-                            <select wire:model="role"
-                                class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
-                                <option value="technician">Teknisi</option>
-                                <option value="service_desk">Service Desk</option>
-                                <option value="superadmin">Superadmin</option>
-                            </select>
+                            <div class="relative">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <select wire:model="role"
+                                    class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                                    <option value="technician">Teknisi</option>
+                                    <option value="service_desk">Service Desk</option>
+                                    <option value="superadmin">Superadmin</option>
+                                </select>
+                            </div>
                             @error('role') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
                             <label class="mb-2 block text-sm font-bold text-slate-700">Status</label>
-                            <select wire:model="status"
-                                class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
-                                <option value="1">Aktif</option>
-                                <option value="0">Nonaktif</option>
-                            </select>
+                            <div class="relative">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <select wire:model="status"
+                                    class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Nonaktif</option>
+                                </select>
+                            </div>
                             @error('status') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
                             <label class="mb-2 block text-sm font-bold text-slate-700">Status Ketersediaan</label>
-                            <select wire:model="personnel_status"
-                                class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
-                                <option value="ready">Ready</option>
-                                <option value="visit">Visit</option>
-                                <option value="support_event">Support Acara</option>
-                                <option value="unavailable">Tidak Tersedia</option>
-                            </select>
+                            <div class="relative">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <select wire:model="personnel_status"
+                                    class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                                    <option value="ready">Ready</option>
+                                    <option value="visit">Visit</option>
+                                    <option value="support_event">Support Acara</option>
+                                    <option value="unavailable">Tidak Tersedia</option>
+                                </select>
+                            </div>
                             @error('personnel_status') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
                             <label class="mb-2 block text-sm font-bold text-slate-700">Estimasi Waktu / Catatan</label>
-                            <input type="text" wire:model="status_estimated_time" placeholder="Contoh: 14:30 WIB"
-                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <div class="relative">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <input type="text" wire:model="status_estimated_time" placeholder="Contoh: 14:30 WIB"
+                                    class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            </div>
                             @error('status_estimated_time') <p class="mt-2 text-xs font-bold text-red-600">{{ $message
                                 }}</p> @enderror
                         </div>
@@ -89,21 +138,34 @@
 
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Password</label>
-                        <input type="password" wire:model="password" autocomplete="new-password"
-                            placeholder="{{ $isEditing ? 'Kosongkan jika tidak diganti' : 'Minimal 8 karakter' }}"
-                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <input type="password" wire:model="password" autocomplete="new-password"
+                                placeholder="{{ $isEditing ? 'Kosongkan jika tidak diganti' : 'Minimal 8 karakter' }}"
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        </div>
                         @error('password') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="flex flex-col gap-3 pt-2 sm:flex-row">
                         <button type="submit"
-                            class="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700">
-                            {{ $isEditing ? 'Simpan Perubahan' : 'Tambah Akun' }}
+                            class="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700">
+                            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>{{ $isEditing ? 'Simpan Perubahan' : 'Tambah Akun' }}</span>
                         </button>
                         @if ($isEditing)
                         <button type="button" wire:click="resetForm"
-                            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
-                            Batal
+                            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
+                            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span>Batal</span>
                         </button>
                         @endif
                     </div>
@@ -217,12 +279,18 @@
             </p>
             <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                 <button type="button" wire:click="cancelDelete"
-                    class="inline-flex min-h-11 justify-center rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
-                    Batal
+                    class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
+                    <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span>Batal</span>
                 </button>
                 <button type="button" wire:click="confirmDelete"
-                    class="inline-flex min-h-11 justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700">
-                    Lanjutkan
+                    class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700">
+                    <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>Lanjutkan</span>
                 </button>
             </div>
         </div>

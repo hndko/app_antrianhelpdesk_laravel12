@@ -81,9 +81,16 @@
                         class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                         Estimasi Waktu Selesai / Kembali <span class="text-slate-400 font-normal">(Opsional)</span>
                     </label>
-                    <input type="text" wire:model="status_estimated_time" id="status_estimated_time"
-                        placeholder="Contoh: 14:30 WIB atau 60 Menit"
-                        class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                    <div class="relative">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" wire:model="status_estimated_time" id="status_estimated_time"
+                            placeholder="Contoh: 14:30 WIB atau 60 Menit"
+                            class="w-full rounded-xl border border-slate-300 pl-10 pr-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                    </div>
                     <p class="mt-1 text-[11px] text-slate-500">Teks singkat untuk memberikan perkiraan waktu kepada
                         pelanggan.</p>
                     @error('status_estimated_time') <span class="mt-1 block text-xs text-rose-600">{{ $message }}</span>
@@ -95,20 +102,34 @@
                         class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                         Catatan / Lokasi <span class="text-slate-400 font-normal">(Opsional)</span>
                     </label>
-                    <input type="text" wire:model="status_note" id="status_note"
-                        placeholder="Contoh: Perbaikan Jaringan Gedung B"
-                        class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                    <div class="relative">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" wire:model="status_note" id="status_note"
+                            placeholder="Contoh: Perbaikan Jaringan Gedung B"
+                            class="w-full rounded-xl border border-slate-300 pl-10 pr-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                    </div>
                     @error('status_note') <span class="mt-1 block text-xs text-rose-600">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
                     <button wire:click="closeModal" type="button"
-                        class="rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50">
-                        Batal
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50">
+                        <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>Batal</span>
                     </button>
                     <button type="submit"
-                        class="rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700">
-                        Simpan Status
+                        class="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700">
+                        <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Simpan Status</span>
                     </button>
                 </div>
             </form>
