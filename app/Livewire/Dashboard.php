@@ -31,6 +31,16 @@ class Dashboard extends Component
     {
         $today = Carbon::today();
 
+        $avgDuration = (int) round((float) $this->queueQueryForUser()
+            ->where('duration_minutes', '>', 0)
+            ->avg('duration_minutes'));
+
+        $activeTechniciansCount = User::query()
+            ->where('role', 'technician')
+            ->where('status', true)
+            ->whereIn('personnel_status', ['ready', 'visit', 'support_event'])
+            ->count();
+
         $stats = [
             'total' => $this->queueQueryForUser()->count('*'),
             'waiting' => $this->queueQueryForUser()->where('status', 'waiting')->count('*'),
@@ -39,6 +49,11 @@ class Dashboard extends Component
                 ->whereIn('status', Queue::doneStatuses())
                 ->whereDate('updated_at', $today)
                 ->count('*'),
+            'done_total' => $this->queueQueryForUser()
+                ->whereIn('status', Queue::doneStatuses())
+                ->count('*'),
+            'avg_duration' => $avgDuration > 0 ? $avgDuration : 15,
+            'active_technicians' => $activeTechniciansCount,
         ];
 
         $statusCounts = $this->queueQueryForUser()
@@ -47,31 +62,40 @@ class Dashboard extends Component
             ->pluck('total', 'status');
 
         $statusChart = collect([
-            'waiting' => 'Menunggu',
-            'progress' => 'Dikerjakan',
-            'done' => 'Selesai',
-        ])->map(function ($label, $status) use ($statusCounts, $stats) {
+            'waiting' => ['label' => 'Menunggu (Antri)', 'color' => '#f59e0b'],
+            'progress' => ['label' => 'Sedang Dikerjakan', 'color' => '#3b82f6'],
+            'done' => ['label' => 'Selesai Dilayani', 'color' => '#10b981'],
+        ])->map(function ($info, $status) use ($statusCounts, $stats) {
             $total = (int) ($statusCounts[$status] ?? 0);
 
             return [
-                'label' => $label,
+                'status' => $status,
+                'label' => $info['label'],
+                'color' => $info['color'],
                 'total' => $total,
                 'percent' => $stats['total'] > 0 ? round(($total / $stats['total']) * 100) : 0,
             ];
-        });
+        })->values();
 
         $dailyTrend = collect(range(6, 0))->map(function ($daysAgo) {
             $date = Carbon::today()->subDays($daysAgo);
-            $query = $this->queueQueryForUser()
-                ->whereDate('created_at', $date);
+            $incoming = $this->queueQueryForUser()
+                ->whereDate('created_at', $date)
+                ->count('*');
+            $completed = $this->queueQueryForUser()
+                ->whereIn('status', Queue::doneStatuses())
+                ->whereDate('updated_at', $date)
+                ->count('*');
 
             return [
                 'label' => $date->translatedFormat('d M'),
-                'total' => $query->count('*'),
+                'total' => $incoming,
+                'incoming' => $incoming,
+                'completed' => $completed,
             ];
         });
 
-        $maxDailyTotal = max($dailyTrend->max('total'), 1);
+        $maxDailyTotal = max($dailyTrend->max('incoming'), $dailyTrend->max('completed'), 1);
 
         $technicianPerformance = User::query()
             ->where('role', 'technician')
@@ -81,10 +105,18 @@ class Dashboard extends Component
                 'assignedQueues as done_today_count' => fn($query) => $query
                     ->whereIn('status', Queue::doneStatuses())
                     ->whereDate('updated_at', $today),
+                'assignedQueues as total_done_count' => fn($query) => $query
+                    ->whereIn('status', Queue::doneStatuses()),
             ])
             ->orderByDesc('done_today_count')
+            ->orderByDesc('active_queues_count')
             ->orderBy('name')
-            ->limit(5)
+            ->get();
+
+        $recentQueues = $this->queueQueryForUser()
+            ->with('technician')
+            ->orderByDesc('updated_at')
+            ->limit(8)
             ->get();
 
         /** @var mixed $view */
@@ -94,6 +126,7 @@ class Dashboard extends Component
             'dailyTrend' => $dailyTrend,
             'maxDailyTotal' => $maxDailyTotal,
             'technicianPerformance' => $technicianPerformance,
+            'recentQueues' => $recentQueues,
         ]);
 
         return $view->layout('components.app-backend');

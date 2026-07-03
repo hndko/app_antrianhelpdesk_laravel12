@@ -21,13 +21,18 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Autoscroll daftar antrian saat data melebihi tinggi panel.
 - Tampilan jam dan tanggal real-time dengan format baku Indonesia (misalnya `Jumat, 03 Juli 2026 • 11:30 WIB`) pada header layar.
 
-### Dashboard
+### Dashboard Operasional (Analytics Graph & Table)
 
 - Login operator/teknisi dengan satu halaman auth responsif.
 - Layout backend menggunakan sidebar responsif dengan tombol hamburger untuk mobile dan desktop.
-- Dashboard fokus sebagai halaman analytics graph.
-- Statistik total antrian, antrian menunggu, antrian diproses, dan selesai hari ini.
-- Grafik tren antrian 7 hari, komposisi status, dan performa teknisi.
+- Dashboard fokus sebagai halaman pusat analitik operasional (`Dashboard Operasional`).
+- **KPI Summary Cards**: Statistik real-time total antrian, menunggu, dikerjakan, selesai hari ini, rata-rata durasi estimasi, dan jumlah teknisi siaga.
+- **Interactive Analytics Graphs**:
+  - *Grafik Tren Antrian 7 Hari Terakhir*: Area chart interaktif (ApexCharts) membandingkan tiket masuk vs tiket selesai per hari.
+  - *Grafik Komposisi Status Tiket*: Donut chart interaktif memvisualisasikan proporsi status layanan antrian.
+- **Operational Analytics Tables**:
+  - *Tabel Analitik Performa Teknisi*: Memantau produktivitas harian tiap teknisi (status personil, tiket aktif, selesai hari ini, dan total penanganan).
+  - *Tabel Aktivitas Antrian Terkini*: Rincian update 8 tiket terbaru yang sedang atau baru selesai ditangani.
 
 ### Manajemen Antrian
 
