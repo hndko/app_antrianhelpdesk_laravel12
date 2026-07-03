@@ -40,6 +40,29 @@ class PersonnelStatusSwitcher extends Component
         $this->isOpen = false;
     }
 
+    public function quickSwitchToReady()
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if ($user) {
+            $user->update([
+                'personnel_status' => 'ready',
+                'status_estimated_time' => null,
+                'status_note' => null,
+            ]);
+
+            $this->personnel_status = 'ready';
+            $this->status_estimated_time = null;
+            $this->status_note = null;
+            $this->isOpen = false;
+
+            $this->dispatch('show-toast', [
+                'type' => 'success',
+                'message' => 'Status ketersediaan otomatis dialihkan ke Ready.'
+            ]);
+        }
+    }
+
     public function saveStatus()
     {
         $this->validate([

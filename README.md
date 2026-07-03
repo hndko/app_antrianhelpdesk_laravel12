@@ -54,7 +54,8 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Role utama: `superadmin`, `service_desk`, dan `technician`.
 - Akun `helpdesk` berperan sebagai `superadmin`.
 - Superadmin dapat membuat dan mengubah akun service desk, teknisi, dan superadmin, termasuk status ketersediaan personil dan estimasi waktu.
-- Setiap teknisi dapat memperbarui status ketersediaan mandiri (Ready, Visit, Support Acara, Tidak Tersedia) secara cepat melalui topbar switcher.
+- Setiap teknisi dapat memperbarui status ketersediaan mandiri (Ready, Visit, Support Acara, Tidak Tersedia) secara cepat melalui topbar switcher dengan tombol 1-klik untuk kembali ke status Ready.
+- Status teknisi otomatis beralih ke `Ready` saat teknisi login kembali atau saat memproses antrian pekerjaan.
 - Akun dengan riwayat antrian dinonaktifkan saat dihapus agar histori tetap aman.
 - Setiap user dapat mengubah profil dan password dari menu `Edit Profile`.
 

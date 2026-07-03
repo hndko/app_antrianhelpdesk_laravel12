@@ -1,15 +1,27 @@
 <div>
     @if($currentUser)
-    <!-- Trigger Button -->
-    <button wire:click="openModal" type="button"
-        class="flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold transition hover:opacity-80 shadow-sm {{ $currentUser->personnel_status_badge_color }}">
-        <span class="h-2 w-2 rounded-full animate-pulse {{ $currentUser->personnel_status_dot_color }}"></span>
-        <span>Status: <strong class="font-bold">{{ $currentUser->personnel_status_label }}</strong></span>
-        @if($currentUser->status_estimated_time)
-        <span class="hidden sm:inline border-l border-current/20 pl-2 text-[11px] opacity-85">⏳ {{
-            $currentUser->status_estimated_time }}</span>
+    <div class="flex items-center gap-1.5">
+        <!-- Trigger Button -->
+        <button wire:click="openModal" type="button"
+            class="flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold transition hover:opacity-80 shadow-sm {{ $currentUser->personnel_status_badge_color }}">
+            <span class="h-2 w-2 rounded-full animate-pulse {{ $currentUser->personnel_status_dot_color }}"></span>
+            <span>Status: <strong class="font-bold">{{ $currentUser->personnel_status_label }}</strong></span>
+            @if($currentUser->status_estimated_time)
+            <span class="hidden sm:inline border-l border-current/20 pl-2 text-[11px] opacity-85">⏳ {{
+                $currentUser->status_estimated_time }}</span>
+            @endif
+        </button>
+
+        @if($currentUser->personnel_status !== 'ready')
+        <button wire:click="quickSwitchToReady" type="button" title="Otomatis beralih ke Ready"
+            class="flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-700 active:scale-95">
+            <svg class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span class="hidden md:inline">Otomatis Ready</span>
+        </button>
         @endif
-    </button>
+    </div>
 
     <!-- Modal -->
     @if($isOpen)

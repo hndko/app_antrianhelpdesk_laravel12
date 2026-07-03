@@ -113,6 +113,20 @@ class QueueManager extends Component
             $msg = 'Antrian baru berhasil ditambahkan!';
         }
 
+        if (!empty($validated['technician_user_id'])) {
+            /** @var \App\Models\User|null $techUser */
+            $techUser = User::find($validated['technician_user_id']);
+            if ($techUser && $techUser->isTechnician() && $techUser->personnel_status !== 'ready') {
+                if ($validated['status'] === 'progress' || ((int) $user?->id === (int) $techUser->id)) {
+                    $techUser->update([
+                        'personnel_status' => 'ready',
+                        'status_estimated_time' => null,
+                        'status_note' => null,
+                    ]);
+                }
+            }
+        }
+
         $this->resetQueueForm();
 
         $this->dispatch('show-toast', [

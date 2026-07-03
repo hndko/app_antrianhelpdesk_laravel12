@@ -75,3 +75,44 @@ it('displays active technicians on public display', function () {
         ->assertSee('Teknisi Handal')
         ->assertSee('Ready');
 });
+
+it('allows technician to quickly switch back to ready via quickSwitchToReady', function () {
+    $technician = User::factory()->create([
+        'role' => 'technician',
+        'status' => true,
+        'personnel_status' => 'visit',
+        'status_estimated_time' => '15:00 WIB',
+        'status_note' => 'Ke gedung B',
+    ]);
+
+    $this->actingAs($technician);
+
+    Livewire::test(PersonnelStatusSwitcher::class)
+        ->call('quickSwitchToReady')
+        ->assertDispatched('show-toast');
+
+    $technician->refresh();
+    expect($technician->personnel_status)->toBe('ready');
+    expect($technician->status_estimated_time)->toBeNull();
+    expect($technician->status_note)->toBeNull();
+});
+
+it('automatically switches technician status to ready when taking or updating queue to progress', function () {
+    $technician = User::factory()->create([
+        'role' => 'technician',
+        'status' => true,
+        'personnel_status' => 'visit',
+    ]);
+
+    $this->actingAs($technician);
+
+    Livewire::test(\App\Livewire\QueueManager::class)
+        ->set('laptop_id', 'LAPTOP-TEST-001')
+        ->set('technician_user_id', $technician->id)
+        ->set('status', 'progress')
+        ->set('duration_minutes', 45)
+        ->call('saveQueue');
+
+    $technician->refresh();
+    expect($technician->personnel_status)->toBe('ready');
+});

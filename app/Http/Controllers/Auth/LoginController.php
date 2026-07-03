@@ -22,6 +22,17 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials + ['status' => true])) {
             $request->session()->regenerate();
+
+            /** @var \App\Models\User|null $user */
+            $user = Auth::user();
+            if ($user && $user->isTechnician() && $user->personnel_status !== 'ready') {
+                $user->update([
+                    'personnel_status' => 'ready',
+                    'status_estimated_time' => null,
+                    'status_note' => null,
+                ]);
+            }
+
             return redirect()->intended('dashboard');
         }
 

@@ -476,7 +476,10 @@ Aturan display:
 - `service_desk` dapat melihat semua antrian dan assign pekerjaan ke teknisi.
 - `technician` hanya boleh melihat antrian dengan `technician_user_id` miliknya.
 - Status ketersediaan personil (`personnel_status`) terdiri dari: `ready`, `visit`, `support_event`, dan `unavailable`.
-- Teknisi dapat memperbarui status ketersediaan mandiri beserta estimasi waktu (`status_estimated_time`, teks bebas maks 50 karakter) dan catatan (`status_note`) melalui topbar switcher (`PersonnelStatusSwitcher`).
+- Teknisi dapat memperbarui status ketersediaan mandiri beserta estimasi waktu (`status_estimated_time`, teks bebas maks 50 karakter) dan catatan (`status_note`) melalui topbar switcher (`PersonnelStatusSwitcher`), serta tersedia tombol cepat 1-klik untuk otomatis kembali ke status `ready`.
+- Status ketersediaan teknisi yang sedang berada pada status `visit`, `support_event`, atau `unavailable` akan otomatis beralih kembali ke `ready` (serta mengosongkan estimasi waktu dan catatan) apabila:
+    - Teknisi tersebut login kembali ke aplikasi.
+    - Teknisi menerima/memproses antrian (mengubah status antrian menjadi `progress` atau menambah antrian atas namannya di Manajemen Antrian).
 - Saat teknisi membuat antrian, `technician_user_id` boleh memakai akun teknisi yang sedang login atau teknisi tujuan jika antrian langsung dioper.
 - Teknisi dan service desk boleh mengoper antrian ke teknisi lain.
 - Oper antrian dan update status wajib membuat history log.
