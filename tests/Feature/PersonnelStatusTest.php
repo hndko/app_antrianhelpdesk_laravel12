@@ -10,6 +10,7 @@ use Livewire\Livewire;
 uses(RefreshDatabase::class);
 
 it('allows technician to update their own personnel status via PersonnelStatusSwitcher', function () {
+    /** @var \App\Models\User $technician */
     $technician = User::factory()->create([
         'role' => 'technician',
         'status' => true,
@@ -32,11 +33,13 @@ it('allows technician to update their own personnel status via PersonnelStatusSw
 });
 
 it('allows superadmin to manage user personnel status via UserManager', function () {
+    /** @var \App\Models\User $superadmin */
     $superadmin = User::factory()->create([
         'role' => 'superadmin',
         'status' => true,
     ]);
 
+    /** @var \App\Models\User $technician */
     $technician = User::factory()->create([
         'name' => 'Budi Teknisi',
         'username' => 'buditek',

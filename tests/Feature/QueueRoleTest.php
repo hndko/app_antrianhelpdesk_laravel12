@@ -56,6 +56,7 @@ it('limits technician queue list to assigned queues', function () {
         'description' => 'Antrian teknisi lain.',
     ]);
 
+    /** @var \App\Models\User $technician */
     $this->actingAs($technician);
 
     Livewire::test(QueueManager::class)
@@ -89,6 +90,7 @@ it('writes a queue log when a queue is transferred', function () {
         'description' => 'Antrian untuk transfer.',
     ]);
 
+    /** @var \App\Models\User $serviceDesk */
     $this->actingAs($serviceDesk);
 
     Livewire::test(QueueManager::class)

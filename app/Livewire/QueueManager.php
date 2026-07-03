@@ -16,16 +16,16 @@ class QueueManager extends Component
 {
     use WithPagination;
 
-    public $queue_id;
-    public $laptop_id;
-    public $user_name;
-    public $technician_user_id;
-    public $status = 'waiting';
-    public $duration_minutes = 60;
-    public $description;
-    public $isEditing = false;
-    public $technicians;
-    public $queuePendingDeleteId;
+    public ?int $queue_id = null;
+    public string $laptop_id = '';
+    public ?string $user_name = '';
+    public ?int $technician_user_id = null;
+    public string $status = 'waiting';
+    public int $duration_minutes = 60;
+    public ?string $description = null;
+    public bool $isEditing = false;
+    public $technicians = [];
+    public ?int $queuePendingDeleteId = null;
 
     public function mount()
     {
@@ -37,7 +37,7 @@ class QueueManager extends Component
         $this->technicians = User::query()
             ->where('role', 'technician')
             ->where('status', true)
-            ->orderBy('name')
+            ->orderBy('name', 'asc')
             ->get();
     }
 
@@ -74,7 +74,8 @@ class QueueManager extends Component
         ]);
 
         if ($this->isEditing) {
-            $queue = $this->findQueueForUser($this->queue_id);
+            /** @var Queue $queue */
+            $queue = $this->findQueueForUser((int) $this->queue_id);
 
             DB::transaction(function () use ($queue, $validated, $user) {
                 $oldTechnicianId = $queue->technician_user_id;
@@ -98,7 +99,7 @@ class QueueManager extends Component
             $msg = 'Data antrian berhasil diperbarui!';
         } else {
             DB::transaction(function () use ($validated, $user) {
-                $lastQueue = Queue::whereDate('created_at', Carbon::today())
+                $lastQueue = Queue::query()->whereDate('created_at', Carbon::today())
                     ->lockForUpdate()
                     ->max('queue_number') ?? 0;
 
@@ -120,7 +121,7 @@ class QueueManager extends Component
         ]);
     }
 
-    public function editQueue($id)
+    public function editQueue(int $id)
     {
         $queue = $this->findQueueForUser($id);
         $this->queue_id = $queue->id;
@@ -133,7 +134,7 @@ class QueueManager extends Component
         $this->isEditing = true;
     }
 
-    public function askDeleteQueue($id): void
+    public function askDeleteQueue(int $id): void
     {
         abort_unless(Auth::user()->canViewAllQueues(), 403);
 
@@ -147,8 +148,9 @@ class QueueManager extends Component
 
     public function confirmDeleteQueue()
     {
-        abort_unless(Auth::user()->canViewAllQueues(), 403);
+        abort_unless(Auth::user()?->canViewAllQueues(), 403);
 
+        /** @var Queue $queue */
         $queue = $this->queueQueryForUser()->findOrFail($this->queuePendingDeleteId);
 
         DB::transaction(function () use ($queue) {
@@ -170,19 +172,23 @@ class QueueManager extends Component
         return 'components.pagination-custom';
     }
 
-    private function queueQueryForUser()
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder<\App\Models\Queue>
+     */
+    private function queueQueryForUser(): \Illuminate\Database\Eloquent\Builder
     {
         $query = Queue::query();
 
-        if (Auth::user()->isTechnician()) {
+        if (Auth::user()?->isTechnician()) {
             $query->where('technician_user_id', Auth::id());
         }
 
         return $query;
     }
 
-    private function findQueueForUser($id): Queue
+    private function findQueueForUser(int $id): Queue
     {
+        /** @var Queue */
         return $this->queueQueryForUser()->findOrFail($id);
     }
 
@@ -241,10 +247,13 @@ class QueueManager extends Component
             ->orderBy('queue_number', 'asc')
             ->paginate(5);
 
-        return view('livewire.queue-manager', [
+        /** @var mixed $view */
+        $view = view('livewire.queue-manager', [
             'queues' => $queues,
             'canTransferQueue' => true,
-            'canDeleteQueue' => Auth::user()->canViewAllQueues(),
-        ])->layout('components.app-backend');
+            'canDeleteQueue' => Auth::user()?->canViewAllQueues(),
+        ]);
+
+        return $view->layout('components.app-backend');
     }
 }
