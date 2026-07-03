@@ -27,7 +27,9 @@ class UserManager extends Component
 
     public function mount(): void
     {
-        abort_unless(Auth::user()?->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canManageUsers(), 403);
     }
 
     public function resetForm(): void
@@ -55,7 +57,9 @@ class UserManager extends Component
 
     public function save(): void
     {
-        abort_unless(Auth::user()?->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canManageUsers(), 403);
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -157,7 +161,9 @@ class UserManager extends Component
 
     public function render()
     {
-        abort_unless(Auth::user()?->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canManageUsers(), 403);
 
         return view('livewire.user-manager', [
             'users' => User::query()

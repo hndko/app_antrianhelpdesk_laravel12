@@ -11,11 +11,16 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    private function queueQueryForUser()
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder<\App\Models\Queue>
+     */
+    private function queueQueryForUser(): \Illuminate\Database\Eloquent\Builder
     {
         $query = Queue::query();
 
-        if (Auth::user()->isTechnician()) {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if ($user?->isTechnician()) {
             $query->where('technician_user_id', Auth::id());
         }
 
@@ -24,21 +29,20 @@ class Dashboard extends Component
 
     public function render()
     {
-        $queueQuery = $this->queueQueryForUser();
         $today = Carbon::today();
 
         $stats = [
-            'total' => (clone $queueQuery)->count(),
-            'waiting' => (clone $queueQuery)->where('status', 'waiting')->count(),
-            'progress' => (clone $queueQuery)->where('status', 'progress')->count(),
-            'done_today' => (clone $queueQuery)
+            'total' => $this->queueQueryForUser()->count('*'),
+            'waiting' => $this->queueQueryForUser()->where('status', 'waiting')->count('*'),
+            'progress' => $this->queueQueryForUser()->where('status', 'progress')->count('*'),
+            'done_today' => $this->queueQueryForUser()
                 ->whereIn('status', Queue::doneStatuses())
                 ->whereDate('updated_at', $today)
-                ->count(),
+                ->count('*'),
         ];
 
-        $statusCounts = (clone $queueQuery)
-            ->select('status', DB::raw('count(*) as total'))
+        $statusCounts = $this->queueQueryForUser()
+            ->select(['status', DB::raw('count(*) as total')])
             ->groupBy('status')
             ->pluck('total', 'status');
 
@@ -63,7 +67,7 @@ class Dashboard extends Component
 
             return [
                 'label' => $date->translatedFormat('d M'),
-                'total' => $query->count(),
+                'total' => $query->count('*'),
             ];
         });
 
@@ -73,8 +77,8 @@ class Dashboard extends Component
             ->where('role', 'technician')
             ->where('status', true)
             ->withCount([
-                'assignedQueues as active_queues_count' => fn ($query) => $query->whereIn('status', ['waiting', 'progress']),
-                'assignedQueues as done_today_count' => fn ($query) => $query
+                'assignedQueues as active_queues_count' => fn($query) => $query->whereIn('status', ['waiting', 'progress']),
+                'assignedQueues as done_today_count' => fn($query) => $query
                     ->whereIn('status', Queue::doneStatuses())
                     ->whereDate('updated_at', $today),
             ])
@@ -83,12 +87,15 @@ class Dashboard extends Component
             ->limit(5)
             ->get();
 
-        return view('livewire.dashboard', [
+        /** @var mixed $view */
+        $view = view('livewire.dashboard', [
             'stats' => $stats,
             'statusChart' => $statusChart,
             'dailyTrend' => $dailyTrend,
             'maxDailyTotal' => $maxDailyTotal,
             'technicianPerformance' => $technicianPerformance,
-        ])->layout('components.app-backend');
+        ]);
+
+        return $view->layout('components.app-backend');
     }
 }

@@ -25,12 +25,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/queues', QueueManager::class)->name('queues.index');
     Route::get('/display-settings', DisplaySettings::class)->name('display-settings.index');
     Route::get('/accounts', function () {
-        abort_unless(auth()->user()->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        abort_unless($user?->canManageUsers(), 403);
 
         return view('backend.accounts.index');
     })->name('accounts.index');
     Route::get('/reports/daily', function () {
-        abort_unless(auth()->user()->canViewReports(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        abort_unless($user?->canViewReports(), 403);
 
         return view('backend.reports.daily');
     })->name('reports.daily');

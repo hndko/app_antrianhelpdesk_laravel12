@@ -14,6 +14,7 @@ class PersonnelStatusSwitcher extends Component
 
     public function mount()
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
         if ($user) {
             $this->personnel_status = $user->personnel_status ?? 'ready';
@@ -24,6 +25,7 @@ class PersonnelStatusSwitcher extends Component
 
     public function openModal()
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
         if ($user) {
             $this->personnel_status = $user->personnel_status ?? 'ready';
@@ -46,6 +48,7 @@ class PersonnelStatusSwitcher extends Component
             'status_note' => ['nullable', 'string', 'max:100'],
         ]);
 
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
         if ($user) {
             $user->update([

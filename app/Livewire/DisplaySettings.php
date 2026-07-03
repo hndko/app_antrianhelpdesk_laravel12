@@ -23,7 +23,9 @@ class DisplaySettings extends Component
 
     public function mount()
     {
-        abort_unless(Auth::user()->canManageDisplaySettings(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canManageDisplaySettings(), 403);
 
         $this->loadSettings();
     }
@@ -47,7 +49,9 @@ class DisplaySettings extends Component
 
     public function saveSettings()
     {
-        abort_unless(Auth::user()->canManageDisplaySettings(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canManageDisplaySettings(), 403);
 
         $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
 
@@ -122,7 +126,7 @@ class DisplaySettings extends Component
 
     private function storeBrandFile($file): string
     {
-        return '/storage/'.$file->store('branding', 'public');
+        return '/storage/' . $file->store('branding', 'public');
     }
 
     private function deleteStoredBrandFile(?string $path): void
@@ -154,9 +158,12 @@ class DisplaySettings extends Component
         $logoPreviewUrl = $this->resolveAssetUrl($this->logo_url, 'assets/helpdesk-logo-icon.svg');
         $faviconPreviewUrl = $this->resolveAssetUrl($this->favicon_url, 'assets/helpdesk-favicon.svg');
 
-        return view('livewire.display-settings', [
+        /** @var mixed $view */
+        $view = view('livewire.display-settings', [
             'logoPreviewUrl' => $this->uploadedImagePreviewUrl($this->logo_file, $logoPreviewUrl),
             'faviconPreviewUrl' => $this->uploadedImagePreviewUrl($this->favicon_file, $faviconPreviewUrl),
-        ])->layout('components.app-backend');
+        ]);
+
+        return $view->layout('components.app-backend');
     }
 }

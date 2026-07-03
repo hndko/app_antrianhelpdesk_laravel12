@@ -18,7 +18,9 @@ class DailyReport extends Component
 
     public function mount(): void
     {
-        abort_unless(Auth::user()?->canViewReports(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canViewReports(), 403);
 
         $this->technicians = User::query()
             ->where('role', 'technician')
@@ -31,7 +33,9 @@ class DailyReport extends Component
 
     public function generateReport(): void
     {
-        abort_unless(Auth::user()?->canViewReports(), 403);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        abort_unless($user?->canViewReports(), 403);
 
         $this->validate([
             'selectedTechnician' => 'required|exists:users,id,role,technician,status,1',
@@ -56,4 +60,3 @@ class DailyReport extends Component
         return $view;
     }
 }
-

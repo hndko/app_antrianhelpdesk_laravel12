@@ -18,6 +18,7 @@ class ProfileManager extends Component
 
     public function mount(): void
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $this->name = $user->name;
@@ -27,6 +28,7 @@ class ProfileManager extends Component
 
     public function saveProfile(): void
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $validated = $this->validate([
@@ -45,6 +47,7 @@ class ProfileManager extends Component
 
     public function savePassword(): void
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $validated = $this->validate([
@@ -72,6 +75,9 @@ class ProfileManager extends Component
 
     public function render()
     {
-        return view('livewire.profile-manager')->layout('components.app-backend');
+        /** @var mixed $view */
+        $view = view('livewire.profile-manager');
+
+        return $view->layout('components.app-backend');
     }
 }
