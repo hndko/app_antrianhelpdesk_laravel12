@@ -93,12 +93,27 @@
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
                             <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-500"></span>
                         </span>
-                        <h2 class="text-xs font-black uppercase tracking-wider text-slate-100 sm:text-sm">Status Ketersediaan Teknisi</h2>
+                        <h2 class="text-xs font-black uppercase tracking-wider text-slate-100 sm:text-sm">Status Ketersediaan Personil</h2>
                     </div>
-                    <span class="rounded-full bg-slate-800 px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-300">{{ $personnel->count() }} Personil</span>
+                    <span class="rounded-full bg-slate-800 px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-300">{{ $personnelStats['total_active'] ?? $personnel->count() }} Aktif</span>
                 </div>
 
-                <div class="max-h-[180px] overflow-y-auto bg-slate-50 p-2.5 sm:max-h-[220px] sm:p-3.5">
+                <div class="grid grid-cols-3 divide-x divide-slate-100 border-b border-slate-200 bg-slate-50 p-2 text-center">
+                    <div class="px-1">
+                        <p class="text-[10px] font-extrabold uppercase text-emerald-600">Tersedia (Ready)</p>
+                        <p class="font-mono text-base font-black text-emerald-700">{{ $personnelStats['onsite_count'] ?? 0 }}</p>
+                    </div>
+                    <div class="px-1">
+                        <p class="text-[10px] font-extrabold uppercase text-amber-600">Visit / Remote</p>
+                        <p class="font-mono text-base font-black text-amber-700">{{ $personnelStats['remote_count'] ?? 0 }}</p>
+                    </div>
+                    <div class="px-1">
+                        <p class="text-[10px] font-extrabold uppercase text-slate-500">Total Personil</p>
+                        <p class="font-mono text-base font-black text-slate-800">{{ $personnelStats['total_active'] ?? 0 }}</p>
+                    </div>
+                </div>
+
+                <div class="max-h-[160px] overflow-y-auto bg-slate-50 p-2.5 sm:max-h-[200px] sm:p-3.5">
                     <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5">
                         @forelse($personnel as $tech)
                             <div class="flex flex-col justify-between rounded-lg border border-slate-200/80 bg-white p-2.5 shadow-2xs transition hover:border-blue-200">
@@ -143,20 +158,20 @@
                         <p class="mt-0.5 text-xs font-medium text-slate-500 sm:mt-1 sm:text-sm">Status layanan diperbarui otomatis.</p>
                     </div>
                     <div class="grid grid-cols-4 gap-1.5 sm:gap-2">
-                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 sm:px-3 sm:py-2">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Total</p>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Total Seluruh Tiket Terdaftar">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Total Tiket Masuk</p>
                             <p class="font-mono text-lg font-black text-slate-900 sm:text-xl">{{ $queueStats['total'] }}</p>
                         </div>
-                        <div class="rounded-lg border border-blue-200 bg-blue-50 px-2 py-1.5 sm:px-3 sm:py-2">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-blue-500">Proses</p>
+                        <div class="rounded-lg border border-blue-200 bg-blue-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Tiket Sedang Dalam Pengerjaan">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-blue-500">Sedang Diproses</p>
                             <p class="font-mono text-lg font-black text-blue-700 sm:text-xl">{{ $queueStats['progress'] }}</p>
                         </div>
-                        <div class="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 sm:px-3 sm:py-2">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-amber-600">Antri</p>
+                        <div class="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Tiket Dalam Antrian Menunggu">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-amber-600">Menunggu (Antri)</p>
                             <p class="font-mono text-lg font-black text-amber-700 sm:text-xl">{{ $queueStats['waiting'] }}</p>
                         </div>
-                        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1.5 sm:px-3 sm:py-2">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-emerald-600">Selesai</p>
+                        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Tiket Selesai Online maupun Onsite">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-emerald-600">Selesai (Online/Onsite)</p>
                             <p class="font-mono text-lg font-black text-emerald-700 sm:text-xl">{{ $queueStats['done'] }}</p>
                         </div>
                     </div>
@@ -197,9 +212,18 @@
                                 </div>
 
                                 <div class="col-span-2 min-w-0 md:col-span-2">
-                                    <div class="flex min-w-0 items-center gap-2">
-                                        <span class="h-2.5 w-2.5 shrink-0 rounded-full {{ $q->status === 'progress' ? 'bg-blue-500' : 'bg-slate-300' }}"></span>
-                                        <p class="truncate text-xs font-semibold leading-tight text-slate-700 sm:text-base">{{ $q->technician->name ?? '-' }}</p>
+                                    <div class="flex flex-col min-w-0 gap-1">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="h-2 w-2 shrink-0 rounded-full {{ $q->status === 'progress' ? 'bg-blue-500' : 'bg-slate-300' }}"></span>
+                                            <p class="truncate text-xs font-semibold leading-tight text-slate-800 sm:text-sm">{{ $q->technician->name ?? '-' }}</p>
+                                        </div>
+                                        @if($q->technician)
+                                            <div>
+                                                <span class="inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[9px] font-extrabold sm:text-[10px] {{ $q->technician->personnel_status_badge_color }}">
+                                                    <span>{{ $q->technician->personnel_status_label }}</span>
+                                                </span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -212,6 +236,10 @@
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             <span class="font-mono text-sm font-black sm:text-lg" x-text="timeLeft">--:--</span>
+                                        </div>
+                                    @elseif($q->status === 'waiting')
+                                        <div class="inline-flex items-center rounded-lg border border-amber-100 bg-amber-50 px-2 py-1 text-amber-800 sm:px-2.5 sm:py-1.5">
+                                            <span class="text-xs font-bold sm:text-sm">Est: {{ $q->duration_minutes }} mnt</span>
                                         </div>
                                     @else
                                         <span class="text-sm font-semibold text-slate-400">-</span>

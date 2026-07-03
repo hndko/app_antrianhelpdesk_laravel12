@@ -460,6 +460,9 @@ Aturan display:
 - Urutan prioritas tampilan: `progress`, `waiting`, lalu `done`.
 - Query public display harus eager load teknisi.
 - Panel Ketersediaan Personil pada Public Display TV hanya boleh menampilkan user aktif (`status = true`) yang memiliki `role = technician`.
+- Public Display TV wajib menampilkan rekapitulasi statistik personil (Teknisi Aktif, Onsite/Ready, Remote/Visit) serta status ketersediaan teknisi pada tiap baris antrian.
+- Public Display TV wajib menampilkan statistik transparansi tiket (Sedang Diproses, Menunggu, Selesai Online & Onsite).
+- Tabel Manajemen Antrian (Queue Manager) wajib memiliki susunan kolom utama: Nomor, Nama User, Perangkat, Nama Teknisi, Estimasi Waktu, Status, dan Aksi, serta menyediakan input manual keterangan keluhan perangkat sementara.
 - Perubahan assignment teknisi dan status antrian wajib dicatat pada history log.
 
 ---
@@ -513,6 +516,7 @@ Aturan:
 - Filter wajib menggunakan teknisi dan tanggal.
 - Hitung hanya status selesai.
 - Status selesai yang saat ini dihitung: `done`.
+- Laporan harian wajib menampilkan kartu statistik ringkas dan tabel rincian tiket selesai beserta durasi dan catatan penanganan.
 - Jangan export semua data tanpa filter jika fitur export ditambahkan.
 - Jika laporan makin kompleks, pindahkan query ke service atau query object.
 

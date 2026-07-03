@@ -2,47 +2,58 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Queue;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class DailyReport extends Component
 {
-    public $technicians;
-    public $selectedTechnician;
-    public $selectedDate;
-    public $reportData;
+    public $technicians = [];
+    public ?int $selectedTechnician = null;
+    public string $selectedDate = '';
+    public ?int $reportData = null;
+    public $completedQueues = [];
 
-    public function mount()
+    public function mount(): void
     {
-        abort_unless(auth()->user()->canViewReports(), 403);
+        abort_unless(Auth::user()?->canViewReports(), 403);
 
         $this->technicians = User::query()
             ->where('role', 'technician')
             ->where('status', true)
-            ->orderBy('name')
+            ->orderBy('name', 'asc')
             ->get();
+
         $this->selectedDate = Carbon::today()->format('Y-m-d');
     }
 
-    public function generateReport()
+    public function generateReport(): void
     {
-        abort_unless(auth()->user()->canViewReports(), 403);
+        abort_unless(Auth::user()?->canViewReports(), 403);
 
         $this->validate([
             'selectedTechnician' => 'required|exists:users,id,role,technician,status,1',
             'selectedDate' => 'required|date',
         ]);
 
-        $this->reportData = Queue::where('technician_user_id', $this->selectedTechnician)
+        $query = Queue::query()
+            ->with('technician')
+            ->where('technician_user_id', $this->selectedTechnician)
             ->whereDate('updated_at', $this->selectedDate)
-            ->whereIn('status', Queue::doneStatuses())
-            ->count();
+            ->whereIn('status', Queue::doneStatuses());
+
+        $this->reportData = $query->count();
+        $this->completedQueues = $query->orderBy('updated_at', 'desc')->get();
     }
 
     public function render()
     {
-        return view('livewire.daily-report');
+        /** @var mixed $view */
+        $view = view('livewire.daily-report');
+
+        return $view;
     }
 }
+

@@ -9,9 +9,11 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 ### Public Display
 
 - Tampilan antrian publik di `/`.
-- Update otomatis menggunakan Livewire polling.
-- Daftar antrian dengan status `waiting`, `progress`, dan `done`.
+- Update otomatis menggunakan Livewire polling setiap 2 detik (`wire:poll.2s`).
+- Daftar antrian dengan status `waiting`, `progress`, dan `done` beserta status ketersediaan teknisi dan estimasi waktu selesai pada tiap barisnya.
 - Panel informasi ketersediaan personil/teknisi siaga (`Ready`, `Visit`, `Support Acara`, `Tidak Tersedia`) beserta estimasi waktu dan catatan.
+- Rekapitulasi statistik personil (Teknisi Aktif, Onsite/Ready, dan Remote/Visit).
+- Transparansi statistik tiket secara realtime (Sedang Diproses, Menunggu, Selesai Online & Onsite).
 - Countdown estimasi pengerjaan untuk status `progress`.
 - Running text dengan kecepatan yang dapat diatur.
 - Video display berbasis YouTube ID atau URL YouTube.
@@ -29,6 +31,8 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 ### Manajemen Antrian
 
 - Tambah, edit, dan hapus data antrian.
+- Input manual keterangan keluhan perangkat sementara sebelum fitur otomatis dikembangkan.
+- Tabel antrian terstruktur dengan 7 kolom utama: Nomor, Nama User, Perangkat, Nama Teknisi, Estimasi Waktu, Status, dan Aksi.
 - Assign teknisi ke antrian untuk role `superadmin` dan `service_desk`.
 - Teknisi hanya melihat antrian miliknya, bisa membuat antrian, dan bisa mengoper antrian ke teknisi lain.
 - History log mencatat pembuatan antrian, perubahan status, perpindahan teknisi, dan penghapusan.
@@ -51,6 +55,8 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 ### Laporan Harian
 
 - Filter laporan berdasarkan teknisi dan tanggal.
+- Kartu statistik ringkas menampilkan status teknisi, total selesai, total durasi, dan rata-rata durasi penanganan.
+- Tabel daftar rincian pekerjaan selesai dengan informasi lengkap termasuk catatan penanganan.
 - Menghitung pekerjaan selesai dari status `done`.
 
 ## Teknologi

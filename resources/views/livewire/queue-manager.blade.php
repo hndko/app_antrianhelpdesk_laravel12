@@ -48,8 +48,8 @@
                     @endif
 
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Deskripsi / Keluhan</label>
-                        <textarea wire:model="description" rows="3" placeholder="Tuliskan keluhan singkat..."
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Keterangan Keluhan Perangkat (Input Manual Sementara)</label>
+                        <textarea wire:model="description" rows="3" placeholder="Tuliskan keluhan perangkat atau deskripsi masalah singkat..."
                             class="w-full resize-none rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
                     </div>
 
@@ -104,8 +104,10 @@
                         <thead>
                             <tr class="border-b border-slate-200 bg-slate-50 text-xs font-black uppercase tracking-wide text-slate-500">
                                 <th class="w-16 p-4 text-center">No</th>
-                                <th class="p-4">User / Unit</th>
-                                <th class="p-4">Teknisi</th>
+                                <th class="p-4">Nama User</th>
+                                <th class="p-4">Perangkat</th>
+                                <th class="p-4">Nama Teknisi</th>
+                                <th class="p-4 text-center">Estimasi Waktu</th>
                                 <th class="p-4 text-center">Status</th>
                                 <th class="p-4 text-right">Aksi</th>
                             </tr>
@@ -114,16 +116,15 @@
                             @forelse($queues as $q)
                                 <tr class="transition hover:bg-blue-50/50">
                                     <td class="p-4 text-center font-mono text-lg font-black text-slate-700">{{ $q->queue_number }}</td>
+                                    <td class="p-4 font-extrabold text-slate-900">{{ $q->user_name }}</td>
                                     <td class="p-4">
-                                        <div class="font-extrabold text-slate-900">{{ $q->user_name }}</div>
-                                        <div class="mt-0.5 text-sm font-bold text-slate-600">{{ $q->laptop_id }}</div>
-                                        <div class="mt-1 text-xs font-medium text-slate-500">{{ $q->duration_minutes }} menit</div>
+                                        <div class="font-bold text-slate-800">{{ $q->laptop_id }}</div>
                                         @if ($q->description)
-                                            <div class="mt-1 max-w-[260px] truncate text-xs italic text-slate-400">{{ Str::limit($q->description, 48) }}</div>
+                                            <div class="mt-0.5 max-w-[220px] text-xs font-medium italic text-slate-500">{{ Str::limit($q->description, 60) }}</div>
                                         @endif
                                         @if ($q->logs->isNotEmpty())
-                                            <div class="mt-3 space-y-1 rounded-lg bg-slate-50 p-2">
-                                                <p class="text-[11px] font-black uppercase tracking-wide text-slate-400">Riwayat Terakhir</p>
+                                            <div class="mt-2 space-y-1 rounded-lg bg-slate-50 p-2">
+                                                <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Riwayat Terakhir</p>
                                                 @foreach ($q->logs->take(2) as $log)
                                                     <div class="text-xs font-semibold text-slate-500">
                                                         <span class="font-black text-slate-700">{{ $log->action_label }}</span>
@@ -138,6 +139,9 @@
                                         <span class="inline-flex rounded-lg bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
                                             {{ $q->technician->name ?? 'N/A' }}
                                         </span>
+                                    </td>
+                                    <td class="p-4 text-center font-mono font-bold text-slate-700">
+                                        {{ $q->duration_minutes }} menit
                                     </td>
                                     <td class="p-4 text-center">
                                         @if ($q->status == 'waiting')
@@ -175,7 +179,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="p-12 text-center text-slate-500">Tidak ada antrian aktif</td>
+                                    <td colspan="7" class="p-12 text-center text-slate-500">Tidak ada antrian aktif</td>
                                 </tr>
                             @endforelse
                         </tbody>

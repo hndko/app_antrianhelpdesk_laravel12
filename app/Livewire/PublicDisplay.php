@@ -70,10 +70,17 @@ class PublicDisplay extends Component
             ->orderBy('name', 'asc')
             ->get();
 
+        $personnelStats = [
+            'total_active' => $personnel->count(),
+            'onsite_count' => $personnel->where('personnel_status', 'ready')->count(),
+            'remote_count' => $personnel->whereIn('personnel_status', ['visit', 'support_event'])->count(),
+        ];
+
         /** @var mixed $view */
         $view = view('livewire.public-display', [
             'queues' => $queues,
             'personnel' => $personnel,
+            'personnelStats' => $personnelStats,
             'settings' => $settings,
             'queueStats' => $queueStats,
             'displayLogoUrl' => $this->resolveAssetUrl($settings->logo_url, 'assets/helpdesk-logo-icon.svg'),
