@@ -19,6 +19,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 - Video display berbasis YouTube ID atau URL YouTube.
 - Layout responsif untuk layar TV/monitor dan mobile.
 - Autoscroll daftar antrian saat data melebihi tinggi panel.
+- Tampilan jam dan tanggal real-time dengan format baku Indonesia (misalnya `Jumat, 03 Juli 2026 • 11:30 WIB`) pada header layar.
 
 ### Dashboard
 
@@ -73,9 +74,9 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 ## Format Lokal
 
-- Locale aplikasi menggunakan bahasa Indonesia (`id`).
-- Timezone default menggunakan `Asia/Jakarta`.
-- Tanggal yang ditampilkan ke pengguna memakai format Indonesia, misalnya `11 Juni 2026`.
+- Locale aplikasi dan penanggalan menggunakan standar bahasa Indonesia (`id` / `id_ID`).
+- Timezone default menggunakan `Asia/Jakarta` (WIB).
+- Seluruh tanggal yang ditampilkan ke pengguna dikonversi dan diformat dalam bahasa Indonesia, misalnya `03 Juli 2026` (sebelumnya `03 July 2026`). Pengaturan ini ditegakkan secara otomatis melalui konfigurasi `.env` dan `AppServiceProvider`.
 
 ## Struktur Seeder
 

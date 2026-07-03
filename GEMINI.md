@@ -78,6 +78,7 @@ Project tidak memakai role table, permission table, atau Spatie Laravel Permissi
 - Hindari query model langsung di Blade.
 - Waktu update display real-time (polling) di public display adalah 2 detik (`wire:poll.2s`).
 - Hindari duplikasi logic status antrian, filter display, dan laporan teknisi.
+- Semua format tanggal dan waktu di seluruh aplikasi wajib menggunakan format lokal Indonesia (`id` / `id_ID` dan zona waktu `Asia/Jakarta`). Gunakan `translatedFormat()` pada Carbon atau penanggalan berbahasa Indonesia (misalnya `03 Juli 2026`).
 - Setiap kali user meminta fitur baru, penyesuaian alur/flow, atau aturan baru, agent wajib langsung memperbarui `GEMINI.md` dan `README.md`.
 - Semua fitur penting harus memiliki validasi, authorization, dan error handling.
 - Untuk fitur baru yang berdampak ke data, wajib pertimbangkan:

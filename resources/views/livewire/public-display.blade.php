@@ -15,14 +15,41 @@
                 </div>
             </div>
 
-            <div
-                class="hidden items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 shadow-sm sm:flex">
-                <span class="relative flex h-3 w-3">
-                    <span
-                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70"></span>
-                    <span class="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
-                </span>
-                <span class="text-xs font-black uppercase tracking-wide">Online</span>
+            <div class="flex items-center gap-3">
+                <div x-data="{
+                    now: '',
+                    init() {
+                        this.updateTime();
+                        setInterval(() => this.updateTime(), 1000);
+                    },
+                    updateTime() {
+                        const d = new Date();
+                        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                        const dayName = days[d.getDay()];
+                        const dayNum = String(d.getDate()).padStart(2, '0');
+                        const monthName = months[d.getMonth()];
+                        const year = d.getFullYear();
+                        const hours = String(d.getHours()).padStart(2, '0');
+                        const minutes = String(d.getMinutes()).padStart(2, '0');
+                        this.now = `${dayName}, ${dayNum} ${monthName} ${year} • ${hours}:${minutes} WIB`;
+                    }
+                }" x-init="init()" class="hidden sm:flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm">
+                    <svg class="h-4 w-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span x-text="now">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y • H:i') }} WIB</span>
+                </div>
+
+                <div
+                    class="hidden items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 shadow-sm sm:flex">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70"></span>
+                        <span class="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-black uppercase tracking-wide">Online</span>
+                </div>
             </div>
         </div>
     </header>
