@@ -237,7 +237,7 @@ class QueueManager extends Component
                             ->whereDate('updated_at', Carbon::today());
                     });
             })
-            ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END")
+            ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END", [])
             ->orderBy('queue_number', 'asc')
             ->paginate(5);
 

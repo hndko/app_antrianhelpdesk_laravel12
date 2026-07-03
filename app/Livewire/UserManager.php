@@ -162,7 +162,7 @@ class UserManager extends Component
         return view('livewire.user-manager', [
             'users' => User::query()
                 ->withCount('assignedQueues')
-                ->orderByRaw("CASE role WHEN 'superadmin' THEN 1 WHEN 'service_desk' THEN 2 WHEN 'technician' THEN 3 ELSE 4 END")
+                ->orderByRaw("CASE role WHEN 'superadmin' THEN 1 WHEN 'service_desk' THEN 2 WHEN 'technician' THEN 3 ELSE 4 END", [])
                 ->orderBy('name')
                 ->paginate(10),
         ]);

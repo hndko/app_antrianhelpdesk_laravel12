@@ -42,7 +42,7 @@ class PublicDisplay extends Component
                             ->where('updated_at', '>=', Carbon::now()->subMinutes(60));
                     });
             })
-            ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END")
+            ->orderByRaw("CASE status WHEN 'progress' THEN 1 WHEN 'waiting' THEN 2 WHEN 'done' THEN 3 ELSE 4 END", [])
             ->orderBy('queue_number', 'asc')
             ->take(50)
             ->get()
@@ -66,7 +66,7 @@ class PublicDisplay extends Component
 
         $personnel = \App\Models\User::query()->where('role', 'technician')
             ->where('status', true)
-            ->orderByRaw("CASE personnel_status WHEN 'ready' THEN 1 WHEN 'visit' THEN 2 WHEN 'support_event' THEN 3 ELSE 4 END")
+            ->orderByRaw("CASE personnel_status WHEN 'ready' THEN 1 WHEN 'visit' THEN 2 WHEN 'support_event' THEN 3 ELSE 4 END", [])
             ->orderBy('name', 'asc')
             ->get();
 
