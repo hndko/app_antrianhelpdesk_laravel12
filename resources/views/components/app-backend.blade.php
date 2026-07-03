@@ -52,7 +52,8 @@
             class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white shadow-2xl transition-all duration-200 lg:static lg:translate-x-0 lg:shadow-none"
             :class="{ 'translate-x-0': sidebarOpen, 'lg:w-20': sidebarCollapsed, 'lg:w-72': !sidebarCollapsed }">
             <div class="flex h-16 items-center gap-3 border-b border-slate-200 px-5">
-                <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo" class="h-10 w-10 rounded-lg object-contain">
+                <img src="{{ $brand['logo_url'] }}" alt="{{ $brand['title'] }} Logo"
+                    class="h-10 w-10 rounded-lg object-contain">
                 <div class="min-w-0" :class="{ 'lg:hidden': sidebarCollapsed }">
                     <p class="truncate text-sm font-extrabold text-slate-950">{{ $brand['title'] }}</p>
                     <p class="text-xs font-semibold text-slate-500">Panel Helpdesk</p>
@@ -61,7 +62,8 @@
                     class="ml-auto rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 lg:hidden"
                     @click="sidebarOpen = false" aria-label="Tutup menu">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -70,8 +72,7 @@
                 <a href="{{ route('dashboard') }}"
                     class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                     {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                    @click="sidebarOpen = false">
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }" @click="sidebarOpen = false">
                     <span
                         class="flex h-10 w-10 items-center justify-center rounded-lg transition
                         {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
@@ -86,8 +87,7 @@
                 <a href="{{ route('queues.index') }}"
                     class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                     {{ request()->routeIs('queues.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                    @click="sidebarOpen = false">
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }" @click="sidebarOpen = false">
                     <span
                         class="flex h-10 w-10 items-center justify-center rounded-lg transition
                         {{ request()->routeIs('queues.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
@@ -100,64 +100,60 @@
                 </a>
 
                 @if (auth()->user()->canManageUsers())
-                    <a href="{{ route('accounts.index') }}"
-                        class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                <a href="{{ route('accounts.index') }}"
+                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                         {{ request()->routeIs('accounts.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                        :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                        @click="sidebarOpen = false">
-                        <span
-                            class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }" @click="sidebarOpen = false">
+                    <span
+                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
                             {{ request()->routeIs('accounts.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-6a4 4 0 11-8 0 4 4 0 018 0zm8 1a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </span>
-                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Manajemen Akun</span>
-                    </a>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-6a4 4 0 11-8 0 4 4 0 018 0zm8 1a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Manajemen Akun</span>
+                </a>
                 @endif
 
                 @if (auth()->user()->canManageDisplaySettings())
-                    <a href="{{ route('display-settings.index') }}"
-                        class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                <a href="{{ route('display-settings.index') }}"
+                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                         {{ request()->routeIs('display-settings.index') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                        :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                        @click="sidebarOpen = false">
-                        <span
-                            class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }" @click="sidebarOpen = false">
+                    <span
+                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
                             {{ request()->routeIs('display-settings.index') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6V4m0 16v-2m8-6h-2M6 12H4m12.95-4.95l-1.414 1.414M8.464 15.536 7.05 16.95m9.9 0-1.414-1.414M8.464 8.464 7.05 7.05M12 9a3 3 0 100 6 3 3 0 000-6z" />
-                            </svg>
-                        </span>
-                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Pengaturan Display</span>
-                    </a>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6V4m0 16v-2m8-6h-2M6 12H4m12.95-4.95l-1.414 1.414M8.464 15.536 7.05 16.95m9.9 0-1.414-1.414M8.464 8.464 7.05 7.05M12 9a3 3 0 100 6 3 3 0 000-6z" />
+                        </svg>
+                    </span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Pengaturan Display</span>
+                </a>
                 @endif
 
                 @if (auth()->user()->canViewReports())
-                    <a href="{{ route('reports.daily') }}"
-                        class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
+                <a href="{{ route('reports.daily') }}"
+                    class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                         {{ request()->routeIs('reports.daily') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                        :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                        @click="sidebarOpen = false">
-                        <span
-                            class="flex h-10 w-10 items-center justify-center rounded-lg transition
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }" @click="sidebarOpen = false">
+                    <span
+                        class="flex h-10 w-10 items-center justify-center rounded-lg transition
                             {{ request()->routeIs('reports.daily') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 17v-6m4 6V7m4 10v-3M5 19h14M5 5h14v14H5V5z" />
-                            </svg>
-                        </span>
-                        <span :class="{ 'lg:hidden': sidebarCollapsed }">Laporan Harian</span>
-                    </a>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 17v-6m4 6V7m4 10v-3M5 19h14M5 5h14v14H5V5z" />
+                        </svg>
+                    </span>
+                    <span :class="{ 'lg:hidden': sidebarCollapsed }">Laporan Harian</span>
+                </a>
                 @endif
 
                 <a href="{{ route('profile.edit') }}"
                     class="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition
                     {{ request()->routeIs('profile.edit') ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950' }}"
-                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }"
-                    @click="sidebarOpen = false">
+                    :class="{ 'lg:justify-center lg:px-2': sidebarCollapsed }" @click="sidebarOpen = false">
                     <span
                         class="flex h-10 w-10 items-center justify-center rounded-lg transition
                         {{ request()->routeIs('profile.edit') ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600' }}">
@@ -171,13 +167,16 @@
             </nav>
 
             <div class="border-t border-slate-200 p-4">
-                <div class="mb-3 flex items-center gap-3 rounded-lg bg-slate-50 p-3" :class="{ 'lg:justify-center': sidebarCollapsed }">
-                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white">
+                <div class="mb-3 flex items-center gap-3 rounded-lg bg-slate-50 p-3"
+                    :class="{ 'lg:justify-center': sidebarCollapsed }">
+                    <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
                     <div class="min-w-0" :class="{ 'lg:hidden': sidebarCollapsed }">
                         <p class="truncate text-sm font-extrabold text-slate-950">{{ auth()->user()->name }}</p>
-                        <p class="truncate text-xs font-semibold text-slate-500">{{ str_replace('_', ' ', auth()->user()->role) }}</p>
+                        <p class="truncate text-xs font-semibold text-slate-500">{{ str_replace('_', ' ',
+                            auth()->user()->role) }}</p>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
@@ -203,7 +202,8 @@
                             @click="window.innerWidth >= 1024 ? sidebarCollapsed = ! sidebarCollapsed : sidebarOpen = true"
                             aria-label="Toggle sidebar">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 7h16M4 12h16M4 17h16" />
                             </svg>
                         </button>
                     </div>

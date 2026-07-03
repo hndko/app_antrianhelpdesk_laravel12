@@ -54,11 +54,11 @@ class QueueLog extends Model
     public function getDescriptionAttribute(): string
     {
         return match ($this->action) {
-            'created' => 'Dibuat untuk '.($this->toTechnician->name ?? 'teknisi'),
-            'transferred' => 'Dari '.($this->fromTechnician->name ?? '-').' ke '.($this->toTechnician->name ?? '-'),
-            'status_changed' => 'Status '.$this->statusLabel($this->from_status).' ke '.$this->statusLabel($this->to_status),
+            'created' => 'Dibuat untuk ' . ($this->toTechnician->name ?? 'teknisi'),
+            'transferred' => 'Dari ' . ($this->fromTechnician->name ?? '-') . ' ke ' . ($this->toTechnician->name ?? '-'),
+            'status_changed' => 'Status ' . $this->statusLabel($this->from_status) . ' ke ' . $this->statusLabel($this->to_status),
             'updated' => 'Data antrian diperbarui',
-            'deleted' => 'Antrian #'.($this->queue_number ?? '-').' dihapus',
+            'deleted' => 'Antrian #' . ($this->queue_number ?? '-') . ' dihapus',
             default => $this->note ?? 'Data diperbarui',
         };
     }

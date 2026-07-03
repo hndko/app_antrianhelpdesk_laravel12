@@ -56,7 +56,8 @@
                     <label class="mb-2 block text-sm font-bold text-slate-700">Password Saat Ini</label>
                     <input type="password" wire:model="current_password" autocomplete="current-password"
                         class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
-                    @error('current_password') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                    @error('current_password') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>

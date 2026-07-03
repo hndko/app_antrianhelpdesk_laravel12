@@ -232,7 +232,7 @@ class QueueManager extends Component
         $queues = $this->queueQueryForUser()
             ->with([
                 'technician',
-                'logs' => fn ($query) => $query
+                'logs' => fn($query) => $query
                     ->with(['actor', 'fromTechnician', 'toTechnician'])
                     ->latest(),
             ])

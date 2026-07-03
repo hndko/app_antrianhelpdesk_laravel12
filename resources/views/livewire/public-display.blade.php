@@ -2,7 +2,8 @@
     <header class="shrink-0 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div class="mx-auto flex max-w-[1920px] items-center justify-between gap-3 px-3 py-2 sm:px-6 sm:py-3 lg:px-8">
             <div class="flex min-w-0 items-center gap-3">
-                <img src="{{ $displayLogoUrl }}" alt="Logo" class="h-10 w-auto max-w-[180px] shrink-0 object-contain sm:h-12">
+                <img src="{{ $displayLogoUrl }}" alt="Logo"
+                    class="h-10 w-auto max-w-[180px] shrink-0 object-contain sm:h-12">
 
                 <div class="min-w-0">
                     <h1 class="truncate text-base font-extrabold leading-tight text-slate-950 sm:text-2xl lg:text-3xl">
@@ -14,9 +15,11 @@
                 </div>
             </div>
 
-            <div class="hidden items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 shadow-sm sm:flex">
+            <div
+                class="hidden items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 shadow-sm sm:flex">
                 <span class="relative flex h-3 w-3">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70"></span>
+                    <span
+                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70"></span>
                     <span class="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
                 </span>
                 <span class="text-xs font-black uppercase tracking-wide">Online</span>
@@ -26,8 +29,10 @@
 
     <main class="mx-auto flex w-full max-w-[1920px] flex-1 flex-col gap-3 p-3 lg:min-h-0 lg:flex-row lg:gap-4 lg:p-5">
         <div class="flex flex-col gap-3 lg:min-h-0 lg:flex-[1.05] lg:gap-4">
-            <section class="flex min-h-[190px] flex-1 flex-col overflow-hidden rounded-lg border border-slate-800 bg-slate-950 shadow-sm sm:min-h-[260px] lg:min-h-0">
-                <div class="flex items-center justify-between border-b border-white/10 px-3 py-2 text-white sm:px-4 sm:py-3">
+            <section
+                class="flex min-h-[190px] flex-1 flex-col overflow-hidden rounded-lg border border-slate-800 bg-slate-950 shadow-sm sm:min-h-[260px] lg:min-h-0">
+                <div
+                    class="flex items-center justify-between border-b border-white/10 px-3 py-2 text-white sm:px-4 sm:py-3">
                     <div class="flex items-center gap-2">
                         <span class="h-2.5 w-2.5 rounded-full bg-red-500"></span>
                         <span class="text-xs font-black uppercase tracking-wide text-slate-200">Informasi Layanan</span>
@@ -35,14 +40,16 @@
                     <span class="text-xs font-semibold text-slate-400">Live Display</span>
                 </div>
 
-                <div class="relative flex-1 bg-black" wire:key="player-{{ $settings->video_type }}-{{ $settings->video_url }}">
+                <div class="relative flex-1 bg-black"
+                    wire:key="player-{{ $settings->video_type }}-{{ $settings->video_url }}">
                     @if ($settings->video_url)
-                        @if ($settings->video_type === 'youtube')
-                            <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore class="h-full w-full">
-                                <div id="youtube-player-container" class="h-full w-full"></div>
-                            </div>
-                        @else
-                            <div wire:ignore class="h-full w-full" x-data="{
+                    @if ($settings->video_type === 'youtube')
+                    <div x-data="youtubePlayer()" x-init="init('{{ $settings->video_url }}')" wire:ignore
+                        class="h-full w-full">
+                        <div id="youtube-player-container" class="h-full w-full"></div>
+                    </div>
+                    @else
+                    <div wire:ignore class="h-full w-full" x-data="{
                                 videoError: false,
                                 initVideo() {
                                     this.$nextTick(() => {
@@ -62,123 +69,155 @@
                                     });
                                 }
                             }" x-init="initVideo()">
-                                <video x-ref="videoPlayer" class="h-full w-full object-contain" loop playsinline>
-                                    <source src="{{ asset('storage/' . $settings->video_url) }}?t={{ time() }}" type="video/mp4">
-                                </video>
+                        <video x-ref="videoPlayer" class="h-full w-full object-contain" loop playsinline>
+                            <source src="{{ asset('storage/' . $settings->video_url) }}?t={{ time() }}"
+                                type="video/mp4">
+                        </video>
 
-                                <div x-show="videoError" style="display: none;"
-                                    class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-white">
-                                    <p class="text-base font-bold sm:text-xl">Gagal Memuat Video</p>
-                                </div>
-                            </div>
-                        @endif
-                    @else
-                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 px-6 text-center">
-                            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-slate-300">
-                                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm font-bold uppercase tracking-[0.25em] text-slate-400">Menunggu Tayangan</p>
+                        <div x-show="videoError" style="display: none;"
+                            class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-white">
+                            <p class="text-base font-bold sm:text-xl">Gagal Memuat Video</p>
                         </div>
+                    </div>
+                    @endif
+                    @else
+                    <div
+                        class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 px-6 text-center">
+                        <div
+                            class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-slate-300">
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm font-bold uppercase tracking-[0.25em] text-slate-400">Menunggu Tayangan</p>
+                    </div>
                     @endif
                 </div>
             </section>
 
             <section class="shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                <div class="flex items-center justify-between border-b border-slate-200 bg-slate-900 px-3 py-2.5 text-white sm:px-4 sm:py-3">
+                <div
+                    class="flex items-center justify-between border-b border-slate-200 bg-slate-900 px-3 py-2.5 text-white sm:px-4 sm:py-3">
                     <div class="flex items-center gap-2">
                         <span class="relative flex h-2.5 w-2.5">
-                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
+                            <span
+                                class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
                             <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-500"></span>
                         </span>
-                        <h2 class="text-xs font-black uppercase tracking-wider text-slate-100 sm:text-sm">Status Ketersediaan Personil</h2>
+                        <h2 class="text-xs font-black uppercase tracking-wider text-slate-100 sm:text-sm">Status
+                            Ketersediaan Personil</h2>
                     </div>
-                    <span class="rounded-full bg-slate-800 px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-300">{{ $personnelStats['total_active'] ?? $personnel->count() }} Aktif</span>
+                    <span
+                        class="rounded-full bg-slate-800 px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-300">{{
+                        $personnelStats['total_active'] ?? $personnel->count() }} Aktif</span>
                 </div>
 
-                <div class="grid grid-cols-3 divide-x divide-slate-100 border-b border-slate-200 bg-slate-50 p-2 text-center">
+                <div
+                    class="grid grid-cols-3 divide-x divide-slate-100 border-b border-slate-200 bg-slate-50 p-2 text-center">
                     <div class="px-1">
                         <p class="text-[10px] font-extrabold uppercase text-emerald-600">Tersedia (Ready)</p>
-                        <p class="font-mono text-base font-black text-emerald-700">{{ $personnelStats['onsite_count'] ?? 0 }}</p>
+                        <p class="font-mono text-base font-black text-emerald-700">{{ $personnelStats['onsite_count'] ??
+                            0 }}</p>
                     </div>
                     <div class="px-1">
                         <p class="text-[10px] font-extrabold uppercase text-amber-600">Visit / Remote</p>
-                        <p class="font-mono text-base font-black text-amber-700">{{ $personnelStats['remote_count'] ?? 0 }}</p>
+                        <p class="font-mono text-base font-black text-amber-700">{{ $personnelStats['remote_count'] ?? 0
+                            }}</p>
                     </div>
                     <div class="px-1">
                         <p class="text-[10px] font-extrabold uppercase text-slate-500">Total Personil</p>
-                        <p class="font-mono text-base font-black text-slate-800">{{ $personnelStats['total_active'] ?? 0 }}</p>
+                        <p class="font-mono text-base font-black text-slate-800">{{ $personnelStats['total_active'] ?? 0
+                            }}</p>
                     </div>
                 </div>
 
                 <div class="max-h-[160px] overflow-y-auto bg-slate-50 p-2.5 sm:max-h-[200px] sm:p-3.5">
                     <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5">
                         @forelse($personnel as $tech)
-                            <div class="flex flex-col justify-between rounded-lg border border-slate-200/80 bg-white p-2.5 shadow-2xs transition hover:border-blue-200">
-                                <div class="flex items-start justify-between gap-1.5">
-                                    <div class="min-w-0 flex-1">
-                                        <p class="truncate text-xs font-black text-slate-900 sm:text-sm">{{ $tech->name }}</p>
-                                        <p class="truncate text-[10px] font-semibold text-slate-400 sm:text-[11px]">{{ $tech->username }}</p>
-                                    </div>
-                                    <div class="shrink-0">
-                                        <span class="inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-extrabold {{ $tech->personnel_status_badge_color }}">
-                                            <span class="h-1.5 w-1.5 rounded-full {{ $tech->personnel_status_dot_color }}"></span>
-                                            <span>{{ $tech->personnel_status_label }}</span>
-                                        </span>
-                                    </div>
+                        <div
+                            class="flex flex-col justify-between rounded-lg border border-slate-200/80 bg-white p-2.5 shadow-2xs transition hover:border-blue-200">
+                            <div class="flex items-start justify-between gap-1.5">
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate text-xs font-black text-slate-900 sm:text-sm">{{ $tech->name }}
+                                    </p>
+                                    <p class="truncate text-[10px] font-semibold text-slate-400 sm:text-[11px]">{{
+                                        $tech->username }}</p>
                                 </div>
-                                @if($tech->status_estimated_time || $tech->status_note)
-                                    <div class="mt-2 flex flex-col gap-0.5 border-t border-slate-100 pt-1.5 text-[10px] font-bold text-slate-600 sm:text-[11px]">
-                                        @if($tech->status_estimated_time)
-                                            <span class="truncate text-blue-600">⏳ Est: {{ $tech->status_estimated_time }}</span>
-                                        @endif
-                                        @if($tech->status_note)
-                                            <span class="truncate text-slate-500">📝 {{ $tech->status_note }}</span>
-                                        @endif
-                                    </div>
+                                <div class="shrink-0">
+                                    <span
+                                        class="inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-extrabold {{ $tech->personnel_status_badge_color }}">
+                                        <span
+                                            class="h-1.5 w-1.5 rounded-full {{ $tech->personnel_status_dot_color }}"></span>
+                                        <span>{{ $tech->personnel_status_label }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            @if($tech->status_estimated_time || $tech->status_note)
+                            <div
+                                class="mt-2 flex flex-col gap-0.5 border-t border-slate-100 pt-1.5 text-[10px] font-bold text-slate-600 sm:text-[11px]">
+                                @if($tech->status_estimated_time)
+                                <span class="truncate text-blue-600">⏳ Est: {{ $tech->status_estimated_time }}</span>
+                                @endif
+                                @if($tech->status_note)
+                                <span class="truncate text-slate-500">📝 {{ $tech->status_note }}</span>
                                 @endif
                             </div>
+                            @endif
+                        </div>
                         @empty
-                            <div class="col-span-full py-4 text-center text-xs font-semibold text-slate-400 sm:text-sm">
-                                Tidak ada teknisi aktif saat ini.
-                            </div>
+                        <div class="col-span-full py-4 text-center text-xs font-semibold text-slate-400 sm:text-sm">
+                            Tidak ada teknisi aktif saat ini.
+                        </div>
                         @endforelse
                     </div>
                 </div>
             </section>
         </div>
 
-        <section class="flex h-[560px] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm sm:h-[640px] lg:h-auto lg:min-h-0 lg:flex-[0.95]">
+        <section
+            class="flex h-[560px] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm sm:h-[640px] lg:h-auto lg:min-h-0 lg:flex-[0.95]">
             <div class="shrink-0 border-b border-slate-200 px-3 py-3 sm:px-5 sm:py-4">
                 <div class="flex flex-col gap-3 sm:gap-4">
                     <div>
                         <h2 class="text-lg font-black text-slate-950 sm:text-2xl">Daftar Antrian</h2>
-                        <p class="mt-0.5 text-xs font-medium text-slate-500 sm:mt-1 sm:text-sm">Status layanan diperbarui otomatis.</p>
+                        <p class="mt-0.5 text-xs font-medium text-slate-500 sm:mt-1 sm:text-sm">Status layanan
+                            diperbarui otomatis.</p>
                     </div>
                     <div class="grid grid-cols-4 gap-1.5 sm:gap-2">
-                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Total Seluruh Tiket Terdaftar">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Total Tiket Masuk</p>
-                            <p class="font-mono text-lg font-black text-slate-900 sm:text-xl">{{ $queueStats['total'] }}</p>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 sm:px-3 sm:py-2"
+                            title="Total Seluruh Tiket Terdaftar">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Total Tiket Masuk
+                            </p>
+                            <p class="font-mono text-lg font-black text-slate-900 sm:text-xl">{{ $queueStats['total'] }}
+                            </p>
                         </div>
-                        <div class="rounded-lg border border-blue-200 bg-blue-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Tiket Sedang Dalam Pengerjaan">
+                        <div class="rounded-lg border border-blue-200 bg-blue-50 px-2 py-1.5 sm:px-3 sm:py-2"
+                            title="Tiket Sedang Dalam Pengerjaan">
                             <p class="text-[10px] font-black uppercase tracking-wide text-blue-500">Sedang Diproses</p>
-                            <p class="font-mono text-lg font-black text-blue-700 sm:text-xl">{{ $queueStats['progress'] }}</p>
+                            <p class="font-mono text-lg font-black text-blue-700 sm:text-xl">{{ $queueStats['progress']
+                                }}</p>
                         </div>
-                        <div class="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Tiket Dalam Antrian Menunggu">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-amber-600">Menunggu (Antri)</p>
-                            <p class="font-mono text-lg font-black text-amber-700 sm:text-xl">{{ $queueStats['waiting'] }}</p>
+                        <div class="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 sm:px-3 sm:py-2"
+                            title="Tiket Dalam Antrian Menunggu">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-amber-600">Menunggu (Antri)
+                            </p>
+                            <p class="font-mono text-lg font-black text-amber-700 sm:text-xl">{{ $queueStats['waiting']
+                                }}</p>
                         </div>
-                        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1.5 sm:px-3 sm:py-2" title="Tiket Selesai Online maupun Onsite">
-                            <p class="text-[10px] font-black uppercase tracking-wide text-emerald-600">Selesai (Online/Onsite)</p>
-                            <p class="font-mono text-lg font-black text-emerald-700 sm:text-xl">{{ $queueStats['done'] }}</p>
+                        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1.5 sm:px-3 sm:py-2"
+                            title="Tiket Selesai Online maupun Onsite">
+                            <p class="text-[10px] font-black uppercase tracking-wide text-emerald-600">Selesai
+                                (Online/Onsite)</p>
+                            <p class="font-mono text-lg font-black text-emerald-700 sm:text-xl">{{ $queueStats['done']
+                                }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="hidden grid-cols-12 gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-black uppercase tracking-wide text-slate-500 md:grid">
+            <div
+                class="hidden grid-cols-12 gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-black uppercase tracking-wide text-slate-500 md:grid">
                 <div class="col-span-1 text-center">No</div>
                 <div class="col-span-3">Nama</div>
                 <div class="col-span-2">Unit</div>
@@ -187,92 +226,110 @@
                 <div class="col-span-2 text-right">Status</div>
             </div>
 
-            <div x-data="autoScroll('public-display-queue')" x-ref="scroller" data-auto-scroll-key="public-display-queue" class="flex-1 overflow-y-auto bg-slate-50 p-2.5 sm:p-4 lg:min-h-0">
+            <div x-data="autoScroll('public-display-queue')" x-ref="scroller"
+                data-auto-scroll-key="public-display-queue"
+                class="flex-1 overflow-y-auto bg-slate-50 p-2.5 sm:p-4 lg:min-h-0">
                 <div x-ref="content" class="space-y-2 sm:space-y-3">
                     @forelse($queues as $q)
-                        <article
-                            class="overflow-hidden rounded-lg border bg-white shadow-sm transition
+                    <article
+                        class="overflow-hidden rounded-lg border bg-white shadow-sm transition
                             {{ $q->status === 'progress' ? 'border-blue-300 ring-2 ring-blue-100' : 'border-slate-200' }}">
-                            <div class="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-3 p-3 sm:p-4 md:grid-cols-12 md:items-center">
-                                <div class="flex items-center md:col-span-1 md:justify-center">
-                                    <span class="font-mono text-3xl font-black leading-none sm:text-4xl {{ $q->status === 'progress' ? 'text-blue-600' : 'text-slate-800' }}">
-                                        {{ $q->queue_number }}
-                                    </span>
-                                </div>
+                        <div
+                            class="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-3 p-3 sm:p-4 md:grid-cols-12 md:items-center">
+                            <div class="flex items-center md:col-span-1 md:justify-center">
+                                <span
+                                    class="font-mono text-3xl font-black leading-none sm:text-4xl {{ $q->status === 'progress' ? 'text-blue-600' : 'text-slate-800' }}">
+                                    {{ $q->queue_number }}
+                                </span>
+                            </div>
 
-                                <div class="min-w-0 md:col-span-3">
-                                    <p class="truncate text-base font-extrabold leading-tight text-slate-950 sm:text-xl">
-                                        {{ $q->user_name ?? 'User' }}
-                                    </p>
-                                    <p class="mt-0.5 truncate text-xs font-bold text-slate-500 md:hidden">{{ $q->laptop_id }}</p>
-                                </div>
+                            <div class="min-w-0 md:col-span-3">
+                                <p class="truncate text-base font-extrabold leading-tight text-slate-950 sm:text-xl">
+                                    {{ $q->user_name ?? 'User' }}
+                                </p>
+                                <p class="mt-0.5 truncate text-xs font-bold text-slate-500 md:hidden">{{ $q->laptop_id
+                                    }}</p>
+                            </div>
 
-                                <div class="hidden min-w-0 md:col-span-2 md:block">
-                                    <p class="wrap-break-word text-sm font-bold leading-tight text-slate-700 sm:text-base">{{ $q->laptop_id }}</p>
-                                </div>
+                            <div class="hidden min-w-0 md:col-span-2 md:block">
+                                <p class="wrap-break-word text-sm font-bold leading-tight text-slate-700 sm:text-base">
+                                    {{ $q->laptop_id }}</p>
+                            </div>
 
-                                <div class="col-span-2 min-w-0 md:col-span-2">
-                                    <div class="flex flex-col min-w-0 gap-1">
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="h-2 w-2 shrink-0 rounded-full {{ $q->status === 'progress' ? 'bg-blue-500' : 'bg-slate-300' }}"></span>
-                                            <p class="truncate text-xs font-semibold leading-tight text-slate-800 sm:text-sm">{{ $q->technician->name ?? '-' }}</p>
-                                        </div>
-                                        @if($q->technician)
-                                            <div>
-                                                <span class="inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[9px] font-extrabold sm:text-[10px] {{ $q->technician->personnel_status_badge_color }}">
-                                                    <span>{{ $q->technician->personnel_status_label }}</span>
-                                                </span>
-                                            </div>
-                                        @endif
+                            <div class="col-span-2 min-w-0 md:col-span-2">
+                                <div class="flex flex-col min-w-0 gap-1">
+                                    <div class="flex items-center gap-1.5">
+                                        <span
+                                            class="h-2 w-2 shrink-0 rounded-full {{ $q->status === 'progress' ? 'bg-blue-500' : 'bg-slate-300' }}"></span>
+                                        <p
+                                            class="truncate text-xs font-semibold leading-tight text-slate-800 sm:text-sm">
+                                            {{ $q->technician->name ?? '-' }}</p>
                                     </div>
-                                </div>
-
-                                <div class="md:col-span-2">
-                                    @if ($q->target_timestamp)
-                                        <div x-data="timer({{ $q->target_timestamp }})" x-init="init()"
-                                            class="inline-flex items-center rounded-lg border border-blue-100 bg-blue-50 px-2 py-1.5 text-blue-700 sm:px-3 sm:py-2">
-                                            <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <span class="font-mono text-sm font-black sm:text-lg" x-text="timeLeft">--:--</span>
-                                        </div>
-                                    @elseif($q->status === 'waiting')
-                                        <div class="inline-flex items-center rounded-lg border border-amber-100 bg-amber-50 px-2 py-1 text-amber-800 sm:px-2.5 sm:py-1.5">
-                                            <span class="text-xs font-bold sm:text-sm">Est: {{ $q->duration_minutes }} mnt</span>
-                                        </div>
-                                    @else
-                                        <span class="text-sm font-semibold text-slate-400">-</span>
-                                    @endif
-                                </div>
-
-                                <div class="flex justify-end md:col-span-2">
-                                    @if ($q->status === 'progress')
-                                        <span class="rounded-lg border border-blue-200 bg-blue-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-blue-700 sm:px-3 sm:py-2 sm:text-xs">Proses</span>
-                                    @elseif($q->status === 'done')
-                                        <span class="rounded-lg border border-emerald-200 bg-emerald-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700 sm:px-3 sm:py-2 sm:text-xs">Selesai</span>
-                                    @else
-                                        <span class="rounded-lg border border-slate-200 bg-slate-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-slate-600 sm:px-3 sm:py-2 sm:text-xs">Antri</span>
+                                    @if($q->technician)
+                                    <div>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[9px] font-extrabold sm:text-[10px] {{ $q->technician->personnel_status_badge_color }}">
+                                            <span>{{ $q->technician->personnel_status_label }}</span>
+                                        </span>
+                                    </div>
                                     @endif
                                 </div>
                             </div>
 
-                            @if ($q->description)
-                                <div class="border-t border-slate-100 bg-slate-50 px-3 py-2 sm:px-4 sm:py-3">
-                                    <p class="line-clamp-2 text-xs font-medium leading-relaxed text-slate-600 sm:text-sm">{{ $q->description }}</p>
+                            <div class="md:col-span-2">
+                                @if ($q->target_timestamp)
+                                <div x-data="timer({{ $q->target_timestamp }})" x-init="init()"
+                                    class="inline-flex items-center rounded-lg border border-blue-100 bg-blue-50 px-2 py-1.5 text-blue-700 sm:px-3 sm:py-2">
+                                    <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="font-mono text-sm font-black sm:text-lg" x-text="timeLeft">--:--</span>
                                 </div>
-                            @endif
-                        </article>
-                    @empty
-                        <div class="flex min-h-[260px] flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-white px-6 text-center">
-                            <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
-                                <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-                                </svg>
+                                @elseif($q->status === 'waiting')
+                                <div
+                                    class="inline-flex items-center rounded-lg border border-amber-100 bg-amber-50 px-2 py-1 text-amber-800 sm:px-2.5 sm:py-1.5">
+                                    <span class="text-xs font-bold sm:text-sm">Est: {{ $q->duration_minutes }}
+                                        mnt</span>
+                                </div>
+                                @else
+                                <span class="text-sm font-semibold text-slate-400">-</span>
+                                @endif
                             </div>
-                            <p class="text-lg font-black text-slate-500">Tidak ada antrian</p>
+
+                            <div class="flex justify-end md:col-span-2">
+                                @if ($q->status === 'progress')
+                                <span
+                                    class="rounded-lg border border-blue-200 bg-blue-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-blue-700 sm:px-3 sm:py-2 sm:text-xs">Proses</span>
+                                @elseif($q->status === 'done')
+                                <span
+                                    class="rounded-lg border border-emerald-200 bg-emerald-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700 sm:px-3 sm:py-2 sm:text-xs">Selesai</span>
+                                @else
+                                <span
+                                    class="rounded-lg border border-slate-200 bg-slate-100 px-2 py-1.5 text-[10px] font-black uppercase tracking-wide text-slate-600 sm:px-3 sm:py-2 sm:text-xs">Antri</span>
+                                @endif
+                            </div>
                         </div>
+
+                        @if ($q->description)
+                        <div class="border-t border-slate-100 bg-slate-50 px-3 py-2 sm:px-4 sm:py-3">
+                            <p class="line-clamp-2 text-xs font-medium leading-relaxed text-slate-600 sm:text-sm">{{
+                                $q->description }}</p>
+                        </div>
+                        @endif
+                    </article>
+                    @empty
+                    <div
+                        class="flex min-h-[260px] flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-white px-6 text-center">
+                        <div
+                            class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                            </svg>
+                        </div>
+                        <p class="text-lg font-black text-slate-500">Tidak ada antrian</p>
+                    </div>
                     @endforelse
                 </div>
             </div>

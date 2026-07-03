@@ -60,7 +60,8 @@
     </style>
 </head>
 
-<body class="min-h-screen w-full overflow-x-hidden bg-slate-100 font-sans antialiased text-slate-800 lg:h-screen lg:overflow-hidden">
+<body
+    class="min-h-screen w-full overflow-x-hidden bg-slate-100 font-sans antialiased text-slate-800 lg:h-screen lg:overflow-hidden">
     {{ $slot }}
 
     @livewireScripts
