@@ -9,7 +9,7 @@
         @endif
 
         <div class="space-y-2">
-            <label for="username" class="block text-sm font-bold text-slate-700">Username</label>
+            <label for="username" class="block text-sm font-bold text-slate-700">Username <span class="text-red-500">*</span></label>
             <div class="relative">
                 <span
                     class="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-slate-400">
@@ -33,7 +33,7 @@
         </div>
 
         <div class="space-y-2">
-            <label for="password" class="block text-sm font-bold text-slate-700">Password</label>
+            <label for="password" class="block text-sm font-bold text-slate-700">Password <span class="text-red-500">*</span></label>
             <div class="relative">
                 <span
                     class="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-slate-400">

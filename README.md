@@ -45,7 +45,7 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 ### Pengaturan Display
 
-- Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, dan video YouTube khusus `superadmin`.
+- Pengaturan judul aplikasi, upload logo/favicon, running text, kecepatan marquee, serta fleksibilitas sumber video display (opsi pilihan antara YouTube Link/ID atau Upload File Video Lokal berformat MP4/WebM dengan autoplay & loop) khusus `superadmin`.
 - Pengaturan favicon browser untuk login, dashboard, dan public display.
 - Toast notification menggunakan IziToast.
 

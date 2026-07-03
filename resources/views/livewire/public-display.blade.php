@@ -84,7 +84,7 @@
                                         if (!video) return;
 
                                         video.addEventListener('error', () => this.videoError = true);
-                                        video.muted = false;
+                                        video.muted = true;
 
                                         const playPromise = video.play();
                                         if (playPromise !== undefined) {
@@ -96,8 +96,8 @@
                                     });
                                 }
                             }" x-init="initVideo()">
-                        <video x-ref="videoPlayer" class="h-full w-full object-contain" loop playsinline>
-                            <source src="{{ asset('storage/' . $settings->video_url) }}?t={{ time() }}"
+                        <video x-ref="videoPlayer" class="h-full w-full object-contain" autoplay muted loop playsinline>
+                            <source src="{{ str_starts_with($settings->video_url, 'http') || str_starts_with($settings->video_url, '/') ? asset($settings->video_url) : asset('storage/' . $settings->video_url) }}"
                                 type="video/mp4">
                         </video>
 
@@ -159,7 +159,7 @@
                     </div>
                 </div>
 
-                <div class="max-h-[160px] overflow-y-auto bg-slate-50 p-2.5 sm:max-h-[200px] sm:p-3.5">
+                <div class="max-h-40 overflow-y-auto bg-slate-50 p-2.5 sm:max-h-[200px] sm:p-3.5">
                     <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5">
                         @forelse($personnel as $tech)
                         <div

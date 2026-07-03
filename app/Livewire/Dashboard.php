@@ -38,8 +38,8 @@ class Dashboard extends Component
         $activeTechniciansCount = User::query()
             ->where('role', 'technician')
             ->where('status', true)
-            ->whereIn('personnel_status', ['ready', 'visit', 'support_event'])
-            ->count();
+            ->whereIn('personnel_status', ['ready', 'visit', 'support_event'], 'and', false)
+            ->count('*');
 
         $stats = [
             'total' => $this->queueQueryForUser()->count('*'),

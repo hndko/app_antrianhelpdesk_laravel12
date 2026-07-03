@@ -31,6 +31,7 @@ it('renders operational dashboard with analytics graph and table data', function
         'description' => 'Perbaikan Jaringan',
     ]);
 
+    /** @var \App\Models\User $admin */
     $this->actingAs($admin);
 
     Livewire::test(Dashboard::class)

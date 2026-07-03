@@ -17,9 +17,12 @@ class DisplaySettings extends Component
     public $marquee_speed;
     public $logo_url;
     public $favicon_url;
+    public $video_type = 'youtube';
+    public $video_url;
     public $youtube_id;
     public $logo_file;
     public $favicon_file;
+    public $local_video_file;
 
     public function mount()
     {
@@ -39,7 +42,14 @@ class DisplaySettings extends Component
         $this->marquee_speed = $settings->marquee_speed ?? 60;
         $this->logo_url = $settings->logo_url ?? '/assets/helpdesk-logo-icon.svg';
         $this->favicon_url = $settings->favicon_url ?? '/assets/helpdesk-favicon.svg';
-        $this->youtube_id = $settings->video_url ?? '';
+        $this->video_type = $settings->video_type ?? 'youtube';
+        $this->video_url = $settings->video_url ?? '';
+
+        if ($this->video_type === 'youtube') {
+            $this->youtube_id = $this->video_url;
+        } else {
+            $this->youtube_id = '';
+        }
     }
 
     public function updatedYoutubeId($value)
@@ -53,9 +63,7 @@ class DisplaySettings extends Component
         $user = Auth::user();
         abort_unless($user?->canManageDisplaySettings(), 403);
 
-        $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
-
-        $validated = $this->validate([
+        $rules = [
             'app_title' => 'required|string|max:255',
             'running_text' => 'nullable|string|max:1000',
             'logo_url' => 'nullable|string|max:255',
@@ -63,8 +71,17 @@ class DisplaySettings extends Component
             'logo_file' => 'nullable|file|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'favicon_file' => 'nullable|file|mimes:jpg,jpeg,png,webp,svg,ico|max:2048',
             'marquee_speed' => 'required|integer|min:10|max:200',
-            'youtube_id' => 'nullable|string|max:255',
-        ]);
+            'video_type' => 'required|in:youtube,local',
+        ];
+
+        if ($this->video_type === 'youtube') {
+            $this->youtube_id = $this->extractYoutubeId($this->youtube_id);
+            $rules['youtube_id'] = 'nullable|string|max:255';
+        } else {
+            $rules['local_video_file'] = 'nullable|file|mimes:mp4,webm|max:51200';
+        }
+
+        $validated = $this->validate($rules);
 
         if ($this->logo_file) {
             $this->deleteStoredBrandFile($this->logo_url);
@@ -76,24 +93,58 @@ class DisplaySettings extends Component
             $validated['favicon_url'] = $this->storeBrandFile($this->favicon_file);
         }
 
+        $settings = Setting::first();
+        $finalVideoUrl = $settings?->video_url;
+
+        if ($this->video_type === 'youtube') {
+            $finalVideoUrl = $this->youtube_id ?: '';
+            if ($settings && $settings->video_type === 'local' && $settings->video_url) {
+                $this->deleteStoredVideoFile($settings->video_url);
+            }
+        } elseif ($this->video_type === 'local') {
+            if ($this->local_video_file) {
+                if ($settings && $settings->video_type === 'local' && $settings->video_url) {
+                    $this->deleteStoredVideoFile($settings->video_url);
+                }
+                $finalVideoUrl = $this->storeVideoFile($this->local_video_file);
+            } elseif (! $finalVideoUrl || $settings?->video_type !== 'local') {
+                $finalVideoUrl = '';
+            }
+        }
+
         Setting::updateOrCreate(['id' => 1], [
             'app_title' => $validated['app_title'],
-            'running_text' => $validated['running_text'],
+            'running_text' => $validated['running_text'] ?? '',
             'marquee_speed' => $validated['marquee_speed'],
-            'logo_url' => $validated['logo_url'],
-            'favicon_url' => $validated['favicon_url'],
-            'video_url' => $validated['youtube_id'],
-            'video_type' => 'youtube',
+            'logo_url' => $validated['logo_url'] ?? $this->logo_url,
+            'favicon_url' => $validated['favicon_url'] ?? $this->favicon_url,
+            'video_url' => $finalVideoUrl,
+            'video_type' => $this->video_type,
         ]);
 
-        $this->logo_url = $validated['logo_url'];
-        $this->favicon_url = $validated['favicon_url'];
-        $this->reset('logo_file', 'favicon_file');
+        $this->logo_url = $validated['logo_url'] ?? $this->logo_url;
+        $this->favicon_url = $validated['favicon_url'] ?? $this->favicon_url;
+        $this->video_url = $finalVideoUrl;
+        $this->reset('logo_file', 'favicon_file', 'local_video_file');
 
         $this->dispatch('show-toast', [
             'type' => 'success',
             'message' => 'Pengaturan display berhasil disimpan.',
         ]);
+    }
+
+    private function storeVideoFile($file): string
+    {
+        return '/storage/' . $file->store('videos', 'public');
+    }
+
+    private function deleteStoredVideoFile(?string $path): void
+    {
+        if (! $path || ! str_starts_with($path, '/storage/videos/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(str_replace('/storage/', '', $path));
     }
 
     private function extractYoutubeId($url)

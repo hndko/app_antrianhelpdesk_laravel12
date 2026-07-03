@@ -18,7 +18,7 @@
 
             <form wire:submit.prevent="saveProfile" class="space-y-5 p-5">
                 <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700">Nama</label>
+                    <label class="mb-2 block text-sm font-bold text-slate-700">Nama <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700">Username</label>
+                    <label class="mb-2 block text-sm font-bold text-slate-700">Username <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700">Email</label>
+                    <label class="mb-2 block text-sm font-bold text-slate-700">Email <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@
 
             <form wire:submit.prevent="savePassword" class="space-y-5 p-5">
                 <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700">Password Saat Ini</label>
+                    <label class="mb-2 block text-sm font-bold text-slate-700">Password Saat Ini <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +92,7 @@
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700">Password Baru</label>
+                    <label class="mb-2 block text-sm font-bold text-slate-700">Password Baru <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +106,7 @@
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700">Konfirmasi Password Baru</label>
+                    <label class="mb-2 block text-sm font-bold text-slate-700">Konfirmasi Password Baru <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

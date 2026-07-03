@@ -42,7 +42,7 @@
             <form wire:submit="saveStatus" class="mt-5 space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Pilih Status
-                        Ketersediaan</label>
+                        Ketersediaan <span class="text-red-500">*</span></label>
                     <div class="grid grid-cols-2 gap-2.5">
                         <label
                             class="relative flex cursor-pointer items-center gap-2.5 rounded-xl border p-3 text-xs font-semibold transition sm:text-sm {{ $personnel_status === 'ready' ? 'border-emerald-500 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-500/20' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50' }}">

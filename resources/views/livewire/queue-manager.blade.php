@@ -23,7 +23,7 @@
 
                 <form wire:submit.prevent="saveQueue" class="space-y-5 p-5">
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Nama User / Pelanggan</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Nama User / Pelanggan <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">No. Laptop / ID</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">No. Laptop / ID <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,7 +50,7 @@
 
                     @if ($canTransferQueue)
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Teknisi / Oper Ke</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Teknisi / Oper Ke <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">Status</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Status <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">Durasi (Menit)</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Durasi (Menit) <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

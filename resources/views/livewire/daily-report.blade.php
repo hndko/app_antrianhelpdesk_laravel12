@@ -27,7 +27,7 @@
                     @error('selectedTechnician') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                 </div>
                 <div class="md:col-span-4">
-                    <label for="date" class="block text-sm font-semibold text-slate-700 mb-2">Pilih Tanggal</label>
+                    <label for="date" class="block text-sm font-semibold text-slate-700 mb-2">Pilih Tanggal <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@
         </div>
 
         <div
-            class="md:col-span-2 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-lg p-6 text-white flex flex-col justify-center items-center text-center">
+            class="md:col-span-2 bg-linear-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-lg p-6 text-white flex flex-col justify-center items-center text-center">
             <p class="text-blue-100 text-sm font-bold uppercase tracking-wider">Total Pekerjaan Diselesaikan</p>
             <div class="text-6xl font-black font-mono my-3 tracking-tight">{{ $reportData }}</div>
             <p class="text-blue-100 text-sm max-w-md">

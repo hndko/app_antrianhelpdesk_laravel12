@@ -23,7 +23,7 @@
 
                 <form wire:submit.prevent="save" class="space-y-5 p-5">
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Nama</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Nama <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Username</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Username <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Email</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Email <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">Role</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Role <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@
                         </div>
 
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">Status</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Status <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@
                         </div>
 
                         <div>
-                            <label class="mb-2 block text-sm font-bold text-slate-700">Status Ketersediaan</label>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Status Ketersediaan <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +137,7 @@
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-bold text-slate-700">Password</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Password @if(!$user_id) <span class="text-red-500">*</span> @endif</label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
