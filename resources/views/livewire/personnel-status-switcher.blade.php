@@ -25,6 +25,7 @@
 
     <!-- Modal -->
     @if($isOpen)
+    @teleport('body')
     <div
         class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/60 p-4 backdrop-blur-sm transition-opacity">
         <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-2xl transition-all">
@@ -161,6 +162,7 @@
             </form>
         </div>
     </div>
+    @endteleport
     @endif
     @endif
 </div>

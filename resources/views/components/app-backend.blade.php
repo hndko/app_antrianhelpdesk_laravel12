@@ -195,7 +195,7 @@
         </aside>
 
         <div class="min-w-0 flex-1">
-            <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+            <header class="sticky top-0 z-30 border-b border-slate-200 bg-white shadow-xs">
                 <div class="flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
                     <div class="flex min-w-0 items-center gap-3">
                         <button type="button"
