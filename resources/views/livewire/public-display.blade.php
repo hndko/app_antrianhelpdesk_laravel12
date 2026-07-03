@@ -193,7 +193,7 @@
                                 </div>
 
                                 <div class="hidden min-w-0 md:col-span-2 md:block">
-                                    <p class="break-words text-sm font-bold leading-tight text-slate-700 sm:text-base">{{ $q->laptop_id }}</p>
+                                    <p class="wrap-break-word text-sm font-bold leading-tight text-slate-700 sm:text-base">{{ $q->laptop_id }}</p>
                                 </div>
 
                                 <div class="col-span-2 min-w-0 md:col-span-2">

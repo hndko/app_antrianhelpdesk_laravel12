@@ -76,7 +76,9 @@ Project tidak memakai role table, permission table, atau Spatie Laravel Permissi
 - Utamakan maintainability, security, dan user experience pada layar publik.
 - Hindari membuat logic bisnis besar langsung di Blade.
 - Hindari query model langsung di Blade.
+- Waktu update display real-time (polling) di public display adalah 2 detik (`wire:poll.2s`).
 - Hindari duplikasi logic status antrian, filter display, dan laporan teknisi.
+- Setiap kali user meminta fitur baru, penyesuaian alur/flow, atau aturan baru, agent wajib langsung memperbarui `GEMINI.md` dan `README.md`.
 - Semua fitur penting harus memiliki validasi, authorization, dan error handling.
 - Untuk fitur baru yang berdampak ke data, wajib pertimbangkan:
     - Security
@@ -457,6 +459,7 @@ Aturan display:
 - Antrian `done` hanya tampil sementara sesuai logic display.
 - Urutan prioritas tampilan: `progress`, `waiting`, lalu `done`.
 - Query public display harus eager load teknisi.
+- Panel Ketersediaan Personil pada Public Display TV hanya boleh menampilkan user aktif (`status = true`) yang memiliki `role = technician`.
 - Perubahan assignment teknisi dan status antrian wajib dicatat pada history log.
 
 ---
@@ -465,9 +468,11 @@ Aturan display:
 
 - Role yang digunakan: `superadmin`, `service_desk`, dan `technician`.
 - Teknisi adalah akun di tabel `users` dengan `role = technician`.
-- `superadmin` dapat mengelola akun, seluruh antrian, laporan, dan pengaturan display.
+- `superadmin` dapat mengelola akun, seluruh antrian, laporan, pengaturan display, serta status ketersediaan personil.
 - `service_desk` dapat melihat semua antrian dan assign pekerjaan ke teknisi.
 - `technician` hanya boleh melihat antrian dengan `technician_user_id` miliknya.
+- Status ketersediaan personil (`personnel_status`) terdiri dari: `ready`, `visit`, `support_event`, dan `unavailable`.
+- Teknisi dapat memperbarui status ketersediaan mandiri beserta estimasi waktu (`status_estimated_time`, teks bebas maks 50 karakter) dan catatan (`status_note`) melalui topbar switcher (`PersonnelStatusSwitcher`).
 - Saat teknisi membuat antrian, `technician_user_id` boleh memakai akun teknisi yang sedang login atau teknisi tujuan jika antrian langsung dioper.
 - Teknisi dan service desk boleh mengoper antrian ke teknisi lain.
 - Oper antrian dan update status wajib membuat history log.

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,22 +12,22 @@ class UserManager extends Component
 {
     use WithPagination;
 
-    public $user_id;
-    public $name = '';
-    public $username = '';
-    public $email = '';
-    public $password = '';
-    public $role = 'technician';
-    public $personnel_status = 'ready';
-    public $status_estimated_time = null;
-    public $status_note = null;
-    public $status = true;
-    public $isEditing = false;
-    public $userPendingDeleteId;
+    public ?int $user_id = null;
+    public string $name = '';
+    public string $username = '';
+    public string $email = '';
+    public string $password = '';
+    public string $role = 'technician';
+    public string $personnel_status = 'ready';
+    public ?string $status_estimated_time = null;
+    public ?string $status_note = null;
+    public bool $status = true;
+    public bool $isEditing = false;
+    public ?int $userPendingDeleteId = null;
 
     public function mount(): void
     {
-        abort_unless(auth()->user()->canManageUsers(), 403);
+        abort_unless(Auth::user()?->canManageUsers(), 403);
     }
 
     public function resetForm(): void
@@ -54,7 +55,7 @@ class UserManager extends Component
 
     public function save(): void
     {
-        abort_unless(auth()->user()->canManageUsers(), 403);
+        abort_unless(Auth::user()?->canManageUsers(), 403);
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -96,7 +97,7 @@ class UserManager extends Component
 
     public function edit(int $id): void
     {
-        abort_unless(auth()->user()->canManageUsers(), 403);
+        abort_unless(Auth::user()?->canManageUsers(), 403);
 
         $user = User::findOrFail($id);
 
@@ -115,8 +116,8 @@ class UserManager extends Component
 
     public function askDelete(int $id): void
     {
-        abort_unless(auth()->user()->canManageUsers(), 403);
-        abort_if(auth()->id() === $id, 403);
+        abort_unless(Auth::user()?->canManageUsers(), 403);
+        abort_if(Auth::id() === $id, 403);
 
         $this->userPendingDeleteId = User::findOrFail($id)->id;
     }
@@ -128,8 +129,8 @@ class UserManager extends Component
 
     public function confirmDelete(): void
     {
-        abort_unless(auth()->user()->canManageUsers(), 403);
-        abort_if(auth()->id() === (int) $this->userPendingDeleteId, 403);
+        abort_unless(Auth::user()?->canManageUsers(), 403);
+        abort_if(Auth::id() === (int) $this->userPendingDeleteId, 403);
 
         $user = User::findOrFail($this->userPendingDeleteId);
 
@@ -156,7 +157,7 @@ class UserManager extends Component
 
     public function render()
     {
-        abort_unless(auth()->user()->canManageUsers(), 403);
+        abort_unless(Auth::user()?->canManageUsers(), 403);
 
         return view('livewire.user-manager', [
             'users' => User::query()

@@ -24,7 +24,7 @@ class PublicDisplay extends Component
 
     public function render()
     {
-        $settings = Setting::first() ?? new Setting([
+        $settings = Setting::query()->first() ?? new Setting([
             'app_title' => 'Service Display',
             'logo_url' => null,
             'favicon_url' => null,
@@ -34,7 +34,7 @@ class PublicDisplay extends Component
             'marquee_speed' => 60,
         ]);
 
-        $queues = Queue::with('technician')
+        $queues = Queue::query()->with('technician')
             ->where(function ($query) {
                 $query->whereNotIn('status', Queue::doneStatuses())
                     ->orWhere(function ($subQuery) {
@@ -64,19 +64,22 @@ class PublicDisplay extends Component
             'done' => $queues->whereIn('status', Queue::doneStatuses())->count(),
         ];
 
-        $personnel = \App\Models\User::where('role', 'technician')
+        $personnel = \App\Models\User::query()->where('role', 'technician')
             ->where('status', true)
             ->orderByRaw("CASE personnel_status WHEN 'ready' THEN 1 WHEN 'visit' THEN 2 WHEN 'support_event' THEN 3 ELSE 4 END")
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('livewire.public-display', [
+        /** @var mixed $view */
+        $view = view('livewire.public-display', [
             'queues' => $queues,
             'personnel' => $personnel,
             'settings' => $settings,
             'queueStats' => $queueStats,
             'displayLogoUrl' => $this->resolveAssetUrl($settings->logo_url, 'assets/helpdesk-logo-icon.svg'),
-        ])->layout('components.app-frontend', [
+        ]);
+
+        return $view->layout('components.app-frontend', [
             'title' => $settings->app_title ?? 'Service Display',
             'appName' => $settings->app_title ?? 'Service Display',
             'logo' => $settings->logo_url ?? '',
