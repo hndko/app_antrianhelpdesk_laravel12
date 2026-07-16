@@ -80,11 +80,23 @@ class UserManager extends Component
         $user = Auth::user();
         abort_unless($user?->canManageUsers(), 403);
 
+        $passwordRule = ['nullable', 'string', 'min:8', 'max:255'];
+        if ($this->auth_source === 'local') {
+            if (!$this->user_id) {
+                $passwordRule = ['required', 'string', 'min:8', 'max:255'];
+            } else {
+                $existingUser = User::find($this->user_id);
+                if ($existingUser && ($existingUser->auth_source === 'ad' || is_null($existingUser->password))) {
+                    $passwordRule = ['required', 'string', 'min:8', 'max:255'];
+                }
+            }
+        }
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($this->user_id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user_id)],
-            'password' => [$this->auth_source === 'ad' ? 'nullable' : ($this->isEditing ? 'nullable' : 'required'), 'string', 'min:8', 'max:255'],
+            'password' => $passwordRule,
             'role' => ['required', Rule::in(['superadmin', 'service_desk', 'technician'])],
             'personnel_status' => ['required', Rule::in(['ready', 'visit', 'support_event', 'unavailable'])],
             'status_estimated_time' => ['nullable', 'string', 'max:50'],
