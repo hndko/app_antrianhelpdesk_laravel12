@@ -103,3 +103,40 @@ it('prevents inactive whitelisted AD users from logging in', function () {
 
     $this->assertGuest();
 });
+
+it('allows batch adding AD users from search results', function () {
+    $admin = User::factory()->create([
+        'role' => 'superadmin',
+        'status' => true,
+    ]);
+
+    $this->actingAs($admin);
+
+    $adSearchResults = [
+        ['name' => 'AD User One', 'username' => 'aduser1', 'email' => 'aduser1@kpk.go.id'],
+        ['name' => 'AD User Two', 'username' => 'aduser2', 'email' => 'aduser2@kpk.go.id'],
+    ];
+
+    Livewire\Livewire::test(\App\Livewire\UserManager::class)
+        ->set('adSearchResults', $adSearchResults)
+        ->call('toggleSelectAdUser', 'aduser1')
+        ->call('toggleSelectAdUser', 'aduser2')
+        ->set('bulkRole', 'service_desk')
+        ->set('bulkStatus', true)
+        ->call('addSelectedAdUsers')
+        ->assertDispatched('show-toast');
+
+    $this->assertDatabaseHas('users', [
+        'username' => 'aduser1',
+        'email' => 'aduser1@kpk.go.id',
+        'role' => 'service_desk',
+        'auth_source' => 'ad',
+    ]);
+
+    $this->assertDatabaseHas('users', [
+        'username' => 'aduser2',
+        'email' => 'aduser2@kpk.go.id',
+        'role' => 'service_desk',
+        'auth_source' => 'ad',
+    ]);
+});

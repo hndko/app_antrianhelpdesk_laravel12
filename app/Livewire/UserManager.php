@@ -35,6 +35,11 @@ class UserManager extends Component
     public bool $adSearching = false;
     public ?string $adError = null;
 
+    // AD Bulk Select fields
+    public array $selectedAdUsernames = [];
+    public string $bulkRole = 'technician';
+    public bool $bulkStatus = true;
+
     public function mount(): void
     {
         /** @var \App\Models\User|null $user */
@@ -65,6 +70,9 @@ class UserManager extends Component
             'adSearchResults',
             'adSearching',
             'adError',
+            'selectedAdUsernames',
+            'bulkRole',
+            'bulkStatus',
         ]);
 
         $this->role = 'technician';
@@ -165,6 +173,9 @@ class UserManager extends Component
         $this->adSearchResults = [];
         $this->adError = null;
         $this->adSearching = false;
+        $this->selectedAdUsernames = [];
+        $this->bulkRole = 'technician';
+        $this->bulkStatus = true;
         $this->resetValidation();
     }
 
@@ -219,6 +230,67 @@ class UserManager extends Component
         $this->dispatch('show-toast', [
             'type' => 'success',
             'message' => "User AD {$username} terpilih.",
+        ]);
+    }
+
+    public function toggleSelectAdUser(string $username): void
+    {
+        if (in_array($username, $this->selectedAdUsernames)) {
+            $this->selectedAdUsernames = array_diff($this->selectedAdUsernames, [$username]);
+        } else {
+            $this->selectedAdUsernames[] = $username;
+        }
+    }
+
+    public function toggleSelectAllAdUsers(): void
+    {
+        if (count($this->selectedAdUsernames) === count($this->adSearchResults)) {
+            $this->selectedAdUsernames = [];
+        } else {
+            $this->selectedAdUsernames = collect($this->adSearchResults)->pluck('username')->toArray();
+        }
+    }
+
+    public function addSelectedAdUsers(): void
+    {
+        if (empty($this->selectedAdUsernames)) {
+            return;
+        }
+
+        $addedCount = 0;
+        foreach ($this->adSearchResults as $result) {
+            if (in_array($result['username'], $this->selectedAdUsernames)) {
+                $user = User::where('username', $result['username'])
+                    ->orWhere('email', $result['email'])
+                    ->first();
+
+                $payload = [
+                    'name' => $result['name'],
+                    'username' => $result['username'],
+                    'email' => $result['email'],
+                    'role' => $this->bulkRole,
+                    'status' => $this->bulkStatus,
+                    'auth_source' => 'ad',
+                    'password' => null,
+                    'personnel_status' => 'ready',
+                    'email_verified_at' => now(),
+                ];
+
+                if ($user) {
+                    $user->update($payload);
+                } else {
+                    User::create($payload);
+                }
+                $addedCount++;
+            }
+        }
+
+        $this->closeAdSearchModal();
+        $this->resetForm();
+
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => "{$addedCount} akun AD berhasil ditambahkan secara massal.",
         ]);
     }
 

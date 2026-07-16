@@ -426,13 +426,24 @@
                 <!-- Search Results Section -->
                 @if (!empty($adSearchResults))
                 <div class="border-t border-slate-200 pt-4">
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-3">Hasil Pencarian AD</h4>
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-500">Hasil Pencarian AD</h4>
+                        <label class="flex items-center gap-1.5 cursor-pointer text-xs font-bold text-slate-700 select-none">
+                            <input type="checkbox" wire:click="toggleSelectAllAdUsers" @if(count($selectedAdUsernames) === count($adSearchResults)) checked @endif class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span>Pilih Semua</span>
+                        </label>
+                    </div>
                     <div class="max-h-[200px] overflow-y-auto divide-y divide-slate-100 rounded-lg border border-slate-200 bg-slate-50">
                         @foreach ($adSearchResults as $result)
                         <div class="flex items-center justify-between p-3 transition hover:bg-blue-50/50">
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">{{ $result['name'] }}</div>
-                                <div class="text-xs text-slate-500 font-semibold">{{ $result['username'] }} · {{ $result['email'] }}</div>
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" wire:click="toggleSelectAdUser('{{ $result['username'] }}')"
+                                    @if(in_array($result['username'], $selectedAdUsernames)) checked @endif
+                                    class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                                <div>
+                                    <div class="text-sm font-bold text-slate-900">{{ $result['name'] }}</div>
+                                    <div class="text-xs text-slate-500 font-semibold">{{ $result['username'] }} · {{ $result['email'] }}</div>
+                                </div>
                             </div>
                             <button type="button" wire:click="selectAdUser('{{ addslashes($result['name']) }}', '{{ addslashes($result['username']) }}', '{{ addslashes($result['email']) }}')"
                                 class="rounded-lg bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white px-3 py-1.5 text-xs font-extrabold transition border border-blue-100">
@@ -442,6 +453,35 @@
                         @endforeach
                     </div>
                 </div>
+
+                @if(!empty($selectedAdUsernames))
+                <div class="border-t border-slate-200 pt-4 mt-4 space-y-4">
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-500">Pengaturan Tambah Massal</h4>
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Role Default <span class="text-red-500">*</span></label>
+                            <select wire:model="bulkRole" class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 text-sm">
+                                <option value="technician">Teknisi</option>
+                                <option value="service_desk">Service Desk</option>
+                                <option value="superadmin">Superadmin</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-bold text-slate-700">Status Default <span class="text-red-500">*</span></label>
+                            <select wire:model="bulkStatus" class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 text-sm">
+                                <option value="1">Aktif</option>
+                                <option value="0">Nonaktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" wire:click="addSelectedAdUsers" class="w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 text-sm font-extrabold text-white shadow-lg transition">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        <span>Tambahkan {{ count($selectedAdUsernames) }} Akun Terpilih</span>
+                    </button>
+                </div>
+                @endif
                 @endif
             </div>
         </div>
