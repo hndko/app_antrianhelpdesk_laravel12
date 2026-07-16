@@ -196,4 +196,17 @@ return [
     */
 
     'release_token' => 'a',
+
+    /*
+    |---------------------------------------------------------------------------
+    | Livewire Asset URL Prefix
+    |---------------------------------------------------------------------------
+    |
+    | Configure the URL prefix where Livewire assets (like livewire.js) are
+    | located. If you publish assets to public/vendor/livewire, set this to
+    | your app url with the path /vendor/livewire.
+    |
+    */
+
+    'asset_url' => env('LIVEWIRE_ASSET_URL', null),
 ];
