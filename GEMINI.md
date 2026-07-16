@@ -293,6 +293,7 @@ Kolom penting:
 - `password`
 - `role`
 - `status`
+- `auth_source`
 - `remember_token`
 - `created_at`
 - `updated_at`
@@ -412,7 +413,9 @@ GET  /reports/daily            reports.daily
 - Login superadmin, service desk, dan teknisi menggunakan satu halaman auth yang sama.
 - Akun login disimpan di tabel `users`.
 - Login menggunakan `username` dan `password`.
-- Password wajib di-hash.
+- Mendukung dua jenis autentikasi: `local` (menggunakan hashed password di database) dan `ad` (Active Directory, menggunakan bind langsung ke LDAP/AD server).
+- Password lokal wajib di-hash, sedangkan akun AD tidak memerlukan/menyimpan password lokal di database (diset nullable).
+- Sistem menggunakan mekanisme whitelist: Hanya akun Active Directory yang telah didaftarkan (di-whitelist) ke dalam database lokal oleh superadmin yang diperbolehkan masuk.
 - Seeder default membuat akun superadmin untuk development.
 - Jangan menampilkan password di view, log, atau dokumentasi publik kecuali untuk akun demo development.
 - Tambahkan throttle login jika aplikasi dipakai production.

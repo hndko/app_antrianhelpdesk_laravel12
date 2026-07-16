@@ -22,8 +22,18 @@ class UserManager extends Component
     public ?string $status_estimated_time = null;
     public ?string $status_note = null;
     public bool $status = true;
+    public string $auth_source = 'local';
     public bool $isEditing = false;
     public ?int $userPendingDeleteId = null;
+
+    // AD Search Modal fields
+    public bool $showAdSearchModal = false;
+    public string $adBindUsername = '';
+    public string $adBindPassword = '';
+    public string $adSearchQuery = '';
+    public array $adSearchResults = [];
+    public bool $adSearching = false;
+    public ?string $adError = null;
 
     public function mount(): void
     {
@@ -45,13 +55,22 @@ class UserManager extends Component
             'status_estimated_time',
             'status_note',
             'status',
+            'auth_source',
             'isEditing',
             'userPendingDeleteId',
+            'showAdSearchModal',
+            'adBindUsername',
+            'adBindPassword',
+            'adSearchQuery',
+            'adSearchResults',
+            'adSearching',
+            'adError',
         ]);
 
         $this->role = 'technician';
         $this->personnel_status = 'ready';
         $this->status = true;
+        $this->auth_source = 'local';
         $this->resetValidation();
     }
 
@@ -65,12 +84,13 @@ class UserManager extends Component
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($this->user_id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user_id)],
-            'password' => [$this->isEditing ? 'nullable' : 'required', 'string', 'min:8', 'max:255'],
+            'password' => [$this->auth_source === 'ad' ? 'nullable' : ($this->isEditing ? 'nullable' : 'required'), 'string', 'min:8', 'max:255'],
             'role' => ['required', Rule::in(['superadmin', 'service_desk', 'technician'])],
             'personnel_status' => ['required', Rule::in(['ready', 'visit', 'support_event', 'unavailable'])],
             'status_estimated_time' => ['nullable', 'string', 'max:50'],
             'status_note' => ['nullable', 'string', 'max:100'],
             'status' => ['boolean'],
+            'auth_source' => ['required', Rule::in(['local', 'ad'])],
         ]);
 
         $payload = [
@@ -82,11 +102,16 @@ class UserManager extends Component
             'status_estimated_time' => $validated['status_estimated_time'] ?: null,
             'status_note' => $validated['status_note'] ?: null,
             'status' => (bool) $validated['status'],
+            'auth_source' => $validated['auth_source'],
             'email_verified_at' => now(),
         ];
 
-        if ($validated['password']) {
+        if ($validated['auth_source'] === 'local' && $validated['password']) {
             $payload['password'] = $validated['password'];
+        } elseif ($validated['auth_source'] === 'ad') {
+            if (!$this->isEditing) {
+                $payload['password'] = null;
+            }
         }
 
         User::updateOrCreate(['id' => $this->user_id], $payload);
@@ -115,7 +140,74 @@ class UserManager extends Component
         $this->status_estimated_time = $user->status_estimated_time;
         $this->status_note = $user->status_note;
         $this->status = $user->status;
+        $this->auth_source = $user->auth_source ?? 'local';
         $this->isEditing = true;
+    }
+
+    public function openAdSearchModal(): void
+    {
+        $this->showAdSearchModal = true;
+        $this->adBindUsername = '';
+        $this->adBindPassword = '';
+        $this->adSearchQuery = '';
+        $this->adSearchResults = [];
+        $this->adError = null;
+        $this->adSearching = false;
+        $this->resetValidation();
+    }
+
+    public function closeAdSearchModal(): void
+    {
+        $this->showAdSearchModal = false;
+        $this->adError = null;
+    }
+
+    public function searchAd(): void
+    {
+        $this->validate([
+            'adBindUsername' => ['required', 'string'],
+            'adBindPassword' => ['required', 'string'],
+            'adSearchQuery' => ['nullable', 'string'],
+        ], [
+            'adBindUsername.required' => 'Username AD Bind wajib diisi.',
+            'adBindPassword.required' => 'Password AD Bind wajib diisi.',
+        ]);
+
+        $this->adSearching = true;
+        $this->adError = null;
+        $this->adSearchResults = [];
+
+        try {
+            $ldapService = app(\App\Services\LdapService::class);
+            $this->adSearchResults = $ldapService->searchUsers(
+                $this->adBindUsername,
+                $this->adBindPassword,
+                $this->adSearchQuery
+            );
+
+            if (empty($this->adSearchResults)) {
+                $this->adError = 'Tidak ditemukan user aktif AD yang sesuai dengan kata kunci.';
+            }
+        } catch (\Exception $e) {
+            $this->adError = $e->getMessage();
+        } finally {
+            $this->adSearching = false;
+        }
+    }
+
+    public function selectAdUser(string $name, string $username, string $email): void
+    {
+        $this->name = $name;
+        $this->username = $username;
+        $this->email = $email;
+        $this->auth_source = 'ad';
+        
+        $this->closeAdSearchModal();
+        
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => "User AD {$username} terpilih.",
+        ]);
     }
 
     public function askDelete(int $id): void

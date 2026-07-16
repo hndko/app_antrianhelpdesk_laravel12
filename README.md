@@ -53,11 +53,14 @@ Aplikasi ini menyediakan tampilan publik untuk TV/monitor dan panel pengelolaan 
 
 - Role utama: `superadmin`, `service_desk`, dan `technician`.
 - Akun `helpdesk` berperan sebagai `superadmin`.
+- **Integrasi Active Directory (AD)**: Mendukung autentikasi via AD/LDAP dengan skema whitelist. Setiap akun dapat memilih menggunakan autentikasi *Lokal* atau *Active Directory*.
+- **Pencarian User AD**: Superadmin dapat mencari user di direktori AD menggunakan kredensial bind UPN sementara (tidak disimpan di sistem) melalui modal interaktif "Sambungkan ke Active Directory".
+- **Whitelist Security**: Hanya akun AD yang telah di-whitelist (didaftarkan ke database lokal) oleh superadmin yang diperbolehkan masuk ke dashboard. Akun AD tidak memerlukan/menyimpan password lokal di database.
 - Superadmin dapat membuat dan mengubah akun service desk, teknisi, dan superadmin, termasuk status ketersediaan personil dan estimasi waktu.
 - Setiap teknisi dapat memperbarui status ketersediaan mandiri (Ready, Visit, Support Acara, Tidak Tersedia) secara cepat melalui topbar switcher dengan tombol 1-klik untuk kembali ke status Ready.
 - Status teknisi otomatis beralih ke `Ready` saat teknisi login kembali atau saat memproses antrian pekerjaan.
 - Akun dengan riwayat antrian dinonaktifkan saat dihapus agar histori tetap aman.
-- Setiap user dapat mengubah profil dan password dari menu `Edit Profile`.
+- Setiap user lokal dapat mengubah profil dan password dari menu `Edit Profile`. Untuk user AD, password diatur penuh oleh Active Directory.
 
 ### Laporan Harian
 

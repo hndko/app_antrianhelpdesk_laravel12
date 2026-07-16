@@ -28,6 +28,7 @@ class User extends Authenticatable
         'status_estimated_time',
         'status_note',
         'status',
+        'auth_source',
     ];
 
     /**

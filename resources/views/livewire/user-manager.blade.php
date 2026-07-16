@@ -23,6 +23,35 @@
 
                 <form wire:submit.prevent="save" class="space-y-5 p-5">
                     <div>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Sumber Autentikasi <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <select wire:model.live="auth_source" @if($isEditing) disabled @endif
+                                class="min-h-11 w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 disabled:opacity-60">
+                                <option value="local">Lokal (Username & Password)</option>
+                                <option value="ad">Active Directory (AD)</option>
+                            </select>
+                        </div>
+                        @error('auth_source') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    @if($auth_source === 'ad' && !$isEditing)
+                    <div>
+                        <button type="button" wire:click="openAdSearchModal"
+                            class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-blue-50 border border-blue-200 px-4 py-2.5 text-sm font-extrabold text-blue-700 shadow-sm transition hover:bg-blue-100">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <span>Sambungkan & Cari di AD</span>
+                        </button>
+                    </div>
+                    @endif
+
+                    <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Nama <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
@@ -30,8 +59,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
-                            <input type="text" wire:model="name" placeholder="Masukkan nama lengkap"
-                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <input type="text" wire:model="name" placeholder="Masukkan nama lengkap" @if($auth_source === 'ad' && !$isEditing) readonly @endif
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 readonly:opacity-80">
                         </div>
                         @error('name') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -44,8 +73,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </div>
-                            <input type="text" wire:model="username" placeholder="Masukkan username"
-                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <input type="text" wire:model="username" placeholder="Masukkan username" @if($auth_source === 'ad' && !$isEditing) readonly @endif
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 readonly:opacity-80">
                         </div>
                         @error('username') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -58,8 +87,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
                             </div>
-                            <input type="email" wire:model="email" placeholder="Masukkan alamat email"
-                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <input type="email" wire:model="email" placeholder="Masukkan alamat email" @if($auth_source === 'ad' && !$isEditing) readonly @endif
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-11 pr-4 py-2.5 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 readonly:opacity-80">
                         </div>
                         @error('email') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -136,6 +165,7 @@
                         </div>
                     </div>
 
+                    @if($auth_source === 'local')
                     <div>
                         <label class="mb-2 block text-sm font-bold text-slate-700">Password @if(!$user_id) <span class="text-red-500">*</span> @endif</label>
                         <div class="relative">
@@ -150,6 +180,7 @@
                         </div>
                         @error('password') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
+                    @endif
 
                     <div class="flex flex-col gap-3 pt-2 sm:flex-row">
                         <button type="submit"
@@ -199,8 +230,12 @@
                             <tr class="transition hover:bg-blue-50/50">
                                 <td class="p-4">
                                     <div class="font-extrabold text-slate-900">{{ $user->name }}</div>
-                                    <div class="mt-0.5 text-sm font-semibold text-slate-500">{{ $user->username }} · {{
-                                        $user->email }}</div>
+                                    <div class="mt-0.5 text-sm font-semibold text-slate-500">
+                                        {{ $user->username }} · {{ $user->email }}
+                                        <span class="ml-1.5 inline-flex items-center rounded-md bg-blue-50 px-1.5 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 font-bold">
+                                            {{ $user->auth_source === 'ad' ? 'AD' : 'Lokal' }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="p-4">
                                     <span
@@ -292,6 +327,122 @@
                     </svg>
                     <span>Lanjutkan</span>
                 </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if ($showAdSearchModal)
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+        <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-[#0f172a] text-slate-100 shadow-2xl border border-slate-800">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+                <div class="flex items-center gap-3">
+                    <div class="rounded-lg bg-blue-500/10 p-2 text-blue-400">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Sambungkan ke Active Directory</h3>
+                </div>
+                <button type="button" wire:click="closeAdSearchModal" class="text-slate-400 hover:text-white transition">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                <!-- Warning/Information Banner -->
+                <div class="rounded-xl bg-blue-950/40 border border-blue-900/50 p-4 flex gap-3 text-sm text-blue-300">
+                    <svg class="h-5 w-5 shrink-0 text-blue-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                    </svg>
+                    <div>
+                        Masukkan <strong>Username & Password AD</strong> milik Anda sendiri. Kredensial ini hanya digunakan sekali untuk mencari user di Active Directory dan <strong>tidak disimpan</strong> di mana pun.
+                    </div>
+                </div>
+
+                <form wire:submit.prevent="searchAd" class="space-y-3">
+                    <div>
+                        <label class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">Username AD (sAMAccountName)</label>
+                        <input type="text" wire:model="adBindUsername" placeholder="Contoh: john.doe atau john.doe@company.local"
+                            class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+                        @error('adBindUsername') <p class="mt-1 text-xs font-bold text-red-400">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">Password AD</label>
+                        <div class="relative" x-data="{ show: false }">
+                            <input :type="show ? 'text' : 'password'" wire:model="adBindPassword" placeholder="Password Active Directory Anda"
+                                class="w-full rounded-lg border border-slate-700 bg-slate-900 pl-4 pr-10 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white transition">
+                                <svg class="h-5 w-5" x-show="!show" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg class="h-5 w-5" x-show="show" x-cloak fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                            </button>
+                        </div>
+                        @error('adBindPassword') <p class="mt-1 text-xs font-bold text-red-400">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">Kata Kunci Pencarian (opsional)</label>
+                        <input type="text" wire:model="adSearchQuery" placeholder="Kosongkan untuk menampilkan semua user aktif AD"
+                            class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+                    </div>
+
+                    @if ($adError)
+                    <div class="rounded-lg bg-red-950/40 border border-red-900/50 p-4 text-sm text-red-400 font-semibold">
+                        ⚠️ {{ $adError }}
+                    </div>
+                    @endif
+
+                    <!-- Search Action Button -->
+                    <div class="pt-2">
+                        <button type="submit" wire:loading.attr="disabled"
+                            class="w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-sm font-extrabold text-white shadow-lg transition disabled:opacity-50">
+                            <span wire:loading.remove wire:target="searchAd" class="inline-flex items-center gap-2">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                Sambungkan & Cari
+                            </span>
+                            <span wire:loading wire:target="searchAd" class="inline-flex items-center gap-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Menghubungkan & Mencari...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Search Results Section -->
+                @if (!empty($adSearchResults))
+                <div class="border-t border-slate-800 pt-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Hasil Pencarian AD</h4>
+                    <div class="max-h-[200px] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800 bg-slate-900/50">
+                        @foreach ($adSearchResults as $result)
+                        <div class="flex items-center justify-between p-3 transition hover:bg-slate-800/40">
+                            <div>
+                                <div class="text-sm font-bold text-white">{{ $result['name'] }}</div>
+                                <div class="text-xs text-slate-400">{{ $result['username'] }} · {{ $result['email'] }}</div>
+                            </div>
+                            <button type="button" wire:click="selectAdUser('{{ addslashes($result['name']) }}', '{{ addslashes($result['username']) }}', '{{ addslashes($result['email']) }}')"
+                                class="rounded-lg bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white px-3 py-1.5 text-xs font-bold transition">
+                                Pilih
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
