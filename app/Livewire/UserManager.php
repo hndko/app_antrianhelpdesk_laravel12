@@ -146,7 +146,9 @@ class UserManager extends Component
 
     public function edit(int $id): void
     {
-        abort_unless(Auth::user()?->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $currentUser = Auth::user();
+        abort_unless($currentUser?->canManageUsers(), 403);
 
         $user = User::findOrFail($id);
 
@@ -296,7 +298,9 @@ class UserManager extends Component
 
     public function askDelete(int $id): void
     {
-        abort_unless(Auth::user()?->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $currentUser = Auth::user();
+        abort_unless($currentUser?->canManageUsers(), 403);
         abort_if(Auth::id() === $id, 403);
 
         $this->userPendingDeleteId = User::findOrFail($id)->id;
@@ -309,7 +313,9 @@ class UserManager extends Component
 
     public function confirmDelete(): void
     {
-        abort_unless(Auth::user()?->canManageUsers(), 403);
+        /** @var \App\Models\User|null $user */
+        $currentUser = Auth::user();
+        abort_unless($currentUser?->canManageUsers(), 403);
         abort_if(Auth::id() === (int) $this->userPendingDeleteId, 403);
 
         $user = User::findOrFail($this->userPendingDeleteId);
