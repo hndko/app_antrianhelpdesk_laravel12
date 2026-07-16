@@ -333,19 +333,19 @@
     @endif
 
     @if ($showAdSearchModal)
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-        <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-[#0f172a] text-slate-100 shadow-2xl border border-slate-800">
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm">
+        <div class="w-full max-w-lg overflow-hidden rounded-xl bg-white text-slate-900 shadow-2xl border border-slate-200">
             <!-- Modal Header -->
-            <div class="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+            <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
                 <div class="flex items-center gap-3">
-                    <div class="rounded-lg bg-blue-500/10 p-2 text-blue-400">
+                    <div class="rounded-lg bg-blue-50 p-2 text-blue-600">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold text-white">Sambungkan ke Active Directory</h3>
+                    <h3 class="text-lg font-extrabold text-slate-950">Sambungkan ke Active Directory</h3>
                 </div>
-                <button type="button" wire:click="closeAdSearchModal" class="text-slate-400 hover:text-white transition">
+                <button type="button" wire:click="closeAdSearchModal" class="text-slate-400 hover:text-slate-600 transition">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -355,8 +355,8 @@
             <!-- Modal Body -->
             <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
                 <!-- Warning/Information Banner -->
-                <div class="rounded-xl bg-blue-950/40 border border-blue-900/50 p-4 flex gap-3 text-sm text-blue-300">
-                    <svg class="h-5 w-5 shrink-0 text-blue-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="rounded-xl bg-blue-50 border border-blue-100 p-4 flex gap-3 text-sm text-blue-800">
+                    <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
                     <div>
@@ -364,20 +364,20 @@
                     </div>
                 </div>
 
-                <form wire:submit.prevent="searchAd" class="space-y-3">
+                <form wire:submit.prevent="searchAd" class="space-y-4">
                     <div>
-                        <label class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">Username AD (sAMAccountName)</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Username AD (sAMAccountName) <span class="text-red-500">*</span></label>
                         <input type="text" wire:model="adBindUsername" placeholder="Contoh: john.doe atau john.doe@company.local"
-                            class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
-                        @error('adBindUsername') <p class="mt-1 text-xs font-bold text-red-400">{{ $message }}</p> @enderror
+                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                        @error('adBindUsername') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">Password AD</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Password AD <span class="text-red-500">*</span></label>
                         <div class="relative" x-data="{ show: false }">
                             <input :type="show ? 'text' : 'password'" wire:model="adBindPassword" placeholder="Password Active Directory Anda"
-                                class="w-full rounded-lg border border-slate-700 bg-slate-900 pl-4 pr-10 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
-                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white transition">
+                                class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 pl-4 pr-10 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 transition">
                                 <svg class="h-5 w-5" x-show="!show" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -387,17 +387,17 @@
                                 </svg>
                             </button>
                         </div>
-                        @error('adBindPassword') <p class="mt-1 text-xs font-bold text-red-400">{{ $message }}</p> @enderror
+                        @error('adBindPassword') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">Kata Kunci Pencarian (opsional)</label>
+                        <label class="mb-2 block text-sm font-bold text-slate-700">Kata Kunci Pencarian (opsional)</label>
                         <input type="text" wire:model="adSearchQuery" placeholder="Kosongkan untuk menampilkan semua user aktif AD"
-                            class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+                            class="min-h-11 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
                     </div>
 
                     @if ($adError)
-                    <div class="rounded-lg bg-red-950/40 border border-red-900/50 p-4 text-sm text-red-400 font-semibold">
+                    <div class="rounded-lg bg-rose-50 border border-rose-100 p-4 text-sm text-rose-700 font-semibold">
                         ⚠️ {{ $adError }}
                     </div>
                     @endif
@@ -425,17 +425,17 @@
 
                 <!-- Search Results Section -->
                 @if (!empty($adSearchResults))
-                <div class="border-t border-slate-800 pt-4">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Hasil Pencarian AD</h4>
-                    <div class="max-h-[200px] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800 bg-slate-900/50">
+                <div class="border-t border-slate-200 pt-4">
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-3">Hasil Pencarian AD</h4>
+                    <div class="max-h-[200px] overflow-y-auto divide-y divide-slate-100 rounded-lg border border-slate-200 bg-slate-50">
                         @foreach ($adSearchResults as $result)
-                        <div class="flex items-center justify-between p-3 transition hover:bg-slate-800/40">
+                        <div class="flex items-center justify-between p-3 transition hover:bg-blue-50/50">
                             <div>
-                                <div class="text-sm font-bold text-white">{{ $result['name'] }}</div>
-                                <div class="text-xs text-slate-400">{{ $result['username'] }} · {{ $result['email'] }}</div>
+                                <div class="text-sm font-bold text-slate-900">{{ $result['name'] }}</div>
+                                <div class="text-xs text-slate-500 font-semibold">{{ $result['username'] }} · {{ $result['email'] }}</div>
                             </div>
                             <button type="button" wire:click="selectAdUser('{{ addslashes($result['name']) }}', '{{ addslashes($result['username']) }}', '{{ addslashes($result['email']) }}')"
-                                class="rounded-lg bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white px-3 py-1.5 text-xs font-bold transition">
+                                class="rounded-lg bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white px-3 py-1.5 text-xs font-extrabold transition border border-blue-100">
                                 Pilih
                             </button>
                         </div>
